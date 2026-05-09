@@ -37,17 +37,17 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > src/ks.keystore
           echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
-          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
-          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
       - name: Preparing to patch
         uses: ./.github/actions/preparing
       - name: Check github connection
         id: check-gh-morphe
         run: bash src/etc/connection.sh
       - name: Patch apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
         id: patch-morphe
         if: steps.check-gh-morphe.outputs.internet_error == '0'
         run: bash src/build/build.sh "morphe-patches" "MorpheApp" "com.google.android.youtube" "youtube" "google-inc/youtube/youtube" 
@@ -70,17 +70,17 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > src/ks.keystore
           echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
-          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
-          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
       - name: Preparing to patch
         uses: ./.github/actions/preparing
       - name: Check github connection
         id: check-gh-morphe
         run: bash src/etc/connection.sh
       - name: Patch apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
         id: patch-morphe
         if: steps.check-gh-morphe.outputs.internet_error == '0'
         run: bash src/build/build.sh "piko" "crimera" "com.twitter.android" "X" "x-corp/twitter/x" "Bundle_extract"
@@ -103,11 +103,7 @@ jobs:
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > src/ks.keystore
           echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
-          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
-          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+
       - name: Preparing to patch
         uses: ./.github/actions/preparing
       - name: Check github connection
@@ -115,6 +111,11 @@ jobs:
         run: bash src/etc/connection.sh
       - name: Patch apk
         id: patch-morphe
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
         if: steps.check-gh-morphe.outputs.internet_error == '0'
         run: bash src/build/build.sh "piko" "crimera" "com.instagram.android" "instagram-arm64-v8a" "instagram-android/com.instagram.android" "apkpure" "Bundle_extract"
       - name: Releasing APK files
