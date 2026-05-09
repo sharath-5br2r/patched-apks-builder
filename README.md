@@ -20,8 +20,11 @@
 
 ## For manual patches 
 [apktool](https://github.com/ibotpeaches/apktool) - [Apache-2.0](https://github.com/iBotPeaches/Apktool/blob/main/LICENSE.md)
+
 Android SDK Command Line Tools and Build Tools
+
 ChatGPT
+
 ### Dormant Libraries, resources using in this repository:
 
 <details>
