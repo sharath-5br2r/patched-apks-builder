@@ -1,5 +1,6 @@
-## How does this repository work?<img src="../main/docs/image/Readme.png" align="right" />
+## How does this repository work?
 Just use GitHub Releases to find Apps
+
 > [!NOTE]
 > If you want to use the YouTube, YouTube Music or Google Photos app, you need to download and install [MicroG RE](https://github.com/MorpheApp/MicroG-RE)
 > 
@@ -9,7 +10,10 @@ Just use GitHub Releases to find Apps
 > 
 > All the code is open-source, clearly, and the APK files used for patching are downloaded from a trusted site, so it is totally safe for you to use.
 ---
-
+## Based on https://github.com/FiorenMas/Revanced-And-Revanced-Extended-Non-Root for revnaced but heavily modified and specialised.
+Notable Modifications
+- Replaced keystore with personal keystore stored in secrets.
+- Redone scripts to be more universal and breaking out of hardcoded multiple bash scripts
 ## Actively Used Libraries
 
 ### Morphe
