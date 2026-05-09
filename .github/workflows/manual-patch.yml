@@ -48,7 +48,7 @@ jobs:
         if: steps.check-gh-morphe.outputs.internet_error == '0'
         uses: ./.github/actions/release
         with:
-         release_name: "YouTube Morphe"
+         release_name: "YouTube-Morphe"
   patch_piko_twitter:
     name: Patch Piko (X)
     if: ${{ github.event.inputs.org == 'piko X' || inputs.org == 'piko X' || inputs.org == 'all' }}
@@ -72,7 +72,7 @@ jobs:
         if: steps.check-gh-morphe.outputs.internet_error == '0'
         uses: ./.github/actions/release
         with:
-         release_name: "X piko"
+         release_name: "X-piko"
   patch_piko_instagram:
     name: Patch Piko (Instagram)
     if: ${{ github.event.inputs.org == 'piko Instagram' || inputs.org == 'piko Instagram' || inputs.org == 'all' }}
@@ -96,5 +96,5 @@ jobs:
         if: steps.check-gh-morphe.outputs.internet_error == '0'
         uses: ./.github/actions/release
         with:
-         release_name: "Instagram piko"
+         release_name: "Instagram-piko"
       
