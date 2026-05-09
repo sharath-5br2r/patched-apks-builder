@@ -1,4 +1,4 @@
-name: 1. Manual Patch
+name: Manual ReVanced Patch
 permissions: write-all
 env:
   repository: ${{ github.repository }}
@@ -32,6 +32,15 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > src/ks.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
       - name: Checkout
         uses: actions/checkout@v6.0.2
       - name: Preparing to patch
@@ -56,6 +65,16 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > src/ks.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+          
       - name: Checkout
         uses: actions/checkout@v6.0.2
       - name: Preparing to patch
@@ -80,6 +99,16 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > src/ks.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+          
       - name: Checkout
         uses: actions/checkout@v6.0.2
       - name: Preparing to patch
