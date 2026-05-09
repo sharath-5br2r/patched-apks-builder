@@ -59,7 +59,7 @@ jobs:
         env:
            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          export DOLPHIN_LATEST=$(gh release view $(gh release list --json tagName --jq '.[] | select(.tagName | contains("patch-")) | .tagName' --limit 1 | head -n 1) --json body --template '{{.body}}' | grep Dolphin | awk '{print $NF}')
+          export DOLPHIN_LATEST=$(gh release view "Dolphin-SDK29" --json body --template '{{.body}}' | grep FCL | awk '{print $NF}')
           DOLPHIN_APK_URL=$(curl -s https://dolphin-emu.org/download/ \
             | grep -Eo 'https://dl\.dolphin-emu\.org/builds/[a-z0-9/]+/dolphin-master-[0-9]+-[0-9]+\.apk' \
             | awk -F'[-/.]' '{
@@ -90,7 +90,7 @@ jobs:
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          export EDEN_LATEST=$(gh release view $(gh release list --json tagName --jq '.[] | select(.tagName | contains("patch-")) | .tagName' --limit 1 | head -n 1) --json body --template '{{.body}}' | grep Eden | awk '{print $NF}' )
+          export EDEN_LATEST=$(gh release view "Eden-PUBG" --json body --template '{{.body}}' | grep Eden | awk '{print $NF}')          
           export EDEN_ID=$(gh run list -R Eden-CI/Workflow -w nightly.yml --status success --limit 1 --json databaseId -q ".[0].databaseId")
           export EDEN_NAME=$(gh run view $EDEN_ID -R Eden-CI/Workflow | grep standard.apk)
           gh api "/repos/Eden-CI/Workflow/actions/artifacts/$(gh api repos/Eden-CI/Workflow/actions/runs/$EDEN_ID/artifacts --jq '.artifacts[] | select(.name| contains("standard.apk")) | .id')/zip" > temp/eden.apk
@@ -114,7 +114,7 @@ jobs:
         env:
          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          FCL_LATEST=$(gh release view $(gh release list --json tagName --jq '.[] | select(.tagName | contains("patch-")) | .tagName' --limit 1 | head -n 1) --json body --template '{{.body}}' | grep FCL| awk '{print $NF}')
+          FCL_LATEST=$(gh release view "FCL-CoD" --json body --template '{{.body}}' | grep Dolphin | awk '{print $NF}')
           FCL_APK_URL=$(curl -fSsL https://api.github.com/repos/FCL-Team/foldcraftlauncher/releases/latest | jq -r '.assets[0].browser_download_url')
           FCL_NAME=$(basename "$FCL_APK_URL" .apk)
           echo "FCL_APK_URL=$FCL_APK_URL" >> $GITHUB_ENV
