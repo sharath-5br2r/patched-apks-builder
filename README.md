@@ -13,7 +13,15 @@ Just use GitHub Releases to find Apps
 ## Based on https://github.com/FiorenMas/Revanced-And-Revanced-Extended-Non-Root for revanced but heavily modified and specialised.
 Notable Modifications
 - Replaced keystore with personal keystore stored in secrets.
-- Redone scripts to be more universal and breaking out of hardcoded multiple bash scripts
+- Redone scripts to be more universal and breaking out of hardcoded multiple bash script
+## Patched Apps
+- YouTube (Morphe)
+- X (piko)
+- Instagram (piko)
+# Custom patches
+- Eden Nightly (PUBG Spoof) [Original](eden-emu.dev)
+- Dolphin Emulator (SDK 29 no scoped storage) [Original](https://dolphin-emu.org)
+- Fold Craft Launcher (CoD spoof) [Original](https://github.com/FCL-Team/FoldCraftLauncher)
 ## Actively Used Libraries
 
 ### Morphe
