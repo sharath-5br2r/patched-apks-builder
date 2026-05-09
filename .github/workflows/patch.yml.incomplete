@@ -27,18 +27,7 @@ jobs:
           fetch-depth: 0
           submodules: true
 
-      - name: Get next version code
-        id: next_ver_code
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-         TAG=$(gh release list -L 20 | awk -F '\t' '{print $3}' | grep 'patch-' | head -n 1)
 
-         if [ -z "$TAG" ]; then TAG='patch-0'; fi
-         prefix="${TAG%%[0-9]*}"
-         number="${TAG#$prefix}"
-         printf -v NEXT_VER_CODE "%s%d" "$prefix" "$((number + 1))" 
-         echo "NEXT_VER_CODE=$NEXT_VER_CODE" >> $GITHUB_OUTPUT
 
       - name: Decode Keystore
         run: |
