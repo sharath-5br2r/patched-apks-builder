@@ -190,7 +190,7 @@ jobs:
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
         if: steps.check-gh-morphe.outputs.internet_error == '0'
         run: | 
-         export version="$(curl --silent 'https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video/feed/' -H 'User-Agent: ' | grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//' -e 's/<description>/  /' -e 's/<\/description>//' | head -n +1 | grep -oP '\d+\.\d+\.\d+')"
+         #export version="$(curl --silent 'https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video/feed/' -H 'User-Agent: ' | grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//' -e 's/<description>/  /' -e 's/<\/description>//' | head -n +1 | grep -oP '\d+\.\d+\.\d+')"
          bash src/build/build.sh "morphe-patches" "hoo-dles"  "prime-video"  "com.amazon.avod.thirdpartyclient" "prime-video-arm64-v8a" "amazon-prime-video" "amazon-mobile-llc/amazon-prime-video/amazon-prime-video" "arm64-v8a"
          
       - name: Releasing APK files
