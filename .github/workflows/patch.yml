@@ -83,7 +83,7 @@ jobs:
             --out build/$DOLPHIN_NAME.apk \
             temp/dolphin-aligned.apk
           else; then
-          exit
+           exit
           fi
       - name: Get output
         id: get_output
@@ -161,7 +161,7 @@ jobs:
             --out build/$EDEN_NAME.apk \
             temp/eden-aligned.apk
           else; then
-          exit
+           exit
           fi
       - name: Get output
         id: get_output
@@ -240,7 +240,7 @@ jobs:
             --out build/$FCL_NAME.apk \
             temp/fcl-aligned.apk
           else; then
-          exit
+           exit
           fi
           
 
