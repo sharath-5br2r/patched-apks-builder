@@ -396,13 +396,13 @@ get_archive() {
 	version=$(printf '%s\n' "$version" "$prefer_version" | sort -V | tail -n1)
 	unset prefer_version
 
-	if [[ $4 == "Bundle" ]] || [[ $4 == "Bundle_extract" ]]; then
+	if [[ $4 == "Bundle" ]] || [[ $4 == "Bundle_extract" ]] ; then
 		local base_apk="$2.apkm"
 	else
 		local base_apk="$2.apk"
 	fi
-	url=$($5$3/$(curl $5$3/| pup 'a attr{href}' | grep $version))
-	green_log "[+] Downloading $2 version: $version $4"
+	url=$($5$3/$(curl $5$3/| pup 'a attr{href}' | grep $version | grep $6))
+	green_log "[+] Downloading $2 version: $version $4 $6"
 	req "$url" "$base_apk"
 	if [[ -f "./download/$base_apk" ]]; then
             green_log "[+] Successfully downloaded $2"
