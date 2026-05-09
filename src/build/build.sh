@@ -14,9 +14,5 @@ then
 else
   get_apk $3 $4 $4 $5 $6
 fi
-if [[ $3 == "com.amazon.avod.thirdpartyclient" ]]
-then
-
-fi 
 split_editor $4 $4
 patch $4 $2 "morphe"
