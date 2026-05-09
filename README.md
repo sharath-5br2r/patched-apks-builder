@@ -15,6 +15,7 @@ Just use GitHub Releases to find Apps
 - Replaced keystore with personal keystore stored in secrets.
 - Redone scripts to be more universal and breaking out of hardcoded multiple bash script
 - Dedicated release for each apps with logs
+- Added suport for Archive.org apk repositories
 ## Patched Apps
 - YouTube (Morphe)
 - X (piko)
