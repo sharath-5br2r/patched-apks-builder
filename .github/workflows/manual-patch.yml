@@ -163,7 +163,7 @@ jobs:
          release_name: "Proton-VPN-hoo-dles"
 
   patch_hoo-dles_prime-video:
-    name: Patch hoo-dles(ProtonVPN)
+    name: Patch hoo-dles(Prime Video)
     if: ${{ github.event.inputs.org == 'hoo-dles Prime Video' || inputs.org == 'hoo-dles Prime Video' || inputs.org == 'all' }}
     runs-on: ubuntu-latest
     strategy:
