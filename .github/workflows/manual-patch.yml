@@ -14,11 +14,10 @@ on:
         default: 'Morphe'
         type: choice
         options:
+          - 'All'
           - 'Morphe YouTube'
           - 'piko X'
           - 'piko Instagram'
-          - 'hoo-dles Prime Video'
-          - 'All'
   workflow_call:
     inputs:
       org:
@@ -32,6 +31,8 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > src/ks.keystore
@@ -41,8 +42,6 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
-      - name: Checkout
-        uses: actions/checkout@v6.0.2
       - name: Preparing to patch
         uses: ./.github/actions/preparing
       - name: Check github connection
@@ -65,6 +64,8 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > src/ks.keystore
@@ -74,9 +75,6 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
-          
-      - name: Checkout
-        uses: actions/checkout@v6.0.2
       - name: Preparing to patch
         uses: ./.github/actions/preparing
       - name: Check github connection
@@ -99,6 +97,8 @@ jobs:
     strategy:
       fail-fast: false
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > src/ks.keystore
@@ -108,9 +108,6 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
-          
-      - name: Checkout
-        uses: actions/checkout@v6.0.2
       - name: Preparing to patch
         uses: ./.github/actions/preparing
       - name: Check github connection
