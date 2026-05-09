@@ -4,16 +4,17 @@ Just use GitHub Releases to find Apps
 > [!NOTE]
 > If you want to use the YouTube, YouTube Music or Google Photos app, you need to download and install [MicroG RE](https://github.com/MorpheApp/MicroG-RE)
 > 
-> If you are an advanced user and you want to use custom patches for patching apps, you should read the [Wiki](../main/docs/Frequently%20Asked%20Questions.md#q-how-do-i-use-this-repository-for-patching-my-own-app).
+> If you are an advanced user and you want to use custom patches for patching revanced apps, you should read the [Wiki](../main/docs/Frequently%20Asked%20Questions.md#q-how-do-i-use-this-repository-for-patching-my-own-app).
 > 
 > This repository is not like any other repository. It does not create new releases; it only releases new files.
 > 
 > All the code is open-source, clearly, and the APK files used for patching are downloaded from a trusted site, so it is totally safe for you to use.
 ---
 ## Based on https://github.com/FiorenMas/Revanced-And-Revanced-Extended-Non-Root for revanced but heavily modified and specialised.
-Notable Modifications
+### Notable Modifications to revanced part
 - Replaced keystore with personal keystore stored in secrets.
 - Redone scripts to be more universal and breaking out of hardcoded multiple bash script
+- Dedicated release for each apps with logs
 ## Patched Apps
 - YouTube (Morphe)
 - X (piko)
