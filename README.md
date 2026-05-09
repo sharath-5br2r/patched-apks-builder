@@ -19,6 +19,8 @@ Just use GitHub Releases to find Apps
 - YouTube (Morphe)
 - X (piko)
 - Instagram (piko)
+- Prime Video (hoo-dles)
+- Proton VPN (hoo-dles)
 ### Custom patches
 - Eden Nightly (PUBG Spoof) [Original](https://eden-emu.dev)
 - Dolphin Emulator (SDK 29 no scoped storage) [Original](https://dolphin-emu.org)
@@ -37,6 +39,9 @@ Just use GitHub Releases to find Apps
 
 [Patches](https://github.com/crimera/piko) - [GPL-3.0](https://github.com/crimera/piko/blob/main/LICENSE)
 
+
+### hoo-dles
+[Patches](https://github.com/hoo-dles/morphe-patches) - [GPL-3.0](https://github.com/hoo-dles/morphe-patches/blob/main/LICENSE)
 
 ### Standalone
 
@@ -163,4 +168,4 @@ ChatGPT
 
 [revanced-build-template](https://github.com/n0k0m3/revanced-build-template) - [GPL-3.0](https://github.com/n0k0m3/revanced-build-template/blob/main/LICENSE)
 
-[revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module) - [GPL-3.0](https://github.com/j-hc/revanced-magisk-module/blob/main/LICENSE)(previously based on,[Download Prime Video APKs from here](https://github.com/sharath-r7q4/revanced-apks-legacy)
+[revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module) - [GPL-3.0](https://github.com/j-hc/revanced-magisk-module/blob/main/LICENSE)(previously based on, now archived old repo)
