@@ -46,10 +46,24 @@ jobs:
           echo '[+] Downloading LSPatch'
           wget -q https://github.com/JingMatrix/LSPatch/releases/latest/download/lspatch.jar
           echo "[+] Downloadong Discord $aver"
-          wget "https://apkcombo.com$(curl https://apkcombo.com/discord/com.discord/download/apk | grep -Po '(?<=href=["\"])(?!https?://)[^"\"]+' | grep r2)" -O discord.xapk
+          export ver=$(curl https://tracker.vd.nexpid.xyz/tracker/index | jq .latest.beta)
+          mkdir splits
+          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.arm_v7a -o splits/config.arm_v7a.apk
+          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.arm64_v8a -o splits/config.arm64_v8a.apk
+          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.x86 -o splits/config.x86.apk
+          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.x86_64 -o splits/config.x86_64.apk
+          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.en -o splits/config.en.apk
+          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.xxdpi -o splits/config.xxdpi.apk
+          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/config.xxxdpi -o splits/config.xxxdpi.apk
+          wget -q "https://tracker.vd.nexpid.xyz/tracker/download/$ver/base -o splits/base.apk
+          
+          
+          
+          
+          
       - name: Patch
         run: |
-          java -jar apkeditor.jar m -i discord.xapk -o discord.apk
+          java -jar apkeditor.jar m -i splits -o discord.apk
           java -jar lspatch.jar discord.apk -m app-release.apk -l 2 -o build -k sign.keystore ${{ secrets.KEYSTORE_PASS }} ${{ secrets.KEYSTORE_ALIAS }} ${{ secrets.KEYSTORE_PASS }}
           echo "Discord: $aver Revenge: $pver" > build_log.txt
     
