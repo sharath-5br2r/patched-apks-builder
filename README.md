@@ -11,6 +11,9 @@ Just use GitHub Releases to find Apps
 > All the code is open-source, clearly, and the APK files used for patching are downloaded from a trusted site, so it is totally safe for you to use.
 ---
 ## Based on https://github.com/FiorenMas/Revanced-And-Revanced-Extended-Non-Root for revanced but heavily modified and specialised.
+
+## Added custom manifest patches and LSPatch
+
 ### Notable Modifications to revanced part
 - Replaced keystore with personal keystore stored in secrets.
 - Redone scripts to be more universal and breaking out of hardcoded multiple bash script
@@ -26,6 +29,8 @@ Just use GitHub Releases to find Apps
 - Eden Nightly (PUBG Spoof) [Original](https://eden-emu.dev)
 - Dolphin Emulator (SDK 29 no scoped storage) [Original](https://dolphin-emu.org)
 - Fold Craft Launcher (CoD spoof) [Original](https://github.com/FCL-Team/FoldCraftLauncher)
+### LSPatch patches 
+Discord (Revenge)
 ## Actively Used Libraries
 
 ### Morphe
@@ -56,6 +61,11 @@ Just use GitHub Releases to find Apps
 Android SDK Command Line Tools and Build Tools
 
 ChatGPT
+### For LSPatch
+[LSPatch](https://github.com/JingMatrix/LSPatch) - [GPL-3.0](https://github.com/JingMatrix/LSPatch/blob/main/LICENSE)
+## Revenge
+Code inspired from [Manager](https://github.com/revenge-mod/revenge-manager) - [OSL-3.0](https://github.com/revenge-mod/revenge-manager/blob/main/LICENSE)
+Actual Module [Xposed](https://github.com/revenge-mod/revenge-xposed) - [OSL-3.0](https://github.com/revenge-mod/revenge-manager/blob/main/LICENSE)
 
 ### Dormant Libraries, resources using in this repository:
 
@@ -172,4 +182,4 @@ ChatGPT
 [revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module) - [GPL-3.0](https://github.com/j-hc/revanced-magisk-module/blob/main/LICENSE)(previously based on, now archived old repo)
 
 ## See also:
-[Levilaunchroid Crack+BGMI Spoof](https://github.com/sharath-r7q4/LeviLaunchroid) Now included in releases
+[Levilaunchroid Crack+BGMI Spoof](https://github.com/sharath-r7q4/LeviLaunchroid) Now included in releases - [Apache-2.0](https://github.com/sharath-r7q4/LeviLaunchroid/blob/main/LICENSE)
