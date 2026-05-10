@@ -9,10 +9,10 @@ on:
 
   workflow_dispatch:
   schedule:
-    - cron: 0 0/4 * * *
+    - cron: 0 0 * * *
 
 jobs:
-  Dolphin:
+  Revenge:
     permissions: write-all
     runs-on: ubuntu-latest
     steps:
@@ -27,8 +27,18 @@ jobs:
           fetch-depth: 0
           submodules: true
 
-
-
+      - name: Get Files and Patch
+        run: |
+          export mver="$(curl -fL https://api.github.com/repos/revenge-mod/revenge-xposed/releases/latest  | jq .name)
+          export aver="$(curl https://apkcombo.com/discord/com.discord/download/apk | grep -oE '[0-9]+\.[0-9]+ - Stable' | sort -V | tail -n 1)
+          echo '[+] Downloading Revenge $aver'
+          wget -q https://github.com/revenge-mod/revenge-xposed/releases/latest/download/app-release.apk
+          echo '[+] Downloading APKEditor'
+          wget -q $(curl -fSsL https://api.github.com/repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O apkeditor.jar
+          echo '[+] Downloading LSPatch'
+          wget -q https://github.com/JingMatrix/LSPatch/releases/latest/download/app-release.apk
+          echo '[+] Downloadong Discord $aver'
+          wget -q "https://apkcombo.com$(curl https://apkcombo.com/discord/com.discord/download/apk | grep -Po '(?<=href=["\"])(?!https?://)[^"\"]+' | grep r2)" -o discord.apk
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > sign.keystore
