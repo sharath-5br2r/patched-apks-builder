@@ -1,0 +1,51 @@
+name: Patch APKs
+on:
+  workflow_call:
+    inputs:
+      from_ci:
+        type: boolean
+        required: false
+        default: true
+
+  workflow_dispatch:
+  schedule:
+    - cron: 0 0/4 * * *
+
+jobs:
+  Dolphin:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: true
+
+
+
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > sign.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+          NEXT_VER_CODE: ${{ steps.next_ver_code.outputs.NEXT_VER_CODE }}
+    
+      - name: Release
+        uses: ncipollo/release-action@v1.21.0
+        with:
+         artifacts: |
+          ./build/*.apk
+         name: FCL-CoD
+         tag: FCL-CoD
+         bodyFile: build_log.txt
+         allowUpdates: true
