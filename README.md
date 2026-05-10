@@ -172,4 +172,4 @@ ChatGPT
 [revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module) - [GPL-3.0](https://github.com/j-hc/revanced-magisk-module/blob/main/LICENSE)(previously based on, now archived old repo)
 
 ## See also:
-[Levilaunchroid Crack+BGMI Spoof](https://github.com/sharath-r7q4/LeviLaunchroid)
+[Levilaunchroid Crack+BGMI Spoof](https://github.com/sharath-r7q4/LeviLaunchroid) Now included in releases
