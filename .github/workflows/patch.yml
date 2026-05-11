@@ -73,7 +73,7 @@ jobs:
             --ks-type PKCS12 \
             --ks-key-alias "${{ secrets.KEYSTORE_ALIAS }}" \
             --ks-pass pass:${{ secrets.KEYSTORE_PASS }} \
-            --out build/$DOLPHIN_NAME.apk \
+            --out build/dolphin-sdk29.apk \
             temp/dolphin-patched.apk
           else
            exit
@@ -145,7 +145,7 @@ jobs:
             --ks-type PKCS12 \
             --ks-key-alias "${{ secrets.KEYSTORE_ALIAS }}" \
             --ks-pass pass:${{ secrets.KEYSTORE_PASS }} \
-            --out build/$EDEN_NAME.apk \
+            --out build/eden-pubg.apk \
             temp/eden-patched.apk
           else
            exit
@@ -218,7 +218,7 @@ jobs:
             --ks-type PKCS12 \
             --ks-key-alias "${{ secrets.KEYSTORE_ALIAS }}" \
             --ks-pass pass:${{ secrets.KEYSTORE_PASS }} \
-            --out build/$FCL_NAME.apk \
+            --out build/fcl-codm.apk \
             temp/fcl-patched.apk
           else
            exit
