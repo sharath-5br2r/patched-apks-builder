@@ -68,7 +68,7 @@ ChatGPT
 
 [LSPatch](https://github.com/JingMatrix/LSPatch) - [GPL-3.0](https://github.com/JingMatrix/LSPatch/blob/main/LICENSE)
 
-## Revenge
+### Revenge
 Code inspired from [Manager](https://github.com/revenge-mod/revenge-manager) - [OSL-3.0](https://github.com/revenge-mod/revenge-manager/blob/main/LICENSE)
 
 Actual Module [Xposed](https://github.com/revenge-mod/revenge-xposed) - [OSL-3.0](https://github.com/revenge-mod/revenge-manager/blob/main/LICENSE)
