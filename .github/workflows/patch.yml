@@ -137,7 +137,7 @@ jobs:
           gh api "/repos/Eden-CI/Workflow/actions/artifacts/$(gh api repos/Eden-CI/Workflow/actions/runs/$EDEN_ID/artifacts --jq '.artifacts[] | select(.name| contains("standard.apk")) | .id')/zip" > temp/eden.apk
           echo "EDEN_NAME=$EDEN_NAME" >> $GITHUB_ENV
           if [[ $EDEN_NAME != $EDEN_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
-            java -jar apkeditor.jar -i temp/eden.apk -o temp/eden-src -t xml -dex
+            java -jar apkeditor.jar d -i temp/eden.apk -o temp/eden-src -t xml -dex
             sed -i 's/dev\.eden\.eden_emulator\.nightly/com.tencent.ig/g' temp/eden-src/AndroidManifest.xml
             java -jar apkeditor.jar b -i temp/eden-src -o temp/eden-patched.apk  
             java -jar android-build-tools/android-14/lib/apksigner.jar sign \
