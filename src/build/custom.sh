@@ -7,7 +7,7 @@ get_deps() {
   mv android-build-tools/android-14/lib/apksigner.jar apksigner.jar
 }
 sign() {
-    java -jar apksigner.jar sign --ks ks-p12.keystore --ks-type PKCS12 --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --out $1 $0
+    java -jar apksigner.jar sign --ks ks-p12.keystore --ks-type PKCS12 --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --out $2 $1
 }
 
 dolphin() {
@@ -33,7 +33,7 @@ eden() {
     export EDEN_LATEST=$(gh release view "Eden-PUBG" --json body --template '{{.body}}' | grep Eden | awk '{print $NF}')          
     export EDEN_ID=$(gh run list -R Eden-CI/Workflow -w nightly.yml --status success --limit 1 --json databaseId -q ".[0].databaseId")
     export EDEN_NAME=$(gh run view $EDEN_ID -R Eden-CI/Workflow | grep standard.apk)
-    gh api "/repos/Eden-CI/Workflow/actions/artifacts/$(gh api repos/Eden-CI/Workflow/actions/runs/$EDEN_ID/artifacts --jq '.artifacts[] | select(.name| contains("standard.apk")) | .id')/zip" > temp/eden-orig.apk
+    gh api "/repos/Eden-CI/Workflow/actions/artifacts/$(gh api repos/Eden-CI/Workflow/actions/runs/$EDEN_ID/artifacts --jq '.artifacts[] | select(.name| contains("standard.apk")) | .id')/zip" > eden-orig.apk
     echo -e "Patched Eden PUBG: $EDEN_NAME" >> build.log
     if [[ $EDEN_NAME != $EDEN_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
         java -jar apkeditor.jar d -i eden-orig.apk -o eden-src -t xml -dex
