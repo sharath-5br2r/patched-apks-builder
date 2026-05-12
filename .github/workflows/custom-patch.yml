@@ -1,4 +1,4 @@
-name: Patch APKs
+name: Custom Patches
 on:
   workflow_call:
     inputs:
@@ -55,7 +55,7 @@ jobs:
          tag: Dolphin-SDK29
          bodyFile: build.log
          allowUpdates: true
-  eden:
+  Eden:
    permissions: write-all
    runs-on: ubuntu-latest
    steps:
@@ -97,7 +97,7 @@ jobs:
          tag: Eden-PUBG
          bodyFile: build.log
          allowUpdates: true
-  fcl:
+  FCL:
    permissions: write-all
    runs-on: ubuntu-latest
    steps:
@@ -140,7 +140,7 @@ jobs:
          bodyFile: build_log.txt
          allowUpdates: true
 
-  geode:
+  Geode:
    permissions: write-all
    runs-on: ubuntu-latest
    steps:
