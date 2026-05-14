@@ -43,7 +43,7 @@ jobs:
       - name: Preparing to patch
         uses: ./.github/actions/preparing
       - name: Check github connection
-        id: check-gh-morphe
+        id: check-gh
         run: bash src/etc/connection.sh
       - name: Patch apk
         env:
@@ -51,12 +51,12 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
-        id: patch-morphe
-        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        id: patch
+        if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/build/build.sh "morphe-youtube"
       - name: Releasing APK files
-        id: releasemorphe
-        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
         with:
          release_name: "YouTube-Morphe"
@@ -76,7 +76,7 @@ jobs:
       - name: Preparing to patch
         uses: ./.github/actions/preparing
       - name: Check github connection
-        id: check-gh-morphe
+        id: check-gh
         run: bash src/etc/connection.sh
       - name: Patch apk
         env:
@@ -84,12 +84,12 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
-        id: patch-morphe
-        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        id: patch
+        if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/build/build.sh "piko-x"
       - name: Releasing APK files
-        id: releasemorphe
-        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
         with:
          release_name: "X-piko"
@@ -110,20 +110,20 @@ jobs:
       - name: Preparing to patch
         uses: ./.github/actions/preparing
       - name: Check github connection
-        id: check-gh-morphe
+        id: check-gh
         run: bash src/etc/connection.sh
       - name: Patch apk
-        id: patch-morphe
+        id: patch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
-        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/build/build.sh "piko-instagram"
       - name: Releasing APK files
-        id: releasemorphe
-        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
         with:
          release_name: "Instagram-piko"
@@ -145,20 +145,20 @@ jobs:
       - name: Preparing to patch
         uses: ./.github/actions/preparing
       - name: Check github connection
-        id: check-gh-morphe
+        id: check-gh
         run: bash src/etc/connection.sh
       - name: Patch apk
-        id: patch-morphe
+        id: patch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
-        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/build/build.sh "hoo-dles-protonvpn"
       - name: Releasing APK files
-        id: releasemorphe
-        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
         with:
          release_name: "Proton-VPN-hoo-dles"
@@ -180,21 +180,21 @@ jobs:
       - name: Preparing to patch
         uses: ./.github/actions/preparing
       - name: Check github connection
-        id: check-gh-morphe
+        id: check-gh
         run: bash src/etc/connection.sh
       - name: Patch apk
-        id: patch-morphe
+        id: patch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
-        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        if: steps.check-gh.outputs.internet_error == '0'
         run: | 
          bash src/build/build.sh "hoo-dles-prime-video"
       - name: Releasing APK files
-        id: releasemorphe
-        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
         with:
          release_name: "Prime-Video-hoo-dles"
@@ -217,21 +217,21 @@ jobs:
       - name: Preparing to patch
         uses: ./.github/actions/preparing
       - name: Check github connection
-        id: check-gh-morphe
+        id: check-gh
         run: bash src/etc/connection.sh
       - name: Patch apk
-        id: patch-morphe
+        id: patch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
-        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        if: steps.check-gh.outputs.internet_error == '0'
         run: | 
          bash src/build/build.sh "revenge-discord"
       - name: Releasing APK files
-        id: releasemorphe
-        if: steps.check-gh-morphe.outputs.internet_error == '0'
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
         with:
          release_name: "Discord-Revenge"

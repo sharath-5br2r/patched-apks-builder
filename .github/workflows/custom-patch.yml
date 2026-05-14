@@ -60,17 +60,11 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
           
-
-
-      - name: Release
-        uses: ncipollo/release-action@v1.21.0
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
         with:
-         artifacts: |
-          ./*sdk29.apk
-         name: Dolphin-SDK29
-         tag: Dolphin-SDK29
-         bodyFile: build.log
-         allowUpdates: true
+         release_name: "Dolphin-SDK29"
   Eden:
    permissions: write-all
    runs-on: ubuntu-latest
@@ -98,15 +92,11 @@ jobs:
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
 
 
-      - name: Release
-        uses: ncipollo/release-action@v1.21.0
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
         with:
-         artifacts: |
-          ./*pubg.apk
-         name: Eden-PUBG
-         tag: Eden-PUBG
-         bodyFile: build.log
-         allowUpdates: true
+         release_name: "Eden-PUBG"
   FCL:
    permissions: write-all
    runs-on: ubuntu-latest
@@ -133,15 +123,11 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
 
-      - name: Release
-        uses: ncipollo/release-action@v1.21.0
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
         with:
-         artifacts: |
-          ./*cod.apk
-         name: FCL-CoD
-         tag: FCL-CoD
-         bodyFile: build.log
-         allowUpdates: true
+         release_name: "FCL-CoD"
 
   Geode:
    permissions: write-all
@@ -168,13 +154,9 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
-      - name: Release
-        uses: ncipollo/release-action@v1.21.0
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
         with:
-         artifacts: |
-          ./*pubgkr.apk
-         name: Geode-PUBGKR
-         tag: Geode-PUBGKR
-         bodyFile: build.log
-         allowUpdates: true
+         release_name: "Geode-PUBGKR"
          

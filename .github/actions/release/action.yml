@@ -11,8 +11,7 @@ runs:
       run: |
         echo  -e "
         **This repository is not like any other repository. It does not create new releases; it only releases new files.**
-        \n ## Build Log"> ${{ github.workspace }}-CHANGELOG.txt
-        cat build.log >> ${{ github.workspace }}-CHANGELOG.txt
+        \n ## Click the first APK for the latest \n The first version in app version, second is patch(if applicable) "> ${{ github.workspace }}-CHANGELOG.txt
     - name: Release
       uses: ncipollo/release-action@v1.21.0
       with:
