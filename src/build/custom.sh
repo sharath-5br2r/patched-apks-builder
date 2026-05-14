@@ -49,7 +49,7 @@ eden() {
 fcl() {
     get_deps
     export FCL_LATEST=$(gh release view "FCL-CoD" --json body --template '{{.body}}' | grep FCL | awk '{print $NF}')
-    FCL_APK_URL=$(curl -fSsL https://api.github.com/repos/FCL-Team/foldcraftlauncher/releases/latest | jq -r '.assets[0].browser_download_url')
+    FCL_APK_URL=$(curl -fSL https://api.github.com/repos/FCL-Team/foldcraftlauncher/releases/latest | jq -r '.assets[0].browser_download_url')
     FCL_NAME=$(basename "$FCL_APK_URL" .apk)
     echo -e "Patched FCL PUBG: $FCL_NAME" >> build.log
     if [[ $FCL_NAME != $FCL_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
@@ -66,7 +66,7 @@ fcl() {
 geode() {
     get_deps
     export GEODE_LATEST=$(gh release view "Geode-PUBGKR" --json body --template '{{.body}}' | grep Geode | awk '{print $NF}')
-    GEODE_APK_URL=$(curl -fSsL https://api.github.com/repos/geode-sdk/android-launcher/releases/latest |  jq -r '.assets[] | select(.name | endswith(".apk") and (contains("android32") | not)) | .browser_download_url' )
+    GEODE_APK_URL=$(curl -fSL https://api.github.com/repos/geode-sdk/android-launcher/releases/latest |  jq -r '.assets[] | select(.name | endswith(".apk") and (contains("android32") | not)) | .browser_download_url' )
     GEODE_NAME=$(basename "$GEODE_APK_URL" .apk)
     echo -e "Patched Geode PUBG KR: $GEODE_NAME" >> build.log
     if [[ $GEODE_NAME != $GEODE_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
