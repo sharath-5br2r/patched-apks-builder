@@ -12,12 +12,6 @@ jobs:
     with:
       org: "Revenge Discord"
     secrets: inherit
-  Patch-Eden-PUBG:
-    name: Patch Eden(PUBG)
-    uses: ./.github/workflows/custom-patch.yml
-    with:
-      org: "Eden PUBG"
-    secrets: inherit
   Patch-Dolphin-SDK-29:
     name: Patch Dolphin SDK 29
     uses: ./.github/workflows/custom-patch.yml

@@ -3,10 +3,12 @@
 mkdir ./release ./download
 
 #Setup pup for download apk files
+echo -e "\e[32m[+] Setting up pup for downloading apks\e[0m"
 wget -q -O ./pup.zip https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_linux_amd64.zip
 unzip "./pup.zip" -d "./" > /dev/null 2>&1
 pup="./pup"
 #Setup APKEditor for install combine split apks
+echo -e "\e[32m[+] Setting up APKEditor for combining apks\e[0m"
 wget -q $(curl -fsSL https://api.github.com/repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O APKEditor.jar
 APKEditor="./APKEditor.jar"
 #Find lastest user_agent

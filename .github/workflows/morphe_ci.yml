@@ -50,6 +50,10 @@ jobs:
         id: check-geode
         if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/etc/ci.sh geode-sdk/android-launcher latest Geode-PUBGKR
+      - name: Check new patch Eden PUBG
+        id: check-eden
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/etc/check_eden.sh
       - name: Re-run workflow if github connection not stable
         if: always() && steps.check-morphe.outcome == 'skipped' && env.retry_count < env.max_retries
         uses: actions/github-script@v7
@@ -81,6 +85,7 @@ jobs:
       check_hoo-dles_proton-vpn: ${{ steps.check-hoo-dles-proton-vpn.outputs.new_patch }}
       check_fcl: ${{ steps.check-fcl.outputs.new_patch }}
       check_geode: ${{ steps.check-geode.outputs.new_patch }}
+      check_eden: ${{ steps.check-eden.outputs.new_patch }}
       
   Patch-Morphe:
     name: Patch Morphe
@@ -115,7 +120,7 @@ jobs:
       org: "hoo-dles Prime Video"
     secrets: inherit
   Patch-hoo-dles-proton-vpn:
-    name: Patch Piko(Instagram)
+    name: Patch hoo-dles Proton VPN
     needs: check
     if: ${{ needs.check.outputs.check_hoo-dles_proton-vpn == 1 }}
     uses: ./.github/workflows/manual-patch.yml
@@ -137,4 +142,11 @@ jobs:
     uses: ./.github/workflows/custom-patch.yml
     with:
       org: "Geode PUBGKR"
+    secrets: inherit
+  Patch-Eden-PUBG:
+    name: Patch Eden(PUBG)
+    uses: ./.github/workflows/custom-patch.yml
+    if: ${{ needs.check.outputs.check_eden == 1 }}
+    with:
+      org: "Eden PUBG"
     secrets: inherit
