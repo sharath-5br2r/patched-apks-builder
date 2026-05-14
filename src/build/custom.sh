@@ -22,7 +22,7 @@ dolphin() {
         java -jar apkeditor.jar d -i dolphin-orig.apk -o dolphin-src -t xml -dex
         sed -i 's/android:targetSdkVersion="[^"]*"/android:targetSdkVersion="29"/g' dolphin-src/AndroidManifest.xml
         java -jar apkeditor.jar b -i dolphin-src -o dolphin-patched.apk
-        sign dolphin-patched.apk dolphin-sdk29.apk
+        sign dolphin-patched.apk $DOLPHIN_NAME-sdk29.apk
     else
        exit 0
     fi
@@ -40,7 +40,7 @@ eden() {
         java -jar apkeditor.jar d -i eden-orig.apk -o eden-src -t xml -dex
         sed -i 's/dev\.eden\.eden_emulator\.nightly/com.tencent.ig/g' eden-src/AndroidManifest.xml
         java -jar apkeditor.jar b -i eden-src -o eden-patched.apk
-        sign eden-patched.apk eden-pubg.apk
+        sign eden-patched.apk $EDEN_NAME-pubg.apk
     else
        exit 0
     fi
@@ -57,7 +57,7 @@ fcl() {
         java -jar apkeditor.jar d -i fcl-orig.apk -o fcl-src -t xml -dex
         sed -i -e 's/package="com\.tungsten\.fcl"/package="com.activision.callofduty.shooter"/' -e 's/com\.tungsten\.fcl\.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/com.activision.callofduty.shooter.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/g' -e 's/com\.tungsten\.fcl\.document\.provider/com.activision.callofduty.shooter.document.provider/g' -e 's/com\.tungsten\.fcl\.provider/com.activision.callofduty.shooter.provider/g' -e 's/com\.tungsten\.fcl\.crashreporterinitprovider/com.activision.callofduty.shooter.crashreporterinitprovider/g' -e 's/com\.tungsten\.fcl\.androidx-startup/com.activision.callofduty.shooter.androidx-startup/g' fcl-src/AndroidManifest.xml
         java -jar apkeditor.jar b -i fcl-src -o fcl-patched.apk
-        sign fcl-patched.apk fcl-cod.apk
+        sign fcl-patched.apk $FCL_NAME-cod.apk
     else
        exit 0
     fi
@@ -74,7 +74,7 @@ geode() {
         java -jar apkeditor.jar d -i geode-orig.apk -o geode-src -t xml -dex
         sed -i -e 's/package="com\.geode\.launcher"/package="com.pubg.krmobile"/' -e '/package="com\.pubg\.krmobile"/a\    android:compileSdkVersion="36"\n    android:compileSdkVersionCodename="16"' -e '/android:compileSdkVersion="36"/d' -e '/android:compileSdkVersionCodename="16"/d' -e '0,/package="com\.pubg\.krmobile"/s//android:compileSdkVersion="36"\n    android:compileSdkVersionCodename="16"\n    package="com.pubg.krmobile"/' -e 's/com\.geode\.launcher\.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/com.pubg.krmobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/g' -e 's/com\.geode\.launcher\.user/com.pubg.krmobile.user/g' -e 's/com\.geode\.launcher\.fileprovider/com.pubg.krmobile.fileprovider/g' -e 's/com\.geode\.launcher\.androidx-startup/com.pubg.krmobile.androidx-startup/g' geode-src/AndroidManifest.xml         
         java -jar apkeditor.jar b -i geode-src -o geode-patched.apk
-        sign geode-patched.apk geode-pubg.apk
+        sign geode-patched.apk $GEODE_NAME-pubg.apk
     else
        exit 0
     fi
