@@ -66,7 +66,7 @@ jobs:
         uses: ncipollo/release-action@v1.21.0
         with:
          artifacts: |
-          ./dolphin-sdk29.apk
+          ./*sdk29.apk
          name: Dolphin-SDK29
          tag: Dolphin-SDK29
          bodyFile: build.log
@@ -102,7 +102,7 @@ jobs:
         uses: ncipollo/release-action@v1.21.0
         with:
          artifacts: |
-          ./eden-pubg.apk
+          ./*pubg.apk
          name: Eden-PUBG
          tag: Eden-PUBG
          bodyFile: build.log
@@ -137,7 +137,7 @@ jobs:
         uses: ncipollo/release-action@v1.21.0
         with:
          artifacts: |
-          fcl-cod.apk
+          ./*cod.apk
          name: FCL-CoD
          tag: FCL-CoD
          bodyFile: build.log
@@ -172,7 +172,7 @@ jobs:
         uses: ncipollo/release-action@v1.21.0
         with:
          artifacts: |
-          ./geode-pubgkr.apk
+          ./*pubgkr.apk
          name: Geode-PUBGKR
          tag: Geode-PUBGKR
          bodyFile: build.log
