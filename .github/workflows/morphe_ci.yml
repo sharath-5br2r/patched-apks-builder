@@ -1,4 +1,4 @@
-name: Check new patch
+name: Check new Morphe patch
 permissions: write-all
 on:
   schedule:
