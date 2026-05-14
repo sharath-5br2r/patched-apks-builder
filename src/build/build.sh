@@ -24,6 +24,8 @@ revenge-discord() {
 	# Patch Revenge:
 	dl_gh "revenge-xposed" "revenge-mod" "latest"
 	LSPatch_dl
+	_fs_get https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/feed/
+	version=$(curl -s https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/feed/  -H "Cookie: $FS_COOKIES" -H "User-Agent: $user_agent"   |  grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//' -e 's/<description>/  /' -e 's/<\/description>//' |  grep -oE '[0-9]+\.[0-9]+.*' |  awk -F ' by' '{print $1}' | grep Beta | head -n 1 )
 	get_apk "com.discord" "discord" "bundle"
 	lspatch "discord" "app-release" "revenge"
 }
