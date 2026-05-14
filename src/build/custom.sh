@@ -13,10 +13,10 @@ sign() {
 dolphin() {
     get_deps
     _fs_get https://dolphin-emu.org/download/
-    export DOLPHIN_LATEST=$(gh release view "Dolphin-SDK29" --json body --template '{{.body}}' | grep dolphin | awk '{print $NF}')
+    export DOLPHIN_LATEST=$(gh release view "Dolphin-SDK29" --json  assets | jq .[].[0].name)
+    DOLPHIN_LATEST=${DOLPHIN_LATEST%%.*}
     DOLPHIN_APK_URL=$(curl  https://dolphin-emu.org/download/ | grep -Eo 'https://dl\.dolphin-emu\.org/builds/[a-z0-9/]+/dolphin-master-[0-9]+-[0-9]+\.apk' | awk -F'[-/.]' '{v=$(NF-2); b=$(NF-1);if (v>V || (v==V && b>B)) {V=v; B=b; U=$0}} END{print U}')
     DOLPHIN_NAME=$(basename "$DOLPHIN_APK_URL" .apk)
-    echo -e "Patched Dolphin SDK 29: $DOLPHIN_NAME" >> build.log
     if [[ $DOLPHIN_NAME != $DOLPHIN_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
         curl -L "$DOLPHIN_APK_URL" -H "Cookie: $FS_COOKIES" -H "User-Agent: $user_agent"  -o dolphin-orig.apk
         java -jar apkeditor.jar d -i dolphin-orig.apk -o dolphin-src -t xml -dex
@@ -30,12 +30,11 @@ dolphin() {
 
 eden() {
     get_deps
-    export EDEN_LATEST=$(gh release view "Eden-PUBG" --json body --template '{{.body}}' | grep Eden | awk '{print $NF}')
-    export EDEN_LATEST=$(gh release view "Eden-PUBG" --json body --template '{{.body}}' | grep Eden | awk '{print $NF}')          
+    export EDEN_LATEST=$(gh release view "Eden-PUBG" --json  assets | jq .[].[0].name)
+    EDEN_LATEST=${EDEN_LATEST%%.*}        
     export EDEN_ID=$(gh run list -R Eden-CI/Workflow -w nightly.yml --status success --limit 1 --json databaseId -q ".[0].databaseId")
     export EDEN_NAME=$(gh run view $EDEN_ID -R Eden-CI/Workflow | grep standard.apk)
     gh api "/repos/Eden-CI/Workflow/actions/artifacts/$(gh api repos/Eden-CI/Workflow/actions/runs/$EDEN_ID/artifacts --jq '.artifacts[] | select(.name| contains("standard.apk")) | .id')/zip" > eden-orig.apk
-    echo -e "Patched Eden PUBG: $EDEN_NAME" >> build.log
     if [[ $EDEN_NAME != $EDEN_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
         java -jar apkeditor.jar d -i eden-orig.apk -o eden-src -t xml -dex
         sed -i 's/dev\.eden\.eden_emulator\.nightly/com.tencent.ig/g' eden-src/AndroidManifest.xml
@@ -48,10 +47,10 @@ eden() {
 
 fcl() {
     get_deps
-    export FCL_LATEST=$(gh release view "FCL-CoD" --json body --template '{{.body}}' | grep FCL | awk '{print $NF}')
+    FCL_LATEST=$(gh release view "FCL-CoD" --json  assets | jq .[].[0].name)
+    FCL_LATEST=${FCL_LATEST%%.*}
     FCL_APK_URL=$(curl -fSL https://api.github.com/repos/FCL-Team/foldcraftlauncher/releases/latest | jq -r '.assets[0].browser_download_url')
     FCL_NAME=$(basename "$FCL_APK_URL" .apk)
-    echo -e "Patched FCL PUBG: $FCL_NAME" >> build.log
     if [[ $FCL_NAME != $FCL_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
         curl -L "$FCL_APK_URL" -o fcl-orig.apk
         java -jar apkeditor.jar d -i fcl-orig.apk -o fcl-src -t xml -dex
@@ -65,16 +64,16 @@ fcl() {
 
 geode() {
     get_deps
-    export GEODE_LATEST=$(gh release view "Geode-PUBGKR" --json body --template '{{.body}}' | grep Geode | awk '{print $NF}')
+    GEODE_LATEST=$(gh release view "Geode-PUBGKR" --json  assets | jq .[].[0].name)
+    GEODE_LATEST=${GEODE_LATEST%%.*}
     GEODE_APK_URL=$(curl -fSL https://api.github.com/repos/geode-sdk/android-launcher/releases/latest |  jq -r '.assets[] | select(.name | endswith(".apk") and (contains("android32") | not)) | .browser_download_url' )
     GEODE_NAME=$(basename "$GEODE_APK_URL" .apk)
-    echo -e "Patched Geode PUBG KR: $GEODE_NAME" >> build.log
     if [[ $GEODE_NAME != $GEODE_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
         curl -L "$GEODE_APK_URL" -o geode-orig.apk
         java -jar apkeditor.jar d -i geode-orig.apk -o geode-src -t xml -dex
         sed -i -e 's/package="com\.geode\.launcher"/package="com.pubg.krmobile"/' -e '/package="com\.pubg\.krmobile"/a\    android:compileSdkVersion="36"\n    android:compileSdkVersionCodename="16"' -e '/android:compileSdkVersion="36"/d' -e '/android:compileSdkVersionCodename="16"/d' -e '0,/package="com\.pubg\.krmobile"/s//android:compileSdkVersion="36"\n    android:compileSdkVersionCodename="16"\n    package="com.pubg.krmobile"/' -e 's/com\.geode\.launcher\.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/com.pubg.krmobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/g' -e 's/com\.geode\.launcher\.user/com.pubg.krmobile.user/g' -e 's/com\.geode\.launcher\.fileprovider/com.pubg.krmobile.fileprovider/g' -e 's/com\.geode\.launcher\.androidx-startup/com.pubg.krmobile.androidx-startup/g' geode-src/AndroidManifest.xml         
         java -jar apkeditor.jar b -i geode-src -o geode-patched.apk
-        sign geode-patched.apk $GEODE_NAME-pubg.apk
+        sign geode-patched.apk $GEODE_NAME-pubgkr.apk
     else
        exit 0
     fi
