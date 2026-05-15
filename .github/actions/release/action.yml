@@ -17,7 +17,7 @@ runs:
       with:
         artifacts: |
           ./release/*.apk
-        name: ${{ inputs.release_name }}
-        tag: ${{ inputs.release_name }}
+        name: "Get APKs"
+        tag: "All"
         bodyFile: ${{ github.workspace }}-CHANGELOG.txt
-        allowUpdates: true
+        allowUpdates: tru
