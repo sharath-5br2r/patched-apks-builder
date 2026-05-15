@@ -42,6 +42,10 @@ jobs:
         id: check-hoo-dles-proton-vpn
         if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/etc/ci.sh hoo-dles/morphe-patches latest Proton-VPN-hoo-dles
+      - name: Check new patch binarymend Symfonium
+        id: check-binarymend-symfonium
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/etc/ci.sh binarymend/morphe-patches latest binarymend-symfonium
       - name: Check new patch FCL
         id: check-fcl
         if: steps.check-gh.outputs.internet_error == '0'
@@ -83,6 +87,7 @@ jobs:
       check_piko_instagram: ${{ steps.check-piko-instagram.outputs.new_patch }}
       check_hoo-dles_prime-video: ${{ steps.check-hoo-dles-prime-video.outputs.new_patch }}
       check_hoo-dles_proton-vpn: ${{ steps.check-hoo-dles-proton-vpn.outputs.new_patch }}
+      check_binarymend_symfonium: ${{ steps.check-binarymend-symfonium.outputs.new_patch }}
       check_fcl: ${{ steps.check-fcl.outputs.new_patch }}
       check_geode: ${{ steps.check-geode.outputs.new_patch }}
       check_eden: ${{ steps.check-eden.outputs.new_patch }}
@@ -127,6 +132,14 @@ jobs:
     with:
       org: "hoo-dles Proton VPN"
     secrets: inherit
+  Patch-binarymend-symfonium:
+    name: Patch binarymend Symfonium
+    needs: check
+    if: ${{ needs.check.outputs.check_binarymend_symfonium == 1 }}
+    uses: ./.github/workflows/manual-patch.yml
+    with:
+      org: "hoo-dles Prime Video"
+    secrets: inherit
   Patch-FCL:
     name: Patch FCL
     needs: check
@@ -145,6 +158,7 @@ jobs:
     secrets: inherit
   Patch-Eden-PUBG:
     name: Patch Eden(PUBG)
+    needs: check
     uses: ./.github/workflows/custom-patch.yml
     if: ${{ needs.check.outputs.check_eden == 1 }}
     with:

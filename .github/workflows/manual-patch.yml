@@ -20,6 +20,7 @@ on:
           - 'piko Instagram'
           - 'hoo-dles Proton VPN'
           - 'hoo-dles Prime Video'
+          - 'binarymend Symfonium'
           - 'Revenge Discord'
   workflow_call:
     inputs:
@@ -199,6 +200,41 @@ jobs:
         with:
          release_name: "Prime-Video-hoo-dles"
 
+  patch_binarymend_symfonium:
+    name: Patch binarymend(Symfonium)
+    if: ${{ github.event.inputs.org == 'binarymend Symfonium' || inputs.org == 'binarymend Symfonium' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        id: patch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: | 
+         bash src/build/build.sh "binarymend-symfonium"
+      - name: Releasing APK files
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+        with:
+         release_name: "binarymend-Symfonium"
 
   patch_revenge_discord:
     name: Patch Revenge Discord

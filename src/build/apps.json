@@ -1,5 +1,9 @@
 {
 	"apkmirror": {
+		"app.symfonik.music.player":{
+			"list_url": "https://www.apkmirror.com/uploads/?appcategory=symfonium-music-player-cast",
+			"example_url": "https://www.apkmirror.com/apk/tolriq/symfonium-music-player-cast/symfonium-music-player-cast-14-0-0-release/"
+		},
 		"ch.protonmail.android": {
 			"list_url": "https://www.apkmirror.com/uploads/?appcategory=protonmail-encrypted-email",
 			"example_url": "https://www.apkmirror.com/apk/proton-technologies-ag/protonmail-encrypted-email/proton-mail-encrypted-email-7-9-4-release/"

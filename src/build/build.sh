@@ -20,6 +20,10 @@ hoo-dles_dl(){
 	dl_gh "morphe-patches" "hoo-dles" "latest"
 }
 
+binarymend_dl(){
+	dl_gh "morphe-cli" "MorpheApp" "latest"
+	dl_gh "morphe-patches" "binarymend" "latest"
+}
 revenge-discord() {
 	# Patch Revenge:
 	LSPatch_dl
@@ -63,6 +67,12 @@ hoo-dles-protonvpn() {
 	get_apk "ch.protonvpn.android" "protonvpn" "apk"
 	patch "protonvpn" "hoo-dles" "morphe"
 }
+binarymend-sympfonium(){
+	binarymend_dl
+	get_patches_key "Sympfonium-binarymend"
+	get_apk "app.symfonik.music.player" "sympfonium" "apk"
+	patch "sympfonium" "binarymend" "morphe"
+}
 morphe-youtube() {
 	morphe_dl
 	# Patch YouTube:
@@ -88,6 +98,9 @@ case "$1" in
 		;;
 	morphe-youtube)
 		morphe-youtube
+		;;
+	binarymend-sympfonium)
+		binarymend-sympfonium
 		;;
 	
 esac
