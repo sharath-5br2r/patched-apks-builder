@@ -25,35 +25,35 @@ jobs:
       - name: Check new patch Piko(X)
         id: check-piko-x
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/ci.sh crimera/piko prelease X-piko
+        run: bash src/etc/ci.sh crimera/piko prelease x*piko
       - name: Check new patch Piko(Instagram)
         id: check-piko-instagram
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/ci.sh crimera/piko prelease Instagram-piko
+        run: bash src/etc/ci.sh crimera/piko prelease instagram*piko
       - name: Check new patch Morphe
         id: check-morphe
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/ci.sh MorpheApp/morphe-patches latest YouTube-Morphe
+        run: bash src/etc/ci.sh MorpheApp/morphe-patches latest youtube*morphe
       - name: Check new patch hoo-dles Prime Video
         id: check-hoo-dles-prime-video
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/ci.sh hoo-dles/morphe-patches latest Prime-Video-hoo-dles
+        run: bash src/etc/ci.sh hoo-dles/morphe-patches latest prime-video*hoo-dles
       - name: Check new patch hoo-dles Proton VPN
         id: check-hoo-dles-proton-vpn
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/ci.sh hoo-dles/morphe-patches latest Proton-VPN-hoo-dles
+        run: bash src/etc/ci.sh hoo-dles/morphe-patches latest protonvpn*hoo-dles
       - name: Check new patch binarymend Symfonium
         id: check-binarymend-symfonium
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/ci.sh binarymend/morphe-patches latest binarymend-symfonium
+        run: bash src/etc/ci.sh binarymend/morphe-patches latest symfonium*binarymend
       - name: Check new patch FCL
         id: check-fcl
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/ci.sh FCL-Team/FoldCraftLauncher latest FCL-CoD
+        run: bash src/etc/ci.sh FCL-Team/FoldCraftLauncher latest FCL*cod
       - name: Check new patch Geode
         id: check-geode
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/ci.sh geode-sdk/android-launcher latest Geode-PUBGKR
+        run: bash src/etc/ci.sh geode-sdk/android-launcher latest geode*pubgkr
       - name: Check new patch Eden PUBG
         id: check-eden
         if: steps.check-gh.outputs.internet_error == '0'
