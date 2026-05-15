@@ -2,10 +2,18 @@
 
 # Check new Eden Version:
 
+
+
+get_date_gh() {
+	json=$(wget -qO- "https://api.github.com/repos/$1/releases")
+	updated_at=$(echo "$json" | jq -r 'first(.[] | .assets[] | select(.name | test("'"$3"'")) | .updated_at)')
+	echo "$updated_at"
+}
+	
 checker(){
 	local date1 date2 date1_sec date1_sec ur_repo=$repository
 	date1=$(gh run list -R Eden-CI/Workflow -w nightly.yml --status success --limit 1 --json updatedAt  -q ".[0].updatedAt")
-	date2=$(gh api repos/$ur_repo/releases |jq -r 'first(.[] | select(.tag_name == "'Eden-PUBG'") | .assets[] | .updated_at )')
+	date2=$(get_date_gh "$ur_repo" "all" "Eden-Android")
 	date1_sec=$(date -d "$date1" +%s)
 	date2_sec=$(date -d "$date2" +%s)
 	if [ -z "$date2" ] || [ "$date1_sec" -gt "$date2_sec" ]; then
