@@ -1,4 +1,5 @@
 # Latest Releases
+The format is appname-appversion-patchname-patchversion.apk
 - [Eden-Android-4d49341918-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-4d49341918-pubg.apk)
 - [FCL-release-1.3.0.6-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.0.6-all-cod.apk)
 - [discord-.329.12.-.Beta.-revenge.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/discord-.329.12.-.Beta.-revenge.apk)
@@ -9,4 +10,4 @@
 - [protonvpn-5.17.72.0-hoo-dles-v1.32.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/protonvpn-5.17.72.0-hoo-dles-v1.32.0.apk)
 - [sympfonium-14.0.0-binarymend-v1.3.1.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/sympfonium-14.0.0-binarymend-v1.3.1.apk)
 - [x-11.91.0-release-ripped.0-piko-v3.4.0-dev.2.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/x-11.91.0-release-ripped.0-piko-v3.4.0-dev.2.apk)
-- [youtube-20.47.62-morphe-v1.28.0-dev.3.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/youtube-20.47.62-morphe-v1.28.0-dev.3.apk)
+- [youtube-20.47.62-morphe-v1.28.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/youtube-20.47.62-morphe-v1.28.0.apk)
