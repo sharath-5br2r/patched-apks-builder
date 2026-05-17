@@ -178,4 +178,9 @@ jobs:
       - name: Releasing APK files
         id: release
         uses: ./.github/actions/release
+  update-releases-file:
+    needs: [Dolphin, Eden, FCL, Geode, Winlator]
+    name: Update releases file
+    uses: ./.github/workflows/release.md.yml
+    secrets: inherit
          

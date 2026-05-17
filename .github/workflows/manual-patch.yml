@@ -257,3 +257,8 @@ jobs:
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
+  update-releases-file:
+    needs: [patch_morphe, patch_piko_twitter, patch_piko_instagram, patch_hoo-dles_protonvpn, patch_hoo-dles_prime-video, patch_binarymend_symfonium, patch_revenge_discord]
+    name: Update releases file
+    uses: ./.github/workflows/release.md.yml
+    secrets: inherit

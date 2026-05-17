@@ -1,9 +1,8 @@
 name: "Generate Releases File"
 permissions: write-all
 on:
-    schedule:
-        - cron: "0 0/4 * * *"
     workflow_dispatch:
+    workflow_call:
 jobs:
     generate_releases:
         name: Generate releases file
@@ -15,7 +14,7 @@ jobs:
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           run: |
-              echo "# Latest Releases" > releases.md
+              echo -e "# Latest Releases\nThe format is appname-appversion-patchname-patchversion.apk" > releases.md
               gh release view all --json assets | jq -r '
                 .assets
                 | map(
