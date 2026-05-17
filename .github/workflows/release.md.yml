@@ -31,7 +31,7 @@ jobs:
                 | .[]
                 # Format the output as Markdown bullets
                 | "- [\(.name)](\(.url))"
-                ' ">> releases.md
+                ' >> releases.md
         - name: Commit and push releases file
           env:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
