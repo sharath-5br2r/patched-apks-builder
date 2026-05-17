@@ -181,6 +181,7 @@ jobs:
   update-releases-file:
     needs: [Dolphin, Eden, FCL, Geode, Winlator]
     name: Update releases file
+    permissions: write-all
     uses: ./.github/workflows/release.md.yml
     secrets: inherit
          
