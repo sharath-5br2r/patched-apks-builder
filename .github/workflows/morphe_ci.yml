@@ -58,6 +58,10 @@ jobs:
         id: check-eden
         if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/etc/check_eden.sh
+      - name: Check new patch Winlator
+        id: check-winlator
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/etc/ci.sh StevenMXZ/Winlator-Ludashi latest winlator*pubgvn
       - name: Re-run workflow if github connection not stable
         if: always() && steps.check-morphe.outcome == 'skipped' && env.retry_count < env.max_retries
         uses: actions/github-script@v7
@@ -91,6 +95,7 @@ jobs:
       check_fcl: ${{ steps.check-fcl.outputs.new_patch }}
       check_geode: ${{ steps.check-geode.outputs.new_patch }}
       check_eden: ${{ steps.check-eden.outputs.new_patch }}
+      check_winlator: ${{ steps.check-winlator.outputs.new_patch }}
       
   Patch-Morphe:
     name: Patch Morphe
@@ -163,4 +168,12 @@ jobs:
     if: ${{ needs.check.outputs.check_eden == 1 }}
     with:
       org: "Eden PUBG"
+    secrets: inherit
+  Patch-Winlator:
+    name: Patch Winlator
+    needs: check
+    uses: ./.github/workflows/custom-patch.yml
+    if: ${{ needs.check.outputs.check_winlator == 1 }}
+    with:
+      org: "Winlator PUBGVN"
     secrets: inherit
