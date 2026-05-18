@@ -2,6 +2,7 @@
 The format is appname-appversion-patchname-patchversion.apk
 - [Eden-Android-4d49341918-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-4d49341918-pubg.apk)
 - [FCL-release-1.3.0.6-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.0.6-all-cod.apk)
+- [LeviLauncher-release.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/LeviLauncher-release.apk)
 - [discord-.329.12.-.Beta.-revenge.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/discord-.329.12.-.Beta.-revenge.apk)
 - [dolphin-master-2603-379-sdk29.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/dolphin-master-2603-379-sdk29.apk)
 - [geode-launcher-v1.8.0-pubgkr.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/geode-launcher-v1.8.0-pubgkr.apk)
