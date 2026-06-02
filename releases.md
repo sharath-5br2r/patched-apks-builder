@@ -1,6 +1,6 @@
 # Latest Releases
 The format is appname-appversion-patchname-patchversion.apk . Sometimes there wont be a patch, or any of the versions
-- [Eden-Android-251a3470dc-2026-05-28T20.53.46Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-251a3470dc-2026-05-28T20.53.46Z-pubg.apk)
+- [Eden-Android-5027aecf77-2026-06-02T21.25.56Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-5027aecf77-2026-06-02T21.25.56Z-pubg.apk)
 - [Eden-Android-bd2d344040-2026-05-31T19.54.18Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-bd2d344040-2026-05-31T19.54.18Z-pubg.apk)
 - [Eden-Android-c84d605426-2026-05-29T20.52.35Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-c84d605426-2026-05-29T20.52.35Z-pubg.apk)
 - [Eden-Android-d761ecba8c-2026-05-23T19.45.08Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-d761ecba8c-2026-05-23T19.45.08Z-pubg.apk)
@@ -8,7 +8,7 @@ The format is appname-appversion-patchname-patchversion.apk . Sometimes there wo
 - [FCL-release-1.3.0.9-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.0.9-all-cod.apk)
 - [LeviLauncher-release.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/LeviLauncher-release.apk)
 - [amazon-india-32.11.0.300.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/amazon-india-32.11.0.300.apk)
-- [discord-.332.6.-.Beta.-revenge.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/discord-.332.6.-.Beta.-revenge.apk)
+- [discord-.332.7.-.Beta.-revenge.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/discord-.332.7.-.Beta.-revenge.apk)
 - [dolphin-master-2603-401-sdk29.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/dolphin-master-2603-401-sdk29.apk)
 - [geode-launcher-v1.8.0-pubgkr.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/geode-launcher-v1.8.0-pubgkr.apk)
 - [instagram-arm64-v8a-430.0.0.53.80-piko-v3.5.0-dev.4.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/instagram-arm64-v8a-430.0.0.53.80-piko-v3.5.0-dev.4.apk)
