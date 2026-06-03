@@ -5,7 +5,7 @@ The format is appname-appversion-patchname-patchversion.apk . Sometimes there wo
 - [Eden-Android-c84d605426-2026-05-29T20.52.35Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-c84d605426-2026-05-29T20.52.35Z-pubg.apk)
 - [Eden-Android-d761ecba8c-2026-05-23T19.45.08Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-d761ecba8c-2026-05-23T19.45.08Z-pubg.apk)
 - [Eden-Android-ff7bbaea7d-2026-05-30T19.51.02Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-ff7bbaea7d-2026-05-30T19.51.02Z-pubg.apk)
-- [FCL-release-1.3.0.9-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.0.9-all-cod.apk)
+- [FCL-release-1.3.1.0-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.1.0-all-cod.apk)
 - [LeviLauncher-release.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/LeviLauncher-release.apk)
 - [amazon-india-32.11.0.300.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/amazon-india-32.11.0.300.apk)
 - [discord-.332.7.-.Beta.-revenge.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/discord-.332.7.-.Beta.-revenge.apk)
