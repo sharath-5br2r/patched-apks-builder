@@ -133,14 +133,13 @@ dl_gl() {
 
   local tag_name
   tag_name=$(echo "$release" | jq -r '.tag_name')
-  echo "$release" | jq -r '.assets.links[] | "\(.direct_asset_url // .url) \(.name)"' | \
-    while read -r url name; do
+  while read -r url name; do
       if [[ -n "$url" ]] && [[ "$url" != "null" ]] && [[ $url != *.asc ]]; then
         green_log "[+] Downloading $name from $owner - $tag"
         wget -q -O "$name" "$url"
 	release_name=$(echo $release  |  jq -r '.name')
       fi
-    done
+  done < <(echo "$release" | jq -r '.assets.links[] | "\(.direct_asset_url // .url) \(.name)"')
 }
 
 #################################################
