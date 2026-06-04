@@ -13,3 +13,4 @@ APKEditor.jar
 *tdl*
 tg_export.json
 tg_tmp_*/
+*.keystore

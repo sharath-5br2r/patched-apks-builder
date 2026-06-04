@@ -143,7 +143,7 @@ eden() {
     java -jar APKEditor.jar d -i eden-orig.apk -o eden-src -t xml -dex
     sed -i 's/dev\.eden\.eden_emulator\.nightly/com.tencent.ig/g' eden-src/AndroidManifest.xml
     java -jar APKEditor.jar b -i eden-src -o eden-patched.apk
-    sign eden-patched.apk ./release/Eden-Android-$EDEN_NAME-$date1-pubg.apk
+    sign eden-patched.apk ./release/Eden-Android-$date1-$EDEN_NAME-pubg.apk
 }
 
 fcl() {
