@@ -76,7 +76,7 @@ dl_gh() {
             if [[ $url != *.asc ]]; then
               name=$(basename "$url")
               wget -q -O "$name" "$url"
-			  release_name=$(gh api repos/$owner/$repo/releases | jq .[0].name)
+	      release_name=$(gh api repos/$owner/$repo/releases | jq .[0].name)
               green_log "[+] Downloading $name from $owner"
             fi
           fi
@@ -138,7 +138,7 @@ dl_gl() {
       if [[ -n "$url" ]] && [[ "$url" != "null" ]] && [[ $url != *.asc ]]; then
         green_log "[+] Downloading $name from $owner - $tag"
         wget -q -O "$name" "$url"
-		release_name=$(curl  "https://gitlab.com/api/v4/projects/$owner%2f$repo/releases" |  jq -r '.[0].name')
+	release_name=$(echo $release  |  jq -r '.name')
       fi
     done
 }
