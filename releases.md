@@ -8,7 +8,7 @@ The format is appname-appversion-patchname-patchversion.apk . Sometimes there wo
 - [LeviLauncher-release.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/LeviLauncher-release.apk)
 - [amazon-alexa-2.2.683672.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/amazon-alexa-2.2.683672.0.apk)
 - [amazon-india-32.11.0.300.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/amazon-india-32.11.0.300.apk)
-- [discord-.332.8.-.Beta.-revenge.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/discord-.332.8.-.Beta.-revenge.apk)
+- [discord-.332.10.-.Beta.-revenge.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/discord-.332.10.-.Beta.-revenge.apk)
 - [dolphin-master-2603-408-sdk29.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/dolphin-master-2603-408-sdk29.apk)
 - [geode-launcher-v1.8.0-pubgkr.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/geode-launcher-v1.8.0-pubgkr.apk)
 - [instagram-arm64-v8a-430.0.0.53.80-piko-v3.5.0-dev.5.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/instagram-arm64-v8a-430.0.0.53.80-piko-v3.5.0-dev.5.apk)
