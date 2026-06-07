@@ -118,6 +118,13 @@ amazon-india(){
 	java -jar APKEditor.jar m -i ./download/amazon-india.apkm -o amazon-india.apk
 	sign "amazon-india.apk" ./release/amazon-india-$version.apk
 }
+amazon-alexa(){
+	_fs_get https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/feed/
+	version=$(curl -s https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/feed/ -H "Cookie: $FS_COOKIES" -H "User-Agent: $user_agent"   |  grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//' -e 's/<description>/  /' -e 's/<\/description>//' |  grep -oE '[0-9]+\.[0-9]+.*' |  awk -F ' by' '{print $1}'| head -n 1 )
+	get_apk "com.amazon.dee.app" "amazon-alexa" "bundle"
+	java -jar APKEditor.jar m -i ./download/amazon-alexa.apkm -o amazon-alexa.apk
+	sign "amazon-alexa.apk" ./release/amazon-alexa-$version.apk
+}
 dolphin() {
     _fs_get https://dolphin-emu.org/download/
     export DOLPHIN_LATEST=$(gh release view "Dolphin-SDK29" --json  assets | jq .[].[0].name)
@@ -209,6 +216,9 @@ case "$1" in
 		;;
 	amazon-india)
 		amazon-india
+		;;
+    amazon-alexa)
+		amazon-alexa
 		;;
     dolphin)
         dolphin

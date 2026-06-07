@@ -30,6 +30,7 @@ on:
           - "Geode PUBGKR"
           - "Winlator PUBGVN"
           - "Amazon India"
+          - "Amazon Alexa"
   workflow_call:
     inputs:
       org:
@@ -412,6 +413,39 @@ jobs:
       - name: Releasing APK files
         id: release
         uses: ./.github/actions/release
+  Amazon-Alexa:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    if: ${{ inputs.org == 'Amazon Alexa' || github.event.inputs.org == 'Amazon Alexa' || inputs.org == 'All' }}
+    steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          submodules: true
+
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
+      - name: Download and Patch Amazon Alexa
+        run: |
+          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+          bash src/build/build.sh amazon-alexa
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
   Dolphin:
     permissions: write-all
     runs-on: ubuntu-latest
@@ -570,7 +604,7 @@ jobs:
         id: release
         uses: ./.github/actions/release
   update-releases-file:
-    needs: [patch_morphe_yt,patch_morphe_ytm_arm, patch_morphe_ytm_x86, patch_piko_twitter, patch_piko_instagram, patch_paresh_protonvpn, patch_paresh_jiohotstar, patch_binarymend_symfonium, patch_revenge_discord, Amazon-India, Dolphin, Eden, FCL, Geode, Winlator]
+    needs: [patch_morphe_yt,patch_morphe_ytm_arm, patch_morphe_ytm_x86, patch_piko_twitter, patch_piko_instagram, patch_paresh_protonvpn, patch_paresh_jiohotstar, patch_binarymend_symfonium, patch_revenge_discord, Amazon-India, Amazon-Alexa, Dolphin, Eden, FCL, Geode, Winlator]
     name: Update releases file
     permissions: write-all
     if: always()
