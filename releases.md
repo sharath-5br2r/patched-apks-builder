@@ -6,6 +6,8 @@ The format is appname-appversion-patchname-patchversion.apk . Sometimes there wo
 - [Eden-Android-ff7bbaea7d-2026-05-30T19.51.02Z-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-ff7bbaea7d-2026-05-30T19.51.02Z-pubg.apk)
 - [FCL-release-1.3.1.1-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.1.1-all-cod.apk)
 - [LeviLauncher-release.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/LeviLauncher-release.apk)
+- [amazon-alexa-2.2.683672.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/amazon-alexa-2.2.683672.0.apk)
+- [amazon-india-32.11.0.300.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/amazon-india-32.11.0.300.apk)
 - [discord-.332.10.-.Beta.-revenge.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/discord-.332.10.-.Beta.-revenge.apk)
 - [dolphin-master-2603-408-sdk29.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/dolphin-master-2603-408-sdk29.apk)
 - [geode-launcher-v1.8.0-pubgkr.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/geode-launcher-v1.8.0-pubgkr.apk)
