@@ -17,4 +17,4 @@ The format is appname-appversion-patchname-patchversion.apk . Sometimes there wo
 - [x-stable-3744301388_10_11.99.0-release-ripped.1.apk-piko-v3.5.0-dev.7.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/x-stable-3744301388_10_11.99.0-release-ripped.1.apk-piko-v3.5.0-dev.7.apk)
 - [youtube-app-21.24.360-morphe-v1.31.0-dev.13.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/youtube-app-21.24.360-morphe-v1.31.0-dev.13.apk)
 - [youtube-music-arm-9.22.53-morphe-v1.31.0-dev.13.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/youtube-music-arm-9.22.53-morphe-v1.31.0-dev.13.apk)
-- [youtube-music-x86-9.20.52-morphe-v1.31.0-dev.3.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/youtube-music-x86-9.20.52-morphe-v1.31.0-dev.3.apk)
+- [youtube-music-x86-9.23.52-morphe-v1.32.0-dev.1.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/youtube-music-x86-9.23.52-morphe-v1.32.0-dev.1.apk)
