@@ -1,6 +1,6 @@
 # Latest Releases
 The format is appname-appversion-patchname-patchversion.apk . Sometimes there wont be a patch, or any of the versions
-- [Eden-Android-2026-06-14T20.12.51Z-60e1032771-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-2026-06-14T20.12.51Z-60e1032771-pubg.apk)
+- [Eden-Android-2026-06-15T21.51.14Z-c8c61a12c3-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-2026-06-15T21.51.14Z-c8c61a12c3-pubg.apk)
 - [FCL-release-1.3.1.2-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.1.2-all-cod.apk)
 - [LeviLauncher-release.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/LeviLauncher-release.apk)
 - [amazon-alexa-2.2.686572.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/amazon-alexa-2.2.686572.0.apk)
