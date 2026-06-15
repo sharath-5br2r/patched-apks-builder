@@ -4,8 +4,8 @@ source ./src/build/utils.sh
 sign() {
     java -jar apksigner.jar sign --ks ks-p12.keystore --ks-type PKCS12 --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in $1 --out $2
 }
-LSPatch_dl(){
-	dl_gh "LSPatch" "JingMatrix" "latest"
+NPatch_dl(){
+	dl_gh "NPatch" "7723mod" "latest"
 }
 morphe_dl(){
 	dl_gh "morphe-cli" "MorpheApp" "latest"
@@ -32,7 +32,7 @@ paresh_dl(){
 }
 revenge-discord() {
 	# Patch Revenge:
-	LSPatch_dl
+	NPatch_dl
 	dl_gh "revenge-xposed" "revenge-mod" "latest"
 	_fs_get https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/feed/
 	version=$(curl -s https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/feed/  -H "Cookie: $FS_COOKIES" -H "User-Agent: $user_agent"   |  grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//' -e 's/<description>/  /' -e 's/<\/description>//' |  grep -oE '[0-9]+\.[0-9]+.*' |  awk -F ' by' '{print $1}' | grep Beta | head -n 1 )

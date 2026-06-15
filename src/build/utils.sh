@@ -751,7 +751,7 @@ patch() {
 	fi
 }
 
-lspatch() {
+npatch() {
 	green_log "[+] Patching $1:"
 	if [ -f "./download/$1.apk" ]; then
 		local module
@@ -765,8 +765,8 @@ lspatch() {
 			red_log "[-] Module not found: $2"
 			return 1
 		fi
-		java -jar lspatch.jar ./download/$1.apk -k ks-p12.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$module" -o ./release/
-		mv ./release/$1-*-lspatched.apk "./release/$1-\"$version\"-$3.apk"
+		java -jar jar*.jar ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$module" -o ./release/
+		mv ./release/$1-*-npatched.apk "./release/$1-\"$version\"-$3.apk"
 		unset version
 		unset lock_version
 	else
