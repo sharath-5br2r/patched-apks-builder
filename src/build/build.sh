@@ -1,9 +1,6 @@
 #!/bin/bash
 #CI build
 source ./src/build/utils.sh
-sign() {
-    java -jar apksigner.jar sign --ks ks-p12.keystore --ks-type PKCS12 --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in $1 --out $2
-}
 NPatch_dl(){
 	dl_gh "NPatch" "7723mod" "latest"
 }

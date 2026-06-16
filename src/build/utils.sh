@@ -1,15 +1,24 @@
 #!/bin/bash
-
+# Colored output logs
+green_log() {
+    echo -e "\e[32m$1\e[0m"
+}
+red_log() {
+	echo -e "\e[31m$1\e[0m"
+}
+yellow_log() {
+	echo -e "\e[33m$1\e[0m"
+}
 mkdir ./release ./download
 
 #Setup pup for download apk files
 chmod +x pup
 chmod +x pup-arm64
 if [ $OSTYPE == "cygwin" ]; then
-    echo "[-] Windows detected, using pup.exe"
+    yellow_log "[-] Windows detected, using pup.exe"
 	pup="./pup.exe"
 elif [ $(uname -m) == "aarch64" ]; then
-	echo "[-] ARM64 architecture detected, using pup-arm64"
+	yellow_log "[-] ARM64 architecture detected, using pup-arm64"
 	pup="./pup-arm64"
 else
 	pup="./pup"
@@ -23,23 +32,19 @@ user_agent=$(wget -qO- https://www.whatismybrowser.com/guides/the-latest-user-ag
 || user_agent=
 [ -z "$user_agent" ] && {
   user_agent='Mozilla/5.0 (Android 16; Mobile; rv:146.0) Gecko/146.0 Firefox/146.0'
-  echo "[-] Can't found lastest user-agent"
+  red_log "[-] Can't found lastest user-agent"
 }
-
-#################################################
-
-# Colored output logs
-green_log() {
-    echo -e "\e[32m$1\e[0m"
-}
-red_log() {
-    echo -e "\e[31m$1\e[0m"
-}
-yellow_log() {
-    echo -e "\e[33m$1\e[0m"
-}
-
-#################################################
+VERSION=$(curl -fsSL https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/maven-metadata.xml | grep -oPm1 '(?<=<release>)[^<]+')
+green_log "[+] Downloading Bouncy Castle Provider"
+wget -qO bcprov.jar "https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/$VERSION/bcprov-jdk18on-$VERSION.jar"
+LAST_PROV=$(grep "^security.provider\." "$JAVA_HOME/conf/security/java.security"  | grep -oP '(?<=security\.provider\.)\d+' | sort -n | tail -1)
+echo "security.provider.$((LAST_PROV+1))=org.bouncycastle.jce.provider.BouncyCastleProvider"  > bc.security
+sign() {
+	if [ $OSTYPE == "cygwin" ]; then
+		java -cp "bcprov.jar;apksigner.jar" com.android.apksigner.ApkSigner sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in "$1" --out "$2"
+    else
+        java -cp "bcprov.jar:apksigner.jar" com.android.apksigner.ApkSigner sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in "$1" --out "$2"
+}		
 check_experimental() {
  prefer_version=$(curl  https://raw.githubusercontent.com/MorpheApp/morphe-patches/refs/tags/$(gh release list --limit 1  --repo MorpheApp/morphe-patches | awk '{print $1}')/patches-list.json  | jq --arg pkg $1 -r '[.patches[].compatiblePackages[]? | select(.packageName == $pkg) | .targets[] | select(.isExperimental == true).version] | unique | sort_by(split(".") | map(tonumber)) | last')
 }
@@ -767,12 +772,7 @@ npatch() {
 			red_log "[-] Module not found: $2"
 			return 1
 		fi
-		VERSION=$(curl -fsSL https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/maven-metadata.xml | grep -oPm1 '(?<=<release>)[^<]+')
-		green_log "[+] Downloading Bouncy Castle Provider"
-		wget -qO bcprov.jar "https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/$VERSION/bcprov-jdk18on-$VERSION.jar"
-		LAST_PROV=$(grep "^security.provider\." "$JAVA_HOME/conf/security/java.security"  | grep -oP '(?<=security\.provider\.)\d+' | sort -n | tail -1)
-		echo "security.provider.$((LAST_PROV+1))=org.bouncycastle.jce.provider.BouncyCastleProvider"  > bc.security
-		mv jar*.jar jar-npatch.jar
+        mv jar*.jar jar-npatch.jar
 		if [[ "$OSTYPE" == "cygwin" ]]; then
 			green_log "[+] Detected Windows environment, using Windows version of npatch"
 			java -cp "bcprov.jar;jar-npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$module" -o ./release/
