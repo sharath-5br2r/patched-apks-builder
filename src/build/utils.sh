@@ -768,7 +768,8 @@ npatch() {
 			return 1
 		fi
 		VERSION=$(curl -fsSL https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/maven-metadata.xml | grep -oPm1 '(?<=<release>)[^<]+')
-		wget -O bcprov.jar "https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/$VERSION/bcprov-jdk18on-$VERSION.jar"
+		green_log "[+] Downloading Bouncy Castle Provider"
+		wget -qO bcprov.jar "https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/$VERSION/bcprov-jdk18on-$VERSION.jar"
 		LAST_PROV=$(grep "^security.provider\." "$JAVA_HOME/conf/security/java.security"  | grep -oP '(?<=security\.provider\.)\d+' | sort -n | tail -1)
 		echo "security.provider.$((LAST_PROV+1))=org.bouncycastle.jce.provider.BouncyCastleProvider"  > bc.security
 		mv jar*.jar jar-npatch.jar
