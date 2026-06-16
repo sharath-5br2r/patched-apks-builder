@@ -9,7 +9,7 @@ if [ $OSTYPE == "cygwin" ]; then
     echo "[-] Windows detected, using pup.exe"
 	pup="./pup.exe"
 elif [ $(uname -m) == "aarch64" ]; then
-	echo "[-] ARM64 architecture detected, using pup-arm64"s
+	echo "[-] ARM64 architecture detected, using pup-arm64"
 	pup="./pup-arm64"
 else
 	pup="./pup"
@@ -40,7 +40,9 @@ yellow_log() {
 }
 
 #################################################
-
+check_experimental() {
+ prefer_version=$(curl  https://raw.githubusercontent.com/MorpheApp/morphe-patches/refs/tags/$(gh release list --limit 1  --repo MorpheApp/morphe-patches | awk '{print $1}')/patches-list.json  | jq --arg pkg $1 -r '[.patches[].compatiblePackages[]? | select(.packageName == $pkg) | .targets[] | select(.isExperimental == true).version] | unique | sort_by(split(".") | map(tonumber)) | last')
+}
 # Download Github assets requirement:
 dl_gh() {
   if [ $3 == "prerelease" ]; then
@@ -765,7 +767,7 @@ npatch() {
 			red_log "[-] Module not found: $2"
 			return 1
 		fi
-		java -jar jar*.jar ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$module" -o ./release/
+		java -jar jar*.jar ./download/$1.apk -k ks-p12.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$module" -o ./release/
 		mv ./release/$1-*-npatched.apk "./release/$1-\"$version\"-$3.apk"
 		unset version
 		unset lock_version

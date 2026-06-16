@@ -58,10 +58,6 @@ jobs:
       - name: Check github connection
         id: check-gh
         run: bash src/etc/connection.sh
-      - name: Check experimental support versions
-        id: experimental-check
-        if: steps.check-gh.outputs.internet_error == '0'
-        uses: ./.github/actions/experimental-check
       - name: Patch apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -94,10 +90,6 @@ jobs:
       - name: Check github connection
         id: check-gh
         run: bash src/etc/connection.sh
-      - name: Check experimental support versions
-        id: experimental-check
-        if: steps.check-gh.outputs.internet_error == '0'
-        uses: ./.github/actions/experimental-check
       - name: Patch apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -105,7 +97,6 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
           youtube_music_experimental_support: ${{ steps.experimental-check.outputs.youtube_music_experimental_support }}
-
         id: patch
         if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/build/build.sh "morphe-youtube-music-x86"
@@ -130,11 +121,7 @@ jobs:
         uses: ./.github/actions/preparing
       - name: Check github connection
         id: check-gh
-        run: bash src/etc/connection.sh 
-      - name: Check experimental support versions
-        id: experimental-check
-        if: steps.check-gh.outputs.internet_error == '0'
-        uses: ./.github/actions/experimental-check 
+        run: bash src/etc/connection.sh
       - name: Patch apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
