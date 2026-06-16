@@ -3,7 +3,7 @@ The format is appname-appversion-patchname-patchversion.apk . Sometimes there wo
 - [Eden-Android-2026-06-15T21.51.14Z-c8c61a12c3-pubg.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/Eden-Android-2026-06-15T21.51.14Z-c8c61a12c3-pubg.apk)
 - [FCL-release-1.3.1.2-all-cod.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/FCL-release-1.3.1.2-all-cod.apk)
 - [LeviLauncher-release.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/LeviLauncher-release.apk)
-- [amazon-alexa-2.2.686572.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/amazon-alexa-2.2.686572.0.apk)
+- [amazon-alexa-2.2.683672.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/amazon-alexa-2.2.683672.0.apk)
 - [amazon-india-32.12.2.300.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/amazon-india-32.12.2.300.apk)
 - [discord-.333.10.-.Beta.-revenge.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/discord-.333.10.-.Beta.-revenge.apk)
 - [dolphin-master-2603-415-sdk29.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/dolphin-master-2603-415-sdk29.apk)
