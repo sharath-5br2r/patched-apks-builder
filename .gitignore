@@ -14,3 +14,5 @@ APKEditor.jar
 tg_export.json
 tg_tmp_*/
 *.keystore
+jar*.jar
+bcprov*.jar

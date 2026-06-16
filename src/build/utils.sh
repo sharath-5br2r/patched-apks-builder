@@ -767,7 +767,11 @@ npatch() {
 			red_log "[-] Module not found: $2"
 			return 1
 		fi
-		java -jar jar*.jar ./download/$1.apk -k ks-p12.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$module" -o ./release/
+		VERSION=$(curl -fsSL https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/maven-metadata.xml | grep -oPm1 '(?<=<release>)[^<]+')
+		curl -fLO "https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/$VERSION/bcprov-jdk18on-$VERSION.jar"
+		LAST_PROV=$(grep "^security.provider\." "$JAVA_HOME/conf/security/java.security"  | grep -oP '(?<=security\.provider\.)\d+' | sort -n | tail -1)
+		echo "security.provider.$((LAST_PROV+1))=org.bouncycastle.jce.provider.BouncyCastleProvider"  > bc.security
+		java -cp "bcprov-jdk18on-*.jar:jar*.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$module" -o ./release/
 		mv ./release/$1-*-npatched.apk "./release/$1-\"$version\"-$3.apk"
 		unset version
 		unset lock_version
