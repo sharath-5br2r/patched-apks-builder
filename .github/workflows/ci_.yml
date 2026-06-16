@@ -30,4 +30,9 @@ jobs:
     with:
       org: "Amazon Alexa"
     secrets: inherit
-  
+  Patch-hoo-dles-prime-video:
+    name: Patch hoo-dles Prime Video
+    uses: ./.github/workflows/manual-patch.yml
+    secrets: inherit
+    with:
+      org: "hoo-dles Prime Video"
