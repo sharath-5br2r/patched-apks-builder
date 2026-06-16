@@ -56,9 +56,8 @@ hoo-dles-prime-video() {
 	# Patch Amazon Prime Video:
 	# Arm64-v8a
 	get_patches_key "prime-video-hoo-dles"
-    detect_version "com.amazon.avod.thirdpartyclient"
-    version1=$(printf '%s\n' "$version" "$prefer_version" | sort -V | tail -n1)
-    version=${version1%.*}
+	_fs_get https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video/feed/
+	version=$(curl -s https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video/feed/ -H "Cookie: $FS_COOKIES" -H "User-Agent: $user_agent"   |  grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//' -e 's/<description>/  /' -e 's/<\/description>//' |  grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | grep -v - | head -n 1) 
 	get_apk "com.amazon.avod.thirdpartyclient" "prime-video" "apk" "arm64-v8a" "nodpi" "Android 9.0+"
 	patch "prime-video" "hoo-dles" "morphe"
 }
