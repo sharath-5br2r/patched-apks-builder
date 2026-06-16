@@ -192,7 +192,6 @@ jobs:
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
-      
   patch_paresh_protonvpn:
     name: Patch paresh(ProtonVPN)
     if: ${{ github.event.inputs.org == 'paresh Proton VPN' || inputs.org == 'paresh Proton VPN' || inputs.org == 'all' }}
@@ -280,7 +279,7 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
         if: steps.check-gh.outputs.internet_error == '0'
-        run: | 
+        run: |
          bash src/build/build.sh "hoo-dles-prime-video"
       - name: Releasing APK files
         id: release
@@ -312,7 +311,7 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
         if: steps.check-gh.outputs.internet_error == '0'
-        run: | 
+        run: |
           bash src/build/build.sh "binarymend-sympfonium"
       - name: Releasing APK files
         id: release
@@ -344,7 +343,7 @@ jobs:
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
         if: steps.check-gh.outputs.internet_error == '0'
-        run: | 
+        run: |
          bash src/build/build.sh "revenge-discord"
       - name: Releasing APK files
         id: release
@@ -451,7 +450,6 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
-          
       - name: Releasing APK files
         id: release
         uses: ./.github/actions/release
@@ -473,7 +471,7 @@ jobs:
 
       - name: Download and Patch Eden to PUBG
         run: |
-          echo "${{ secrets.KEYSTORE_P12 }}" | base64 --decode > ks-p12.keystore
+          echo "${{ secrets.KEYSTORE}}" | base64 --decode > ks.keystore
           bash src/build/build.sh eden
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
