@@ -39,10 +39,6 @@ jobs:
         id: check-piko-instagram
         if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/etc/ci.sh crimera/piko prerelease instagram.*piko
-      - name: Check new patch hoo-dles Prime Video
-        id: check-hoo-dles-prime-video
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/ci.sh hoo-dles/morphe-patches latest prime-video.*hoo-dles
       - name: Check new patch paresh Proton VPN
         id: check-paresh-proton-vpn
         if: steps.check-gh.outputs.internet_error == '0'
@@ -103,7 +99,6 @@ jobs:
       check_morphe_ytm: ${{ steps.check-morphe-ytm.outputs.new_patch }}
       check_piko_x: ${{ steps.check-piko-x.outputs.new_patch }}
       check_piko_instagram: ${{ steps.check-piko-instagram.outputs.new_patch }}
-      check_hoo-dles_prime-video: ${{ steps.check-hoo-dles-prime-video.outputs.new_patch }}
       check_paresh_proton-vpn: ${{ steps.check-paresh-proton-vpn.outputs.new_patch }}
       check_app_proton-vpn: ${{ steps.check-app-proton-vpn.outputs.new_patch }}
       check_paresh_jiohotstar: ${{ steps.check-paresh-jiohotstar.outputs.new_patch }}
@@ -145,14 +140,6 @@ jobs:
     secrets: inherit
     with:
       org: "piko Instagram"
-  Patch-hoo-dles-prime-video:
-    name: Patch hoo-dles Prime Video
-    needs: check
-    if: ${{ needs.check.outputs.check_hoo-dles_prime-video == 1 }}
-    uses: ./.github/workflows/manual-patch.yml
-    secrets: inherit
-    with:
-      org: "hoo-dles Prime Video"
   Patch-paresh-proton-vpn:
     name: Patch Paresh Proton VPN
     needs: check
