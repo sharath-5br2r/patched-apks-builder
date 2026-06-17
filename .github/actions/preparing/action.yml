@@ -10,7 +10,7 @@ runs:
     - name: Start Byparr
       shell: bash
       run: |
-        docker run -p 8191:8191 ghcr.io/thephaseless/byparr:latest
+        docker run -d -p 8191:8191 ghcr.io/thephaseless/byparr:latest
         echo "[*] Waiting for Byparr to start..."
         for i in $(seq 1 30); do
           if curl -s http://localhost:8191/ > /dev/null 2>&1; then
