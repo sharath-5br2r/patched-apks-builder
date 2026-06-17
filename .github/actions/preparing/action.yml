@@ -7,14 +7,14 @@ runs:
       with:
         distribution: 'zulu'
         java-version: '21'
-    - name: Start Byparr
+    - name: Start FlareSolverr
       shell: bash
       run: |
-        docker run -d -p 8191:8191 ghcr.io/thephaseless/byparr:latest
-        echo "[*] Waiting for Byparr to start..."
+        docker run -d --name flaresolverr -p 8191:8191 ghcr.io/flaresolverr/flaresolverr:latest
+        echo "[*] Waiting for FlareSolverr to start..."
         for i in $(seq 1 30); do
           if curl -s http://localhost:8191/ > /dev/null 2>&1; then
-            echo "[+] Byparr is ready."
+            echo "[+] FlareSolverr is ready."
             break
           fi
           sleep 2
