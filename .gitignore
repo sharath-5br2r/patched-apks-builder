@@ -16,3 +16,4 @@ tg_tmp_*/
 *.keystore
 jar*.jar
 bcprov*.jar
+bc.security
