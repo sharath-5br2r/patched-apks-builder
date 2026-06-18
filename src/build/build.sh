@@ -39,7 +39,7 @@ revenge-discord() {
 
 piko-x() {
 	dl_gh "morphe-cli" "MorpheApp" "latest"
-    dl_gl "piko-shim" "inotia00" "prerelease"
+    dl_gl "piko-shim" "inotia00" "latest"
     # Patch Twitter Piko:
     
     telegram_dl "https://t.me/xriprepo" "10" "*.apk" "x-stable.apk" #https://github.com/crimera/piko/issues/1146#issuecomment-4469171783
