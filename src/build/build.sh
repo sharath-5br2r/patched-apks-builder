@@ -41,6 +41,7 @@ piko-x() {
 	dl_gh "morphe-cli" "MorpheApp" "latest"
     dl_gl "piko-shim" "inotia00" "latest"
     # Patch Twitter Piko:
+	version="11.99.0-release.1"
     get_apk "com.twitter.android" "x" "bundle"
     #telegram_dl "https://t.me/xriprepo" "10" "*.apk" "x.apk" #https://github.com/crimera/piko/issues/1146#issuecomment-4469171783
 	patch "x" "shim" "morphe"
