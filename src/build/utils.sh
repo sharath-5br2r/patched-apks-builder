@@ -765,6 +765,7 @@ patch() {
 		unset lock_version
 		unset excludePatches
 		unset includePatches
+		rm *.mpp *.rvp 2>/dev/null || true
 	else
 		red_log "[-] Not found $1.apk"
 		exit 1
