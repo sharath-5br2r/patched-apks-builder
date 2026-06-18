@@ -14,7 +14,7 @@ The format is appname-appversion-patchname-patchversion.apk . Sometimes there wo
 - [protonvpn-5.18.84.0-paresh-v1.18.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/protonvpn-5.18.84.0-paresh-v1.18.0.apk)
 - [sympfonium-14.0.0-binarymend-v1.3.1.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/sympfonium-14.0.0-binarymend-v1.3.1.apk)
 - [winlator-3.0-pubgvn.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/winlator-3.0-pubgvn.apk)
-- [x-3744301388_10_11.99.0-release-ripped.1.apk-shim-v1.5.0.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/x-3744301388_10_11.99.0-release-ripped.1.apk-shim-v1.5.0.apk)
+- [x-11.99.0-release.1-shim-v1.6.0-piko-v3.6.0-dev.1.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/x-11.99.0-release.1-shim-v1.6.0-piko-v3.6.0-dev.1.apk)
 - [x-stable-3744301388_10_11.99.0-release-ripped.1.apk-piko-v3.5.1-dev.1.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/x-stable-3744301388_10_11.99.0-release-ripped.1.apk-piko-v3.5.1-dev.1.apk)
 - [youtube-app-21.24.360-morphe-v1.32.0-dev.2.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/youtube-app-21.24.360-morphe-v1.32.0-dev.2.apk)
 - [youtube-music-arm-9.23.52-morphe-v1.32.0-dev.2.apk](https://github.com/sharath-5br2r/patched-apks-builder/releases/download/all/youtube-music-arm-9.23.52-morphe-v1.32.0-dev.2.apk)
