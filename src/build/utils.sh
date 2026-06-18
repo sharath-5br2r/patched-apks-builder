@@ -749,7 +749,12 @@ patch() {
 			unset CI GITHUB_ACTION GITHUB_ACTIONS GITHUB_ACTOR GITHUB_ENV GITHUB_EVENT_NAME GITHUB_EVENT_PATH GITHUB_HEAD_REF GITHUB_JOB GITHUB_REF GITHUB_REPOSITORY GITHUB_RUN_ID GITHUB_RUN_NUMBER GITHUB_SHA GITHUB_WORKFLOW GITHUB_WORKSPACE RUN_ID RUN_NUMBER
 		fi
 		eval java -jar *cli*.jar $p$b  --keystore-password=$KEYSTORE_PASS --keystore-entry-password=$KEYSTORE_PASS --keystore-entry-alias=$KEYSTORE_ALIAS --keystore=ks.keystore $m$opt --out=./release/$1-$version-$2-$release_name.apk$excludePatches$includePatches$ks $pu$force $a./download/$1.apk
-  		unset version
+  		if [[ $repatch == "1" ]]; then
+			mv ./release/$1-$version-$2-$release_name.apk "./download/"
+			prev_name=$1-$version-$2-$release_name
+			version=""
+		fi
+		unset version
 		unset lock_version
 		unset excludePatches
 		unset includePatches
