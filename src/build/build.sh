@@ -44,11 +44,11 @@ piko-x() {
     
     telegram_dl "https://t.me/xriprepo" "10" "*.apk" "x-stable.apk" #https://github.com/crimera/piko/issues/1146#issuecomment-4469171783
 	repatch=1
-	patch "x-stable" "shim" "morphe"
+	patch "x" "shim" "morphe"
 	get_patches_key "x-piko"
 	unset repatch
 	dl_gh "piko" "crimera" "prerelease"
-	patch "x-stable" "piko" "morphe"
+	patch "$prev_name" "piko" "morphe"
 	
 }
 piko-instagram() {
