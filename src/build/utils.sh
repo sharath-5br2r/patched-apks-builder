@@ -720,7 +720,7 @@ patch() {
 	else
 		green_log "[+] Patching $1"
 	fi
-	if [ -f "./download/$1.apk" || "$1" = "repatch"  ]; then
+	if [[ -f "./download/$1.apk" || "$1" = "repatch"  ]]; then
 		local p b m ks a pu opt force
 		if [ "$3" = inotia ]; then
 			p="patch " b="-p *.rvp" m="" a="" ks="" pu="--purge=true" opt="--legacy-options=./src/options/$2.json" force=" --force"
