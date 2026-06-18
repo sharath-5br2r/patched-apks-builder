@@ -156,7 +156,7 @@ jobs:
           TDL_BACKUP: ${{ secrets.TDL_BACKUP }}
         id: patch
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/build/build.sh "piko-x"
+        run: bash -x src/build/build.sh "piko-x"
       - name: Releasing APK files
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
