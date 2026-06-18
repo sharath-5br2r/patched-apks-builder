@@ -715,8 +715,12 @@ telegram_dl() {
 
 # Patching apps with Revanced CLI:
 patch() {
-	green_log "[+] Patching $1:"
-	if [ -f "./download/$1.apk" ]; then
+	if [[ "$1" = "repatch" ]]; then
+		green_log "[+] Patching ${file_name%.*}"
+	else
+		green_log "[+] Patching $1"
+	fi
+	if [ -f "./download/$1.apk" || [ "$1" = "repatch" ] ]; then
 		local p b m ks a pu opt force
 		if [ "$3" = inotia ]; then
 			p="patch " b="-p *.rvp" m="" a="" ks="" pu="--purge=true" opt="--legacy-options=./src/options/$2.json" force=" --force"
