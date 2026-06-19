@@ -1,20 +1,65 @@
-### This repository uses GitHub actions for automating patching of apks. If you want your own version follow the steps.
+## GitHub Actions
+
+This repository uses GitHub Actions to automate APK patching. If you want your own version, follow the steps below.
+
 ## Required Secrets
- To create secrets, go to `Settings` tab then Select `Actions` under `Secrets and Variables` under `Security and quality`. Then click `New repository secret`
- Here are following secrets
- - KEYSTORE: base64 encoded version of your bks keystore. use `base64 ks.keystore`
- - KEYSTORE_ALIAS: signing alias of keystore
- - KEYSTORE_PASS: password of keystore
+
+To create secrets, go to the **Settings** tab, then select **Actions** under **Secrets and variables** in the **Security and quality** section. Then click **New repository secret**.
+
+The following secrets are required:
+
+- `KEYSTORE`: Base64-encoded version of your BKS keystore. Use:
+  ```sh
+  base64 ks.keystore
+  ```
+- `KEYSTORE_ALIAS`: Signing alias of the keystore.
+- `KEYSTORE_PASS`: Password of the keystore.
+
 ## Syntax
-- `.github/workflows/manual-patch.yml` contains every patch you need to manually patch. To add a new app copy any one of the blocks, modify if trigger to name of your app,  modify `build.sh` to point at your app and rename releases to your app. It is triggered manually using Actions menu and from other workflows. Remember to modify `options:` of `org:` block and `org` at `if:` statement.
-- `src/etc/ci.sh` and `src/etc/_ci.sh` are checkers for GitHub and GitLab respectively to check whether to build a new app. The syntax is `bash src/etc/ci.sh $reponame $channel $pattern $urtag`
-  > where `$reponame` is formatted as Owner/Repo
-  >   `$channel` is either `latest`, `prerelease` or `$remotetag` which is the tag of remote repo
-  >   `$pattern` is name of released apk pattern
-  >   `$urtag` is name of tag where is apk is present in your repo
- 
-- `.github/workflows/ci.yml` contains code that checks for new patches on GitHub/GitLab every 4 hrs. Copy each block and modify patch repo, apk pattern and release tag for checkers, then add your check output at end of `check:` job and finally copy patching block and edit your check variable  at `if:` field and `org:` field.
-- `.github/workflows/ci_.yml` contains code that always runs every 4 hrs. It is used for apps that dont have a proper way to check for latest version. Just copy a block and modify `org:` field
+
+- `.github/workflows/manual-patch.yml` contains every patch you need to manually patch.
+
+  To add a new app:
+  - Copy any one of the existing blocks.
+  - Modify the `if` trigger to the name of your app.
+  - Modify `build.sh` to point to your app.
+  - Rename the release to your app.
+  - Remember to modify the `options:` of the `org:` block and the `org` in the `if:` statement.
+
+  It can be triggered manually using the **Actions** menu or from other workflows.
+
+- `src/etc/ci.sh` and `src/etc/_ci.sh` are checkers for GitHub and GitLab, respectively, used to determine whether a new app should be built.
+
+  Syntax:
+  ```sh
+  bash src/etc/ci.sh $reponame $channel $pattern $urtag
+  ```
+
+  > Where:
+  > - `$reponame` is formatted as `Owner/Repo`.
+  > - `$channel` is either `latest`, `prerelease`, or `$remotetag`, which is the tag of the remote repository.
+  > - `$pattern` is the released APK filename pattern.
+  > - `$urtag` is the name of the tag where the APK is present in your repository.
+
+- `.github/workflows/ci.yml` checks for new patches on GitHub/GitLab every 4 hours.
+
+  To add a new app:
+  - Copy one of the existing check blocks.
+  - Modify the patch repository, APK pattern, and release tag used by the checkers.
+  - Add your check output at the end of the `check:` job.
+  - Copy a patching block and modify its check variable in the `if:` field and the `org:` field.
+
+- `.github/workflows/ci_.yml` runs every 4 hours regardless of changes.
+
+  It is used for apps that do not have a proper way to check for the latest version.
+
+  To add a new app:
+  - Copy an existing block.
+  - Modify the `org:` field.
+
 ## Instructions
- Select `Actions` tab and then select `Manual Patch` workflow
- Hit `Run workflow` and select ur app/all to patch apps.
+
+1. Select the **Actions** tab.
+2. Select the **Manual Patch** workflow.
+3. Click **Run workflow**.
+4. Select your app or `all` to patch all apps.
