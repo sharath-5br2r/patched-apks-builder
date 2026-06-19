@@ -1,3 +1,26 @@
+>[!NOTE]
+>### Notable Modifications
+>- Replaced the hardcoded keystore with a keystore stored in GitHub Secrets.
+>- Moved patch configuration from separate files into a single file.
+>- APK files now include their version in the filename.
+>- Dedicated releases for each app with the latest version and a archive release
+>- Added support for Archive.org APK repositories (currently unused).
+>- Simplified the repository and reduced the number of supported apps.
+>- Added custom manifest patches.
+>- Added full Windows x64 and Linux ARM64 support, along with the existing Linux x64 support (requires MSYS2 on Windows and FlareSolverr) and Android ARM64 support.
+>- Added support for chaining patches (required for Piko).
+## ⚙️ How does this repository work?
+Simply, all you need to do is choose the app you want to use  below. Then, it will take you to corresponding release of that app. Just download it.
+>[!Note]
+>For old versions of apps use [below](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/all)
+
+
+>[!Note]
+**For obtainium:**
+>1. Put the repository link `https://github.com/sharath-5br2r/patched-apks-builder` under **App source URL**
+>2. Go to corresponding release and copy part of  name  and paste it into **Filter release titles by regular expression** 
+>3. Enable **Use latest asset upload as release date** and **Use release date as version string (pseudo-version)**
+
 > [!NOTE]
 > If you want to use the YouTube, YouTube Music, or Google Photos app, you need to download and install [MicroG RE](https://github.com/MorpheApp/MicroG-RE).
 >
@@ -17,72 +40,58 @@
 
 <https://github.com/FiorenMas/Revanced-And-Revanced-Extended-Non-Root> for ReVanced, but slightly modified and specialized.
 
-## Added custom manifest patches
-
-### Notable Modifications
-
-- Replaced the hardcoded keystore with a keystore stored in GitHub Secrets.
-- Moved patch configuration from separate files into a single file.
-- APK files now include their version in the filename.
-- Dedicated releases for each app with a permanent link to the latest version.
-- Added support for Archive.org APK repositories (currently unused).
-- Simplified the repository and reduced the number of supported apps.
-- Added custom patches.
-- Added full Windows x64 and Linux ARM64 support, along with the existing Linux x64 support (requires MSYS2 on Windows and FlareSolverr) and Android ARM64 support.
-- Added support for chaining patches (required for Piko).
-
 ## Patched Apps
 
 - **Morphe**
-  - YouTube – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/youtube-morphe)
-  - YouTube Music – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/youtube-music-morphe)
+  - YouTube (universal) – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/youtube-morphe)
+  - YouTube Music (x86_64 and arm64) – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/youtube-music-morphe)
 
 - **Piko**
-  - X – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/x-piko)
-  - Instagram – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/instagram-piko)
+  - X (universal)– [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/x-piko)
+  - Instagram (x86_64 and arm64) – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/instagram-piko)
 
 - **hoo-dles**
-  - Prime Video – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/prime-video-hoo-dles)
-    - Amazon India (signed for compatibility) – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/amazon-india)
-    - Amazon Alexa (signed for compatibility) – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/amazon-alexa)
+  - Prime Video (arm64 only)– [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/prime-video-hoo-dles)
+    - Amazon India (armv7a+arm64) (signed for compatibility) – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/amazon-india)
+    - Amazon Alexa (universal) (signed for compatibility) – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/amazon-alexa)
 
 - **Paresh**
-  - Proton VPN – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/protonvpn-paresh)
-  - JioHotstar (Indian OTT platform) – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/jiohotstar-paresh)
+  - Proton VPN (universal) – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/protonvpn-paresh)
+  - JioHotstar (Indian OTT platform) (universal)– [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/jiohotstar-paresh)
 
 - **binarymend**
   - Symfonium (music player) (**NOT FUNCTIONAL**)
 
 ### Custom patches
 
-- Eden Nightly (Switch Emulator) (PUBG spoof)
+- Eden Nightly (Switch Emulator) (PUBG spoof) (arm64 standard)
   - [Original](https://eden-emu.dev)
   - [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/eden-pubg)
 
-- Dolphin Emulator (Wii/GameCube Emulator) (SDK 29, no scoped storage)
+- Dolphin Emulator (Wii/GameCube Emulator) (arm64+x86_64) (SDK 29, no scoped storage)
   - [Original](https://dolphin-emu.org)
   - [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/dolphin-sdk-29)
 
-- Fold Craft Launcher (Minecraft Java Launcher) (CoD spoof)
+- Fold Craft Launcher (universal) (Minecraft Java Launcher) (CoD spoof)
   - [Original](https://github.com/FCL-Team/FoldCraftLauncher)
   - [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/fcl-cod)
 
-- Geode (Geometry Dash mods) (PUBG KR spoof)
+- Geode (Geometry Dash mods) (PUBG KR spoof) (arm64 only)
   - [Original](https://github.com/geode-sdk/android-launcher)
   - [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/geode-pubgkr)
 
-- Winlator CMOD/Ludashi (Windows Emulator) (PUBG VN spoof)
+- Winlator CMOD/Ludashi (Windows Emulator) (PUBG VN spoof) (arm64 only)
   - [Original](https://github.com/StevenMXZ/Winlator-Ludashi)
   - [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/winlator-pubgvn)
 
 ### Xposed patches
 
-- Discord (Revenge)
+- Discord (Revenge) (likely arm64 only)
   - [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/discord-revenge)
 
 ## See also
 
-- [LeviLaunchroid Crack + BGMI Spoof](https://github.com/sharath-r7q4/LeviLaunchroid) (Mobile MC Bedrock launcher, get your own MC APK)
+- [LeviLaunchroid Crack + BGMI Spoof](https://github.com/sharath-r7q4/LeviLaunchroid) (Mobile MC Bedrock launcher, get your own MC APK) (arm64 only)
   - [Apache-2.0](https://github.com/sharath-r7q4/LeviLaunchroid/blob/main/LICENSE)
 
 ## Actively Used Libraries
