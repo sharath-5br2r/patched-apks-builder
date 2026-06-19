@@ -867,19 +867,22 @@ split_arch() {
 make_module() {
 	local pkg_id=$1 module_name=$2
 	if [ -f "./updates/$2-$3.json" ]; then
+		yellow_log "[-] Existing update found for $2-$3, incrementing version code"
 	   code=$(jq -r '.versionCode' ./updates/$2-$3.json)
 	   rm -f ./updates/$2-$3.json
 	   code=$((code+1))
 	else
+		yellow_log "[-] No existing update found for $2-$3, starting with version code 1"
 	   code=1
 	fi
+	green_log "[+] Making module for $2-$3 with version code $code"
 	cp -r  rv_module/module/. module
 	cp ./release/$2*$3*.apk module/base.apk
-	cp ./download/$2.apk stock/base.apk
-	echo -e "PKG_NAME=$1\nPKG_VER=$version\nMODULE_ARCH=$5" > module/config
-	echo -e "id=$2-$3\nname=$2-$3\nversion=$version (patches $3 - $release_name)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$2 $3 Module\nupdateJson=https://raw.githubusercontent.com/sharath-5br2r/patched-apks-builder/main/updates/$2-$3.json" > module/module.prop
-	zip -j -r "./release/$2-$version-$3-$release_name.zip" module/* > /dev/null 2>&1
-	rm -rf module release/$2-$version-$3-$release_name.apk
+	cp ./download/$2.apk ./module/stock/base.apk
+	echo -e "PKG_NAME=$1\nPKG_VER=$version\nMODULE_ARCH=$5" > ./module/config
+	echo -e "id=$2-$3\nname=$2-$3\nversion=$version (patches $3 - $release_name)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$2 $3 Module\nupdateJson=https://raw.githubusercontent.com/sharath-5br2r/patched-apks-builder/main/updates/$2-$3.json" > ./module/module.prop
+	zip -j -r "./release/$2-$version-$3-$release_name.zip" ./module/* > /dev/null 2>&1
+	rm -rf ./module ./release/$2*module*-$3-*.apk
 	echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$4/$2-$version-$3-$release_name.zip\"\n}" > ./updates/$2-$3.json
 	git add ./updates/$2-$3.json
 	git commit -am "Update $2-$3 module to version $version (patches $3 - $release_name)"

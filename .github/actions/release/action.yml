@@ -15,6 +15,7 @@ runs:
       with:
         artifacts: |
           ./release/*.apk
+          ./release/*.zip
         removeArtifacts: true
         name: ${{ inputs.name }}
         tag: ${{ inputs.tag }}
@@ -24,7 +25,8 @@ runs:
       with:
         artifacts: |
           ./release/*.apk
-        name: "Old APKs"
+          ./release/*.zip
+        name: "Old APKs and zips"
         tag: "all"
         allowUpdates: true
  
