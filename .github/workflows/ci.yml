@@ -34,7 +34,7 @@ jobs:
       - name: Check new patch Piko(X)
         id: check-piko-x
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/ci.sh gh crimera/piko prerelease x-piko
+        run: bash src/etc/ci.sh gh crimera/piko prerelease twitter-piko
       - name: Check new patch Piko(Instagram)
         id: check-piko-instagram
         if: steps.check-gh.outputs.internet_error == '0'
