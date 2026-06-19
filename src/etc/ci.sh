@@ -27,6 +27,7 @@ get_date_gh() {
 				updated_at=$(echo "$json" | jq -r '[.[] | select(.tag_name == "'$2'") | .assets[] | select(.name | test("'$3'"))] | sort_by(.updated_at) | last | .updated_at')
 				;;
 		esac
+	fi
 	echo "$updated_at"
 }
 get_date_gl() {
