@@ -93,6 +93,11 @@ morphe-youtube() {
 	get_patches_key "youtube-morphe"
 	get_apk "com.google.android.youtube" "youtube-app" "apk"
 	patch "youtube-app" "morphe" "morphe"
+	get_patches_key "youtube-morphe-module"
+	morphe_dl
+	get_apk "com.google.android.youtube" "youtube-module" "apk"
+	patch "youtube-module" "morphe-module" "morphe"
+	make_module "com.google.android.youtube" "youtube-app" "morphe" youtube-morphe-module
 }
 morphe-youtube-music() {
 	morphe_dl
@@ -105,6 +110,19 @@ morphe-youtube-music() {
 	# Patch YouTube Music Arm64-v8a:
 	get_apk "com.google.android.apps.youtube.music" "youtube-music-arm64" "apk" "arm64-v8a"
 	patch "youtube-music-arm64" "morphe" "morphe"
+	# Patch YouTube Music x86_64 module:
+	morphe_dl
+	get_apk "com.google.android.apps.youtube.music" "youtube-music-x86_64-module" "apk" "x86_64"
+	get_patches_key "youtube-music-morphe-module"
+	patch "youtube-music-x86_64-module" "morphe-module" "morphe"
+	make_module "com.google.android.apps.youtube.music" "youtube-music-x86_64" "morphe" youtube-morphe-module x86_64
+	# Patch YouTube Music Arm64-v8a module:
+	morphe_dl
+	get_apk "com.google.android.apps.youtube.music" "youtube-music-arm64-module" "apk" "arm64-v8a"
+	patch "youtube-music-arm64-module" "morphe-module" "morphe"
+	make_module "com.google.android.apps.youtube.music" "youtube-music-arm64" "morphe" youtube-morphe-module arm64
+
+
 }
 paresh-jiohotstar() {
 	paresh_dl
