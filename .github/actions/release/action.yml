@@ -25,7 +25,7 @@ runs:
         if [ ${{ inputs.tag }} == "youtube-music-morphe" ]; then
            latestx86=$(gh release view youtube-music-morphe --json assets --jq '.assets[] | select(.name| contains("x86")) | .url')
            latestarm=$(gh release view youtube-music-morphe --json assets --jq '.assets[] | select(.name| contains("arm")) | .url')
-          #  echo -e "[Latest x86  YouTube Music - Morphe APK]($latestx86)\n[Latest arm64 YouTube Music - Morphe APK]($latestarm)" > ${{ github.workspace }}-CHANGELOG.txt
+           echo -e "[Latest x86  YouTube Music - Morphe APK]($latestx86)\n[Latest arm64 YouTube Music - Morphe APK]($latestarm)" > ${{ github.workspace }}-CHANGELOG.txt
 
         else
           latest=$(gh release view ${{ inputs.tag }} --json assets --jq '.assets[] | .url')
