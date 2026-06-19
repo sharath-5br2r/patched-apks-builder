@@ -43,7 +43,6 @@
   - Prime Video  [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/prime-video-hoo-dles)
     - Amazon India signed for compatibilty  [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/amazon-india)
     - Amazon Alexa signed for compatibility  [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/amazon-alexa)
-  - 
 - Paresh
   - Proton VPN  [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/protonvpn-paresh)
   - JioHotstar (Indian OTT Platform) [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/jiohotstar-paresh)
