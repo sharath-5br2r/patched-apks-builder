@@ -882,6 +882,6 @@ make_module() {
 	rm -rf module release/$2-$version-$3-$release_name.apk
 	echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$4/$2-$version-$3-$release_name.zip\"\n}" > module/$2-$3.json
 	git add /updates/$2-$3.json
-	git commit -m "Update $2-$3 module to version $version (patches $3 - $release_name)"
+	git commit -am "Update $2-$3 module to version $version (patches $3 - $release_name)"
 	git push
 }
