@@ -17,3 +17,4 @@ tg_tmp_*/
 jar*.jar
 bcprov*.jar
 bc.security
+.obsidian/*

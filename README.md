@@ -1,14 +1,22 @@
-## How does this repository work?
-Check latest [Releases](https://github.com/sharath-5br2r/patched-apks-builder/blob/main/releases.md) to find Apps
 
 > [!NOTE]
 > If you want to use the YouTube, YouTube Music or Google Photos app, you need to download and install [MicroG RE](https://github.com/MorpheApp/MicroG-RE)
 > 
-> If you are an advanced user and you want to use custom patches for patching revanced apps, you should read the [Wiki](../main/docs/Frequently%20Asked%20Questions.md#q-how-do-i-use-this-repository-for-patching-my-own-app).
-> 
-> This repository is not like any other repository. It does not create new releases; it only releases new files.
+> If you are an advanced user and you want to use custom patches for patching revanced apps, you should read [Customization Guide](../main/docs/Customization.md)
+>
+> This repository is  like any other repository. It does not create new releases; it only releases new files.
 > 
 > All the code is open-source, clearly, and the APK files used for patching are downloaded from a trusted site, so it is totally safe for you to use.
+> 
+> To run locally see [Local Guide](../main/docs/Local.md)
+> 
+> To see what to do after forking repo refer [GitHub Actions Guide](../main/docs/Github-Actions.md)
+
+
+
+
+
+
 ---
 ## Based on https://github.com/FiorenMas/Revanced-And-Revanced-Extended-Non-Root for revanced but slightly modified and specialised.
 
@@ -18,38 +26,39 @@ Check latest [Releases](https://github.com/sharath-5br2r/patched-apks-builder/bl
 - Replaced hardcoded keystore with keystore stored in secrets.
 - Moved patches stuff from seperate files into a single file.
 - APK Files now have versions in their name
-- Automatic latest release generation
-- Added suport for Archive.org apk repositories
+- Dedicates releases for each app with link to latest app
+- Added suport for Archive.org apk repositories(unused)
 - Simplified repo and reduced no of apps
 - Added custom patches
-- Added full windows x64 and linux arm64 support along with existing linux x64 (requires msys2 on windows and flaresolverr) and limited android arm64 support (flaresolverr is missing, wait till port comes)
-- Added support for chaining repos
+- Added full windows x64 and linux arm64 support along with existing linux x64 (requires msys2 on windows and flaresolverr) and android arm64 support
+- Added support for chaining patches(required for piko)
 ## Patched Apps
 - Morphe
-  - YouTube 
-  - YouTube Music 
+  - YouTube [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/youtube-morphe)
+  - YouTube Music [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/youtube-music-morphe)
 - Piko
-  - X 
-  - Instagram
+  - X  [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/x-piko)
+  - Instagram  [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/instagram-piko)
 - hoo-dles
-  - Prime Video 
-    - Amazon India signed for compatibilty 
-    - Amazon Alexa signed for compatibility 
-  - Proton VPN (Paresh)
+  - Prime Video  [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/prime-video-hoo-dles)
+    - Amazon India signed for compatibilty  [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/amazon-india)
+    - Amazon Alexa signed for compatibility  [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/amazon-alexa)
+  - 
 - Paresh
-  - JioHotstar (Indian OTT Platform) 
+  - Proton VPN  [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/protonvpn-paresh)
+  - JioHotstar (Indian OTT Platform) [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/jiohotstar-paresh)
 - binarymend
   - Symfonium (music player) (**NOT FUNCTIONAL**)
 - ### Custom patches
-  - Eden Nightly (Switch Emulator) (PUBG Spoof) [Original](https://eden-emu.dev) 
-  - Dolphin Emulator (Wii/GameCube Emulator) (SDK 29 no scoped storage) [Original](https://dolphin-emu.org) 
-  - Fold Craft Launcher (Minecraft Java Launcher) (CoD spoof) [Original](https://github.com/FCL-Team/FoldCraftLauncher)
-  - Geode (Geometry Dash mods) (PUBG KR Spoof) [Original](https://github.com/geode-sdk/android-launcher) 
-  - Winlator CMOD/Ludashi (Windows Emulator) (PUBG VN Spoof) [Original](https://github.com/StevenMXZ/Winlator-Ludashi) 
+  - Eden Nightly (Switch Emulator) (PUBG Spoof) [Original](https://eden-emu.dev) [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/eden-pubg)
+  - Dolphin Emulator (Wii/GameCube Emulator) (SDK 29 no scoped storage) [Original](https://dolphin-emu.org) [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/dolphin-sdk-29)
+  - Fold Craft Launcher (Minecraft Java Launcher) (CoD spoof) [Original](https://github.com/FCL-Team/FoldCraftLauncher)[Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/fcl-cod)
+  - Geode (Geometry Dash mods) (PUBG KR Spoof) [Original](https://github.com/geode-sdk/android-launcher) [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/geode-pubgkr)
+  - Winlator CMOD/Ludashi (Windows Emulator) (PUBG VN Spoof) [Original](https://github.com/StevenMXZ/Winlator-Ludashi) [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/winlator-pubgvn)
   ### Xposed  patches 
-  - Discord (Revenge) 
+  - Discord (Revenge) [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/discord-revenge)
 ### See also:
-[LeviLaunchroid Crack+BGMI Spoof](https://github.com/sharath-r7q4/LeviLaunchroid) [Apache-2.0](https://github.com/sharath-r7q4/LeviLaunchroid/blob/main/LICENSE) (Mobile MC Bedrock Launcher,Get ur own MC APK)
+[LeviLaunchroid Crack+BGMI Spoof](https://github.com/sharath-r7q4/LeviLaunchroid) [Apache-2.0](https://github.com/sharath-r7q4/LeviLaunchroid/blob/main/LICENSE) (Mobile MC Bedrock Launcher,Get ur own MC APK) 
 ## Actively Used Libraries
 - Morphe
   - [Patches](https://github.com/MorpheApp/morphe-patches) - [GPL-3.0](https://github.com/MorpheApp/morphe-patches/blob/main/LICENSE)
