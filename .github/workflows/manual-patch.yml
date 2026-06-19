@@ -73,8 +73,8 @@ jobs:
         with:
           name: "YouTube - Morphe"
           tag: "youtube-morphe"
-  patch_morphe_ytm_x86:
-    name: Patch Morphe (YouTube Music x86)
+  patch_morphe_ytm:
+    name: Patch Morphe (YouTube Music)
     if: ${{ github.event.inputs.org == 'Morphe YouTube Music' || inputs.org == 'Morphe YouTube Music' || inputs.org == 'all' }}
     runs-on: ubuntu-latest
     strategy:
@@ -98,7 +98,7 @@ jobs:
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
         id: patch
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/build/build.sh "morphe-youtube-music-x86"
+        run: bash src/build/build.sh "morphe-youtube-music-x86_64"
       - name: Releasing APK files
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
@@ -106,39 +106,7 @@ jobs:
         with:
           name: "YouTube Music - Morphe"
           tag: "youtube-music-morphe"
-  patch_morphe_ytm_arm:
-    name: Patch Morphe (YouTube Music arm)
-    if: ${{ github.event.inputs.org == 'Morphe YouTube Music' || inputs.org == 'Morphe YouTube Music' || inputs.org == 'all' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6.0.2
-      - name: Decode Keystore
-        run: |
-          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
-      - name: Preparing to patch
-        uses: ./.github/actions/preparing
-      - name: Check github connection
-        id: check-gh
-        run: bash src/etc/connection.sh
-      - name: Patch apk
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
-          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
-          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
-        id: patch
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/build/build.sh "morphe-youtube-music-arm"
-      - name: Releasing APK files
-        id: release
-        if: steps.check-gh.outputs.internet_error == '0'
-        uses: ./.github/actions/release
-        with:
-          name: "YouTube Music - Morphe"
-          tag: "youtube-music-morphe"
+
   patch_piko_twitter:
     name: Patch Piko (X)
     if: ${{ github.event.inputs.org == 'piko X' || inputs.org == 'piko X' || inputs.org == 'all' }}
@@ -621,10 +589,4 @@ jobs:
         with:
           name: "Winlator - PUBG VN"
           tag: "winlator-pubgvn"
- # update-releases-file:
- #   needs: [patch_morphe_yt,patch_morphe_ytm_arm, patch_morphe_ytm_x86, patch_piko_twitter, patch_piko_instagram, patch_paresh_protonvpn, patch_paresh_jiohotstar, patch_binarymend_symfonium, patch_revenge_discord, Amazon-India, Amazon-Alexa, Dolphin, Eden, FCL, Geode, Winlator]
- #  name: Update releases file
- #   permissions: write-all
- #   if: always()
- #   uses: ./.github/workflows/release.md.yml
- #   secrets: inherit
+

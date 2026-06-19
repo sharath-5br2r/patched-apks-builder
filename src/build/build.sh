@@ -56,6 +56,8 @@ piko-instagram() {
     get_patches_key "instagram-piko"
     get_apk "com.instagram.android" "instagram-arm64-v8a" "bundle" "arm64-v8a" "120-640dpi"  "Android 9.0+"
     patch "instagram-arm64-v8a" "piko" "morphe"
+	get_apk "com.instagram.android" "instagram-x86_64" "bundle" "x86_64" "120-640dpi"  "Android 9.0+"
+	patch "instagram-x86_64" "piko" "morphe"
 }
 hoo-dles-prime-video() {
 	hoo-dles_dl
@@ -90,21 +92,15 @@ morphe-youtube() {
 	get_apk "com.google.android.youtube" "youtube-app" "apk"
 	patch "youtube-app" "morphe" "morphe"
 }
-morphe-youtube-music-x86() {
+morphe-youtube-music() {
 	morphe_dl
-	# Patch YouTube Music x86:
+	# Patch YouTube Music x86_64:
 	check_experimental "com.google.android.apps.youtube.music"
 	get_patches_key "youtube-music-morphe"
-	get_apk "com.google.android.apps.youtube.music" "youtube-music-x86" "apk" "x86_64"
-	patch "youtube-music-x86" "morphe" "morphe"
-}
-morphe-youtube-music-arm() {
-	morphe_dl
-	# Patch YouTube Music Arm64-v8a:
-	check_experimental "com.google.android.apps.youtube.music"
-	get_patches_key "youtube-music-morphe"
-	get_apk "com.google.android.apps.youtube.music" "youtube-music-arm" "apk" "arm64-v8a"
-	patch "youtube-music-arm" "morphe" "morphe"
+	get_apk "com.google.android.apps.youtube.music" "youtube-music-x86_64" "apk" "x86_64"
+	patch "youtube-music-x86_64" "morphe" "morphe"
+	get_apk "com.google.android.apps.youtube.music" "youtube-music-arm64" "apk" "arm64-v8a"
+	patch "youtube-music-arm64" "morphe" "morphe"
 }
 paresh-jiohotstar() {
 	paresh_dl
@@ -210,11 +206,8 @@ case "$1" in
 	binarymend-sympfonium)
 		binarymend-sympfonium
 		;;
-	morphe-youtube-music-x86)
-		morphe-youtube-music-x86
-		;;
-	morphe-youtube-music-arm)
-		morphe-youtube-music-arm
+	morphe-youtube-music)
+		morphe-youtube-music
 		;;
 	amazon-india)
 		amazon-india

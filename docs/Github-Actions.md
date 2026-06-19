@@ -28,17 +28,17 @@ The following secrets are required:
 
   It can be triggered manually using the **Actions** menu or from other workflows.
 
-- `src/etc/ci.sh` and `src/etc/_ci.sh` are checkers for GitHub and GitLab, respectively, used to determine whether a new app should be built.
+- `src/etc/ci.sh` is the checker scrupt for GitHub and GitLab, respectively, used to determine whether a new app should be built.
 
   Syntax:
   ```sh
-  bash src/etc/ci.sh $reponame $channel $pattern $urtag
+  bash src/etc/ci.sh $source $reponame $channel $urtag
   ```
 
   > Where:
+  > - `$source` is either `gh` for github, `gl` for gitlab and `eden` is purpose built for eden emulator ci.
   > - `$reponame` is formatted as `Owner/Repo`.
   > - `$channel` is either `latest`, `prerelease`, or `$remotetag`, which is the tag of the remote repository.
-  > - `$pattern` is the released APK filename pattern.
   > - `$urtag` is the name of the tag where the APK is present in your repository.
 
 - `.github/workflows/ci.yml` checks for new patches on GitHub/GitLab every 4 hours.
