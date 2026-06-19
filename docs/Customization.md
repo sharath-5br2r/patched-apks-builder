@@ -6,7 +6,7 @@
 >Custom patches are made using [Apktool M](https://maximoff.su/apktool/?lang=en), diff and then ChatGPT to generate sed patch for that diff
 ## `src/build/utils.sh` syntax
 - Download from GitHub `dl_gh $repo $owner $tag` 
-  >where `$repo` refers to repository
+  > where `$repo` refers to repository
     `$owner` refers to owner of such repository
     `$tag` refers to version/github tag of required binary
     `$tag` can also contain `latest` to download latest stable release
@@ -28,7 +28,7 @@
 - `check_experimental $apppkgname` is specific to morphe experimental app versions to get latest experimental version from readme.
 - `_fs_get $url` is usage of flaresolverr against `$url` which is protected by anti bot measures it outputs as `$html` and `$FS_COOKIES` for content and cookies respectively.
 - `npatch $baseapkname $moduleapkname $modulename` is used for xposed patches 
-    >where `$baseapkname` refers to original apk name
+    > where `$baseapkname` refers to original apk name
     >`$moduleapkname` refers to name of module apk
     >`$modulename` is fancy name of module
 - `sign $input $output` is used to sign a app that is usually custom patched with `$input` and `$output` refering to apks
