@@ -9,6 +9,7 @@
 >- Added custom manifest patches.
 >- Added full Windows x64 and Linux ARM64 support, along with the existing Linux x64 support (requires MSYS2 on Windows and FlareSolverr) and Android ARM64 support.
 >- Added support for chaining patches (required for Piko).
+>- Added root module support
 ## ⚙️ How does this repository work?
 Simply, all you need to do is choose the app you want to use  below. Then, it will take you to corresponding release of that app. Just download it.
 >[!Note]
@@ -43,8 +44,8 @@ Simply, all you need to do is choose the app you want to use  below. Then, it wi
 ## Patched Apps
 
 - **Morphe**
-  - YouTube (universal) – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/youtube-morphe)
-  - YouTube Music (x86_64 and arm64) – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/youtube-music-morphe)
+  - YouTube (universal) – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/youtube-morphe) (root module also available)
+  - YouTube Music (x86_64 and arm64) – [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/youtube-music-morphe) (root module also available)
 
 - **Piko**
   - X (universal)– [Download](https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/x-piko)
@@ -127,6 +128,7 @@ Simply, all you need to do is choose the app you want to use  below. Then, it wi
   - Code inspired by [Manager](https://github.com/revenge-mod/revenge-manager) — [OSL-3.0](https://github.com/revenge-mod/revenge-manager/blob/main/LICENSE)
   - Actual module: [Xposed](https://github.com/revenge-mod/revenge-xposed) — [OSL-3.0](https://github.com/revenge-mod/revenge-manager/blob/main/LICENSE)
 
+- j-hc  [revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module) — [GPL-3.0](https://github.com/j-hc/revanced-magisk-module/blob/main/LICENSE) (taken only module code, available as submodule)
 ### Dormant libraries/resources used in this repository
 
 <details>
@@ -170,4 +172,4 @@ Simply, all you need to do is choose the app you want to use  below. Then, it wi
 
 - [revanced-build-template](https://github.com/n0k0m3/revanced-build-template) — [GPL-3.0](https://github.com/n0k0m3/revanced-build-template/blob/main/LICENSE)
 
-- [revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module) — [GPL-3.0](https://github.com/j-hc/revanced-magisk-module/blob/main/LICENSE) (previously based on this repository, now archived)
+- [revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module) — [GPL-3.0](https://github.com/j-hc/revanced-magisk-module/blob/main/LICENSE) (CI code,previously based on this repository, now archived)

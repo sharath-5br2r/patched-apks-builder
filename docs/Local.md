@@ -32,10 +32,10 @@ python src/flaresolverr.py
 
 ## Steps
 
-### Step 1: Clone this repository or your fork
+### Step 1: Clone this repository or your fork with submodules
 
 ```sh
-git clone https://github.com/sharath-5br2r/patched-apks-builder
+git clone https://github.com/sharath-5br2r/patched-apks-builder --recurse-submodules
 ```
 
 ### Step 2: Configure the project
@@ -63,4 +63,10 @@ The generated APKs will be available in:
 
 ```text
 ./build/*.apk
+```
+
+If module is generated, it is at 
+
+```text
+./build/*.zip
 ```

@@ -54,6 +54,7 @@
   > - `$modulename` is the fancy name of the module.
 
 - `sign $input $output` is used to sign an app, usually one that has been custom patched, where `$input` and `$output` refer to APKs.
+- `make_module $apppkgname $appname $patchname $releasetag $arch` is used to make root modules. `$releasetag` is used to specify which release the module is uploaded and `$arch` is optional unless the app only supports one architecture.
 
 > [!IMPORTANT]
 > Remember to set `$version` before `revanced`/`npatch` to get the original app version appended to the end of ReVanced/Morphe/Xposed patches. Refer to `src/build/build.sh` for more information. Use it as a template for obtaining the version from APKMirror feeds.
