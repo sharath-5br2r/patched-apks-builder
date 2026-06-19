@@ -884,7 +884,7 @@ make_module() {
 	echo -e "PKG_NAME=$1\nPKG_VER=$version\nMODULE_ARCH=$5" > ./module/config
 	echo -e "id=$2-$3\nname=$2-$3\nversion=$version (patches $3 - $release_name)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$2 $3 Module\nupdateJson=https://raw.githubusercontent.com/sharath-5br2r/patched-apks-builder/main/updates/$2-$3.json" > ./module/module.prop
 	zip -r "./release/$2-$version-$3-$release_name.zip" ./module/ > /dev/null 2>&1
-	rm -rf ./module ./release/$2*module*-$3-*.apk
+	rm -rf ./module ./release/$2*$3*.apk
 	echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$4/$2-$version-$3-$release_name.zip\"\n}" > ./updates/$2-$3.json
 	git add ./updates/$2-$3.json
 	git commit -am "Update $2-$3 module to version $version (patches $3 - $release_name)"
