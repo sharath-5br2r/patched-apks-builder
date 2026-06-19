@@ -10,10 +10,6 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Generate release info
-      shell: bash
-      run: |
-        echo  -e "changelog wip"> ${{ github.workspace }}-CHANGELOG.txt
     - name: Release
       uses: ncipollo/release-action@v1.21.0
       with:
@@ -21,5 +17,25 @@ runs:
           ./release/*.apk
         name: ${{ inputs.name }}
         tag: ${{ inputs.tag }}
-        bodyFile: ${{ github.workspace }}-CHANGELOG.txt
+        #bodyFile: ${{ github.workspace }}-CHANGELOG.txt
         allowUpdates: true
+    - name: Generate release info
+      shell: bash
+      run: |
+        if [ ${{ inputs.tag }} == "youtube-music-morphe" ]; then
+           latestx86=$(gh release view youtube-music-morphe --json assets --jq '.assets[] | select(.name| contains("x86")) | .url')
+           latestarm=$(gh release view youtube-music-morphe --json assets --jq '.assets[] | select(.name| contains("arm")) | .url')
+          #  echo -e "[Latest x86  YouTube Music - Morphe APK]($latestx86)\n[Latest arm64 YouTube Music - Morphe APK]($latestarm)" > ${{ github.workspace }}-CHANGELOG.txt
+
+        else
+          latest=$(gh release view ${{ inputs.tag }} --json assets --jq '.assets[] | .url')
+          echo  -e "[Latest ${{ inputs.name }} APK]($latest)" > ${{ github.workspace }}-CHANGELOG.txt
+        fi
+    - name: Update Release info
+      uses: ncipollo/release-action@v1.21.0
+      with:
+          name: ${{ inputs.name }}
+          tag: ${{ inputs.tag }}
+          bodyFile: ${{ github.workspace }}-CHANGELOG.txt
+          allowUpdates: true
+ 
