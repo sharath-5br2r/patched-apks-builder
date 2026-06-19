@@ -13,7 +13,7 @@ get_date_gh() {
 checker(){
 	local date1 date2 date1_sec date1_sec ur_repo=$repository
 	date1=$(gh run list -R Eden-CI/Workflow -w nightly.yml --status success --limit 1 --json updatedAt  -q ".[0].updatedAt")
-	date2=$(get_date_gh "$ur_repo" "all" "Eden-Android")
+	date2=$(get_date_gh "$ur_repo" "eden-pubg" "Eden-Android")
 	date1_sec=$(date -d "$date1" +%s)
 	date2_sec=$(date -d "$date2" +%s)
 	if [ -z "$date2" ] || [ "$date1_sec" -gt "$date2_sec" ]; then

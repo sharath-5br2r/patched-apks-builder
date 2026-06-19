@@ -1,4 +1,5 @@
 name: Preparing to patch
+description: "a"
 runs:
   using: "composite"
   steps:

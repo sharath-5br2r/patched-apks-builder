@@ -1,20 +1,25 @@
 name: Releasing APK files
 description: "a"
+inputs:
+  name:
+    description: "Release name"
+    required: true
+  tag:
+    description: "Release tag"
+    required: true
 runs:
   using: "composite"
   steps:
     - name: Generate release info
       shell: bash
       run: |
-        echo  -e "
-        **This repository is not like any other repository. It does not create new releases; it only releases new files.**
-        \n ## Click the first APK for the latest \n The first version in app version, second is patch(if applicable) "> ${{ github.workspace }}-CHANGELOG.txt
+        echo  -e "changelog wip"> ${{ github.workspace }}-CHANGELOG.txt
     - name: Release
       uses: ncipollo/release-action@v1.21.0
       with:
         artifacts: |
           ./release/*.apk
-        name: "Get APKs"
-        tag: "all"
+        name: ${{ inputs.name }}
+        tag: ${{ inputs.tag }}
         bodyFile: ${{ github.workspace }}-CHANGELOG.txt
         allowUpdates: true

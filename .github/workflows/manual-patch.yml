@@ -70,6 +70,9 @@ jobs:
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
+        with:
+          name: "YouTube - Morphe"
+          tag: "youtube-morphe"
   patch_morphe_ytm_x86:
     name: Patch Morphe (YouTube Music x86)
     if: ${{ github.event.inputs.org == 'Morphe YouTube Music' || inputs.org == 'Morphe YouTube Music' || inputs.org == 'all' }}
@@ -100,6 +103,9 @@ jobs:
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
+        with:
+          name: "YouTube Music - Morphe"
+          tag: "youtube-music-morphe"
   patch_morphe_ytm_arm:
     name: Patch Morphe (YouTube Music arm)
     if: ${{ github.event.inputs.org == 'Morphe YouTube Music' || inputs.org == 'Morphe YouTube Music' || inputs.org == 'all' }}
@@ -130,6 +136,9 @@ jobs:
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
+        with:
+          name: "YouTube Music - Morphe"
+          tag: "youtube-music-morphe"
   patch_piko_twitter:
     name: Patch Piko (X)
     if: ${{ github.event.inputs.org == 'piko X' || inputs.org == 'piko X' || inputs.org == 'all' }}
@@ -161,6 +170,9 @@ jobs:
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
+        with:
+          name: "Twitter - Piko"
+          tag: "twitter-piko"
   patch_piko_instagram:
     name: Patch Piko (Instagram)
     if: ${{ github.event.inputs.org == 'piko Instagram' || inputs.org == 'piko Instagram' || inputs.org == 'all' }}
@@ -192,8 +204,11 @@ jobs:
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
+        with:
+          name: "Instagram - Piko"
+          tag: "instagram-piko"
   patch_paresh_protonvpn:
-    name: Patch paresh(ProtonVPN)
+    name: Patch Paresh(ProtonVPN)
     if: ${{ github.event.inputs.org == 'paresh Proton VPN' || inputs.org == 'paresh Proton VPN' || inputs.org == 'all' }}
     runs-on: ubuntu-latest
     strategy:
@@ -223,8 +238,11 @@ jobs:
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
+        with:
+          name: "Proton VPN - Paresh"
+          tag: "protonvpn-paresh"
   patch_paresh_jiohotstar:
-    name: Patch paresh(JioHotstar)
+    name: Patch Paresh(JioHotstar)
     if: ${{ github.event.inputs.org == 'paresh JioHotstar' || inputs.org == 'paresh JioHotstar' || inputs.org == 'all' }}
     runs-on: ubuntu-latest
     strategy:
@@ -253,6 +271,9 @@ jobs:
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
+        with:
+          name: "JioHotstar - Paresh"
+          tag: "jiohotstar-paresh"
 
   patch_hoo-dles_prime-video:
     name: Patch hoo-dles(Prime Video)
@@ -285,6 +306,9 @@ jobs:
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
+        with:
+          name: "Prime Video - hoo-dles"
+          tag: "prime-video-hoo-dles"
 
   patch_binarymend_symfonium:
     name: Patch binarymend(Symfonium)
@@ -317,6 +341,9 @@ jobs:
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
+        with:
+          name: "Symfonium - binarymend"
+          tag: "symfonium-binarymend"
 
   patch_revenge_discord:
     name: Patch Revenge Discord
@@ -349,6 +376,9 @@ jobs:
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
+        with:
+          name: "Discord - Revenge"
+          tag: "discord-revenge"
   Amazon-India:
     permissions: write-all
     runs-on: ubuntu-latest
@@ -382,6 +412,9 @@ jobs:
       - name: Releasing APK files
         id: release
         uses: ./.github/actions/release
+        with:
+          name: "Amazon India"
+          tag: "amazon-india"
   Amazon-Alexa:
     permissions: write-all
     runs-on: ubuntu-latest
@@ -415,6 +448,9 @@ jobs:
       - name: Releasing APK files
         id: release
         uses: ./.github/actions/release
+        with:
+          name: "Amazon Alexa"
+          tag: "amazon-alexa"
   Dolphin:
     permissions: write-all
     runs-on: ubuntu-latest
@@ -453,6 +489,9 @@ jobs:
       - name: Releasing APK files
         id: release
         uses: ./.github/actions/release
+        with:
+          name: "Dolphin SDK 29"
+          tag: "dolphin-sdk-29"
   Eden:
    permissions: write-all
    runs-on: ubuntu-latest
@@ -483,6 +522,9 @@ jobs:
       - name: Releasing APK files
         id: release
         uses: ./.github/actions/release
+        with:
+          name: "Eden PUBG"
+          tag: "eden-pubg"
   FCL:
    permissions: write-all
    runs-on: ubuntu-latest
@@ -512,7 +554,9 @@ jobs:
       - name: Releasing APK files
         id: release
         uses: ./.github/actions/release
-
+        with:
+          name: "FCL - CoD"
+          tag: "fcl-cod"
   Geode:
    permissions: write-all
    runs-on: ubuntu-latest
@@ -541,6 +585,9 @@ jobs:
       - name: Releasing APK files
         id: release
         uses: ./.github/actions/release
+        with:
+          name: "Geode - PUBGKR"
+          tag: "geode-pubgkr"
 
   Winlator:
     permissions: write-all
@@ -571,10 +618,13 @@ jobs:
       - name: Releasing APK files
         id: release
         uses: ./.github/actions/release
-  update-releases-file:
-    needs: [patch_morphe_yt,patch_morphe_ytm_arm, patch_morphe_ytm_x86, patch_piko_twitter, patch_piko_instagram, patch_paresh_protonvpn, patch_paresh_jiohotstar, patch_binarymend_symfonium, patch_revenge_discord, Amazon-India, Amazon-Alexa, Dolphin, Eden, FCL, Geode, Winlator]
-    name: Update releases file
-    permissions: write-all
-    if: always()
-    uses: ./.github/workflows/release.md.yml
-    secrets: inherit
+        with:
+          name: "Winlator - PUBG VN"
+          tag: "winlator-pubgvn"
+ # update-releases-file:
+ #   needs: [patch_morphe_yt,patch_morphe_ytm_arm, patch_morphe_ytm_x86, patch_piko_twitter, patch_piko_instagram, patch_paresh_protonvpn, patch_paresh_jiohotstar, patch_binarymend_symfonium, patch_revenge_discord, Amazon-India, Amazon-Alexa, Dolphin, Eden, FCL, Geode, Winlator]
+ #  name: Update releases file
+ #   permissions: write-all
+ #   if: always()
+ #   uses: ./.github/workflows/release.md.yml
+ #   secrets: inherit
