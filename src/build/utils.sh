@@ -866,9 +866,9 @@ split_arch() {
 #Make root modules
 make_module() {
 	local pkg_id=$1 module_name=$2
-	if [ -f "/updates/$2-$3.json" ]; then
-	   code=$(jq -r '.versionCode' /updates/$2-$3.json)
-	   rm -f /updates/$2-$3.json
+	if [ -f "./updates/$2-$3.json" ]; then
+	   code=$(jq -r '.versionCode' ./updates/$2-$3.json)
+	   rm -f ./updates/$2-$3.json
 	   code=$((code+1))
 	else
 	   code=1
@@ -880,8 +880,8 @@ make_module() {
 	echo -e "id=$2-$3\nname=$2-$3\nversion=$version (patches $3 - $release_name)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$2 $3 Module\nupdateJson=https://raw.githubusercontent.com/sharath-5br2r/patched-apks-builder/main/updates/$2-$3.json" > module/module.prop
 	zip -j -r "./release/$2-$version-$3-$release_name.zip" module/* > /dev/null 2>&1
 	rm -rf module release/$2-$version-$3-$release_name.apk
-	echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$4/$2-$version-$3-$release_name.zip\"\n}" > module/$2-$3.json
-	git add /updates/$2-$3.json
+	echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$4/$2-$version-$3-$release_name.zip\"\n}" > ./updates/$2-$3.json
+	git add ./updates/$2-$3.json
 	git commit -am "Update $2-$3 module to version $version (patches $3 - $release_name)"
 	git push
 }
