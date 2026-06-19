@@ -1,6 +1,6 @@
 # How to customize this repo
 >[!Important]
->Rember to append your apps onto utils.sh for simplicity 
+>Remember to append your apps onto utils.sh for simplicity 
 
 >[!Note]
 >Custom patches are made using [Apktool M](https://maximoff.su/apktool/?lang=en), diff and then ChatGPT to generate sed patch for that diff
@@ -13,10 +13,10 @@
     `prerelease` for latest prerelease 
 - Gitlab syntax is similar but replace `dl_gh` with `dl_gl`
 -  For APKMirror APK downloads first see `src/build/apps.json` to know about template of links, then after adding apps use `get_apk $apppkgname $appname $filetype $arch $dpi $androidversion`
- >   Where `$apppkgname` refers to Android package name
- >   `$appname` refer to friendly app name and see build scripts for
- >   `$filetype`  it is either `bundle` or `bundle_extract` or `apk` depending upon app
- >   `$arch $dpi $androidversion` is optional and is needed in some cases refer build scripts at `src/build` for more info
+  >   Where `$apppkgname` refers to Android package name
+  >   `$appname` refer to friendly app name and see build scripts for
+  >   `$filetype`  it is either `bundle` or `bundle_extract` or `apk` depending upon app
+  >   `$arch $dpi $androidversion` is optional and is needed in some cases refer build scripts at `src/build` for more info
 - For apkpure syntax is similar but replace with `dl_apkpure`
 - `get_patches_key $appname-$patchname` is used to initialise custom options 
   >  where `$appname` refers to provided app name and `$patchname` refers to provided patch name
@@ -33,11 +33,14 @@
     >`$modulename` is fancy name of module
 - `sign $input $output` is used to sign a app that is usually custom patched with `$input` and `$output` refering to apks
 
-> [!Remember]
- Remeber to set `$version` before revanced/npatch to get name of  original app version at end of revanced/morphe/xposed patches. Refer `src/build/build.sh` for more info. Use it as a template for getting version from APKMirror feeds.
+>[!Remember]
+>Remeber to set `$version` before revanced/npatch to get name of  original app version at end of revanced/morphe/xposed patches. Refer `src/build/build.sh` for more info. Use it as a template for getting version from APKMirror feeds.
+
 ## `src\build\build.sh` syntax
+
 >[!Syntax]
->The script can be launched as `src\build\build.sh $appname-$patchname` 
+>The script can be launched as `src\build\build.sh $appname-$patchname`
+
 - First there are functions to download Dependencies 
 - Then there are main patching blocks
 - Then there case blocks for the script to be executed with a specific patch
