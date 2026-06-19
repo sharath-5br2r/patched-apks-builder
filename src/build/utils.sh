@@ -874,7 +874,7 @@ make_module() {
 	   code=1
 	fi
 	cp -r  rv_module/module/. module
-	cp ./release/$name_out.apk module/base.apk
+	cp ./release/$2*$3*.apk module/base.apk
 	cp ./download/$2.apk stock/base.apk
 	echo -e "PKG_NAME=$1\nPKG_VER=$version\nMODULE_ARCH=$5" > module/config
 	echo -e "id=$2-$3\nname=$2-$3\nversion=$version (patches $3 - $release_name)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$2 $3 Module\nupdateJson=https://raw.githubusercontent.com/sharath-5br2r/patched-apks-builder/main/updates/$2-$3.json" > module/module.prop
