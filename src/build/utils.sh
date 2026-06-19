@@ -865,6 +865,7 @@ split_arch() {
 
 #Make root modules
 make_module() {
+	release_name=$(echo $release_name | sed 's/"//g')
 	local pkg_id=$1 module_name=$2
 	if [ -f "./updates/$2-$3.json" ]; then
 		yellow_log "[-] Existing update found for $2-$3, incrementing version code"
