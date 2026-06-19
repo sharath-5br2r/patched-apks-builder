@@ -761,7 +761,6 @@ patch() {
 			name_in=$1
 	    fi
 		eval java -jar *cli*.jar $p$b  --keystore-password=$KEYSTORE_PASS --keystore-entry-password=$KEYSTORE_PASS --keystore-entry-alias=$KEYSTORE_ALIAS --keystore=ks.keystore $m$opt --out=./release/$name_out.apk$excludePatches$includePatches$ks $pu$force $a./download/$name_in.apk
-		unset version
 		unset lock_version
 		unset excludePatches
 		unset includePatches
@@ -794,7 +793,6 @@ npatch() {
 			java -cp "bcprov.jar:jar-npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$module" -o ./release/
 		fi
 		mv ./release/$1-*-npatched.apk "./release/$1-\"$version\"-$3.apk"
-		unset version
 		unset lock_version
 	else
 		red_log "[-] Not found $1.apk"
@@ -868,7 +866,7 @@ split_arch() {
 #Make root modules
 make_module() {
 	local pkg_id=$1 module_name=$2
-	if [ ! -f "/updates/$2-$3.json" ]; then
+	if [ -f "/updates/$2-$3.json" ]; then
 	   code=$(jq -r '.versionCode' /updates/$2-$3.json)
 	   rm -f /updates/$2-$3.json
 	   code=$((code+1))
@@ -876,7 +874,7 @@ make_module() {
 	   code=1
 	fi
 	cp -r  rv_module/module/. module
-	cp ./release/$2-module-$version-$3-$release_name.apk module/base.apk
+	cp ./release/$name_out.apk module/base.apk
 	cp ./download/$2.apk stock/base.apk
 	echo -e "PKG_NAME=$1\nPKG_VER=$version\nMODULE_ARCH=$5" > module/config
 	echo -e "id=$2-$3\nname=$2-$3\nversion=$version (patches $3 - $release_name)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$2 $3 Module\nupdateJson=https://raw.githubusercontent.com/sharath-5br2r/patched-apks-builder/main/updates/$2-$3.json" > module/module.prop
