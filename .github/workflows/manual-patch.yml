@@ -49,6 +49,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          submodules: recursive
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
@@ -82,6 +84,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          submodules: recursive
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
@@ -116,6 +120,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          submodules: recursive
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
@@ -150,6 +156,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          submodules: recursive
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
@@ -184,6 +192,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          submodules: recursive
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
@@ -218,6 +228,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          submodules: recursive
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
@@ -252,6 +264,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          submodules: recursive
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
@@ -287,6 +301,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          submodules: recursive
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
@@ -322,6 +338,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          submodules: recursive
       - name: Decode Keystore
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
@@ -360,7 +378,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
-          submodules: true
+          submodules: recursive
 
       - name: Preparing to patch
         uses: ./.github/actions/preparing
@@ -396,7 +414,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
-          submodules: true
+          submodules: recursive
 
       - name: Preparing to patch
         uses: ./.github/actions/preparing
@@ -444,7 +462,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
-          submodules: true
+          submodules: recursive
       - name: Download and Patch Dolphin to SDK 29
         run: |
           echo "${{ secrets.KEYSTORE}}" | base64 --decode > ks.keystore
@@ -474,7 +492,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
-          submodules: true
+          submodules: recursive
 
       - name: Download and Patch Eden to PUBG
         run: |
@@ -507,7 +525,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
-          submodules: true
+          submodules: recursive
 
       - name: Download and Patch FCL to CoD
         run: |
@@ -539,7 +557,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
-          submodules: true
+          submodules: recursive
 
       - name: Download and Patch Geode to PUBGKR
         run: |
@@ -571,7 +589,7 @@ jobs:
         uses: actions/checkout@v7
         with:
           fetch-depth: 0
-          submodules: true
+          submodules: recursive
 
       - name: Download and Patch Winlator to PUBG VN
         run: |
