@@ -98,7 +98,7 @@ jobs:
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
         id: patch
         if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/build/build.sh "morphe-youtube-music-x86_64"
+        run: bash src/build/build.sh "morphe-youtube-music"
       - name: Releasing APK files
         id: release
         if: steps.check-gh.outputs.internet_error == '0'

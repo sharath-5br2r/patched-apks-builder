@@ -52,10 +52,12 @@ piko-x() {
 }
 piko-instagram() {
     piko_dl
-    # Patch Instagram
+    # Patch Instagram arm64-v8a:
     get_patches_key "instagram-piko"
     get_apk "com.instagram.android" "instagram-arm64-v8a" "bundle" "arm64-v8a" "120-640dpi"  "Android 9.0+"
     patch "instagram-arm64-v8a" "piko" "morphe"
+	piko_dl
+	# Patch Instagram x86_64:
 	get_apk "com.instagram.android" "instagram-x86_64" "bundle" "x86_64" "120-640dpi"  "Android 9.0+"
 	patch "instagram-x86_64" "piko" "morphe"
 }
@@ -99,6 +101,8 @@ morphe-youtube-music() {
 	get_patches_key "youtube-music-morphe"
 	get_apk "com.google.android.apps.youtube.music" "youtube-music-x86_64" "apk" "x86_64"
 	patch "youtube-music-x86_64" "morphe" "morphe"
+	morphe_dl
+	# Patch YouTube Music Arm64-v8a:
 	get_apk "com.google.android.apps.youtube.music" "youtube-music-arm64" "apk" "arm64-v8a"
 	patch "youtube-music-arm64" "morphe" "morphe"
 }
