@@ -47,7 +47,7 @@ piko-x() {
 	patch "x" "shim" "morphe"
 	get_patches_key "x-piko"
 	dl_gh "piko" "crimera" "prerelease"
-	patch "repatch" "piko" "morphe"
+	repatch "piko" "morphe"
 	
 }
 piko-instagram() {
