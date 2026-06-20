@@ -128,7 +128,7 @@ Simply choose the app you want to use from the list below. The link will take yo
 
 
 <details>
- <summary>Old Readme, dont follow</summary>
+ <summary><h2>Old Readme, don't follow this block</h2></summary>
 
 <h4 align="center">
 They are open-source scripts for patching various apps like YouTube, YouTube Music... However, they are very difficult to use for most users. That's why I created this repository to provide an easier way.
@@ -1027,7 +1027,7 @@ Web version:
 
 </details>
 
-</details>
+
 
 <details>
   <summary>Morphe</summary>
