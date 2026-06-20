@@ -11,14 +11,14 @@ jobs:
       - name: Get LeviLauncher tag
         id: get_tag
         run:  |
-            echo "TAG=$(gh release view -R 0Sombra666/LeviLaunchroidUnlocked --json tagName --jq '.tagName' )" >> $GITHUB_OUTPUT
+            echo "TAG=$(gh release view -R 0Sombra666/LeviLaunchroidUnlocked --json tagName --jq '.tagName' )" >> $GITHUB_ENV
       - name: Checkout LeviLauncher code
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
           repository: 0Sombra666/LeviLaunchroidUnlocked
           submodules: "recursive"
-          ref: ${{ steps.get_tag.outputs.TAG }}
+          ref: ${{ env.TAG }}
       - name: Prepare google-services.json
         run: |
           mkdir -p app
@@ -110,7 +110,7 @@ jobs:
       - name: Sign APK with keystore
         run: |
           APK_IN=$(find app/build/outputs/apk/release -name "*.apk" | head -1)
-          APK_OUT="LeviLauncher-${{ steps.get_tag.outputs.TAG}}-release.apk"
+          APK_OUT="LeviLauncher-$TAG-release.apk"
           java -cp "bcprov.jar:apksigner.jar" com.android.apksigner.ApkSignerTool sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in "$APK_IN" --out "$APK_OUT"
           echo "APK_OUT=$APK_OUT" >> $GITHUB_ENV
         env:
