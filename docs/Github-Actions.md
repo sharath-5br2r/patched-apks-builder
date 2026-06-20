@@ -14,6 +14,7 @@ The following secrets are required:
   ```
 - `KEYSTORE_ALIAS`: Signing alias of the keystore.
 - `KEYSTORE_PASS`: Password of the keystore.
+- `PAT_TOKEN`: GitHub Personal Access Token. Used to auto rebase repo. Get it from GitHub Settings.
 
 ## Syntax
 
