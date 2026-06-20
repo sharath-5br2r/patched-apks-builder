@@ -45,6 +45,7 @@ runs:
       continue-on-error: true
       run: |
         echo "[*] Configuring git and downloading submodules..."
+        git pull
         git submodule update --remote --recursive
         git config user.name "github-actions[bot]"
         git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

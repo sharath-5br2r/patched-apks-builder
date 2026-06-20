@@ -723,6 +723,7 @@ patch() {
 		unset lock_version
 		unset excludePatches
 		unset includePatches
+		rm -f *.mpp *.rvp  || true
 	else
 		red_log "[-] Not found $1.apk"
 		exit 1
@@ -730,7 +731,6 @@ patch() {
 }
 
 repatch() {
-	rm *.mpp *.rvp 2>/dev/null || true
 	mv ./release/$name_out.apk ./download/
 	name_in=$name_out
 	name_out=$name_out-$2-$release_name
@@ -788,6 +788,7 @@ make_module() {
 	zip -r "./release/$2-$version-$3-$release_name.zip" ./module/ > /dev/null 2>&1
 	rm -rf ./module ./release/$2*$3*.apk
 	if [[ $(git config user.name) == "github-actions[bot]" ]]; then 
+		git pull
 		echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$4/$2-$version-$3-$release_name.zip\"\n}" > ./updates/$2-$3.json
 		git add ./updates/$2-$3.json
 		git commit -am "Update $2-$3 module to version $version (patches $3 - $release_name)"
