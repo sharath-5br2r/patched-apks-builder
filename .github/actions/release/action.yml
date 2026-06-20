@@ -10,7 +10,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Upload to archive
+    - name: Release
       uses: ncipollo/release-action@v1.21.0
       with:
         artifacts: |
@@ -19,7 +19,7 @@ runs:
         name: "Old APKs and zips"
         tag: "all"
         allowUpdates: true
-    - name: Release
+    - name: Release Seperately
       uses: ncipollo/release-action@v1.21.0
       with:
         artifacts: |
