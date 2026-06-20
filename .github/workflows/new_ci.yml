@@ -55,22 +55,26 @@ jobs:
         id: check-binarymend-symfonium
         if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/etc/check.sh gh binarymend/morphe-patches latest symfonium-binarymend
-      - name: Check new patch FCL
+      - name: Check new app FCL
         id: check-fcl
         if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/etc/check.sh gh FCL-Team/FoldCraftLauncher latest fcl-cod
-      - name: Check new patch Geode
+      - name: Check new app Geode
         id: check-geode
         if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/etc/check.sh gh geode-sdk/android-launcher latest geode-pubgkr
-      - name: Check new patch Eden PUBG
+      - name: Check new app Eden PUBG
         id: check-eden
         if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/etc/check.sh eden
-      - name: Check new patch Winlator
+      - name: Check new app Winlator
         id: check-winlator
         if: steps.check-gh.outputs.internet_error == '0'
         run: bash src/etc/check.sh gh StevenMXZ/Winlator-Ludashi latest winlator-pubgvn
+      - name: Check new app LeviLauncher Unlocked
+        id: check-levilauncher
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/etc/check.sh gh 0Sombra666/LeviLaunchroidUnlocked latest levilauncher-unlocked-bgmi
       - name: Re-run workflow if github connection not stable
         if: always() && steps.check-morphe.outcome == 'skipped' && env.retry_count < env.max_retries
         uses: actions/github-script@v9
@@ -107,7 +111,7 @@ jobs:
       check_geode: ${{ steps.check-geode.outputs.new_patch }}
       check_eden: ${{ steps.check-eden.outputs.new_patch }}
       check_winlator: ${{ steps.check-winlator.outputs.new_patch }}
-      
+      check_levilauncher: ${{ steps.check-levilauncher.outputs.new_patch }}
   Patch-Morphe:
     name: Patch Morphe
     needs: check
@@ -226,3 +230,9 @@ jobs:
     secrets: inherit
     with:
       org: "hoo-dles Prime Video"
+  Patch-LeviLauncher-Unlocked:
+    name: Patch LeviLauncher Unlocked
+    needs: check
+    if: ${{ needs.check.outputs.check_levilauncher == 1 }}
+    uses: ./.github/workflows/levilauncher.yml
+    secrets: inherit
