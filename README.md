@@ -2,7 +2,7 @@
 >[!Note]
 >Contains LeviLaunchroid Unlocked BGMI Spoof (Mobile MC Bedrock launcher)
 > -  [Original Unlocked](https://github.com/0Sombra666/LeviLaunchroidUnlocked) — [Apache-2.0](https://github.com/0Sombra666/LeviLaunchroidUnlocked/blob/main/LICENSE) 
-> - [Download](../../releases/tag/levilaunchrer-unlocked-bgmi) (arm64 only) 
+> - [Download](../../releases/tag/levilauncher-unlocked-bgmi) (arm64 only) 
 > - Requires your own Minecraft APK
 > - Built via GitHub Actions and modified with sed
 > - Requires android sdk and ndk and xmake to build locally, it is independent of the other scripts.
