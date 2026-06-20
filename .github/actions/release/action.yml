@@ -10,6 +10,15 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Upload to archive
+      uses: ncipollo/release-action@v1.21.0
+      with:
+        artifacts: |
+          ./release/*.apk
+          ./release/*.zip
+        name: "Old APKs and zips"
+        tag: "all"
+        allowUpdates: true
     - name: Release
       uses: ncipollo/release-action@v1.21.0
       with:
@@ -20,13 +29,5 @@ runs:
         name: ${{ inputs.name }}
         tag: ${{ inputs.tag }}
         allowUpdates: true
-    - name: Upload to archive
-      uses: ncipollo/release-action@v1.21.0
-      with:
-        artifacts: |
-          ./release/*.apk
-          ./release/*.zip
-        name: "Old APKs and zips"
-        tag: "all"
-        allowUpdates: true
+
  
