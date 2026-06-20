@@ -25,12 +25,19 @@ sign() {
 check_experimental() {
  prefer_version=$(curl  https://raw.githubusercontent.com/MorpheApp/morphe-patches/refs/tags/$(gh release list --limit 1  --repo MorpheApp/morphe-patches | awk '{print $1}')/patches-list.json  | jq --arg pkg $1 -r '[.patches[].compatiblePackages[]? | select(.packageName == $pkg) | .targets[] | select(.isExperimental == true).version] | unique | sort_by(split(".") | map(tonumber)) | last')
 }
+#Setup Apksigner
+if [ ! -f apksigner.jar ]; then
+	wget -qO sdk.zip "https://dl.google.com/android/repository/build-tools_r36_linux.zip"
+	unzip -q -j sdk.zip build-tools/android-16/lib/apksigner.jar
+	rm -f ./sdk.zip
+fi
 
 mkdir ./release ./download
 
 #Setup pup for download apk files
 wget -q -O ./pup.zip https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_linux_amd64.zip
 unzip "./pup.zip" -d "./" > /dev/null 2>&1
+rm -f "./pup.zip"
 pup="./pup"
 if [ $OSTYPE == "cygwin" ]; then
 	pup="./pup.exe"

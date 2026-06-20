@@ -1,0 +1,137 @@
+name: Download patch and compile LeviLauncher
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get LeviLauncher tag
+        id: get_tag
+        run:  |
+            echo "TAG=$(gh release view -R 0Sombra666/LeviLaunchroidUnlocked --json tagName --jq '.tagName' )" >> $GITHUB_OUTPUT
+      - name: Checkout LeviLauncher code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          repository: 0Sombra666/LeviLaunchroidUnlocked
+          submodules: "recursive"
+          ref: ${{ steps.get_tag.outputs.TAG }}
+      - name: Prepare google-services.json
+        run: |
+          mkdir -p app
+          cat > app/google-services.json <<'JSON'
+          {
+            "project_info": {
+              "project_number": "000000000000",
+              "project_id": "ci-placeholder",
+              "storage_bucket": "ci-placeholder.appspot.com"
+            },
+            "client": [
+              {
+                "client_info": {
+                  "mobilesdk_app_id": "1:000000000000:android:0000000000000000000000",
+                  "android_client_info": {
+                    "package_name": "com.pubg.imobile"
+                  }
+                },
+                "oauth_client": [],
+                "api_key": [
+                  {
+                    "current_key": "AIzaSyCIOnlyPlaceholderKey"
+                  }
+                ],
+                "services": {
+                  "appinvite_service": {
+                    "other_platform_oauth_client": []
+                  }
+                }
+              }
+            ],
+            "configuration_version": "1"
+          }
+          JSON
+
+      - name: Setup Java JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: "21"
+          distribution: temurin
+
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Accept Licenses
+        run: yes | sdkmanager --licenses
+
+      - name: Install Build Tools 35.0.0
+        run: sdkmanager "build-tools;35.0.0"
+
+      - name: Setup Xmake
+        uses: xmake-io/github-action-setup-xmake@v1
+        with:
+          xmake-version: "2.9.9"
+          actions-cache-folder: ".xmake-cache"
+          actions-cache-key: "ubuntulinux-ci"
+
+      - name: Setup Android NDK
+        uses: nttld/setup-ndk@v1
+        with:
+          ndk-version: r28c
+          link-to-sdk: true
+
+      - name: Grant Execute Permission to gradlew
+        run: chmod +x ./gradlew
+
+      - name: Inject API Key
+        run: echo "curseforge.api_key=$2a$10$bL4bIL5pUWqfcO7KQtnMReakwtfHbNKh6v1uTpKlzhwoueEJQnPnm" >> local.properties
+     
+      - name: Patch
+        run: sed -i 's/applicationId "org\.levimc\.launcher"/applicationId "com.pubg.imobile"/' app/build.gradle
+        
+      - name: Build Release APK
+        run: ./gradlew assembleRelease
+
+      - name: Prepare and extract keystore
+        run: |
+          bcversion=$(curl -fsSL https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/maven-metadata.xml | grep -oPm1 '(?<=<release>)[^<]+')
+          echo -e "\e[32m[+] Downloading Bouncy Castle Provider\e[0m"
+          wget -qO bcprov.jar "https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/$bcversion/bcprov-jdk18on-$bcversion.jar"
+          LAST_PROV=$(grep "^security.provider\." "$JAVA_HOME/conf/security/java.security"  | grep -oP '(?<=security\.provider\.)\d+' | sort -n | tail -1)
+          echo "security.provider.$((LAST_PROV+1))=org.bouncycastle.jce.provider.BouncyCastleProvider"  > bc.security
+          echo "${{ secrets.KEYSTORE}}" | base64 -d > ks.keystore
+      - name: Install apksigner
+        run: |
+         wget -qO sdk.zip "https://dl.google.com/android/repository/build-tools_r36_linux.zip"
+         unzip -q -j sdk.zip android-16/lib/apksigner.jar
+
+      - name: Sign APK with keystore
+        run: |
+          APK_IN=$(find app/build/outputs/apk/release -name "*.apk" | head -1)
+          APK_OUT="LeviLauncher-${GITHUB_REF_NAME}-release.apk"
+          java -cp "bcprov.jar:apksigner.jar" com.android.apksigner.ApkSignerTool sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in "$APK_IN" --out "$APK_OUT"
+          echo "APK_OUT=$APK_OUT" >> $GITHUB_ENV
+        env:
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+
+      - name: Release
+        uses: ncipollo/release-action@v1.21.0
+        with:
+            artifacts: |
+                ${{ env.APK_OUT }}
+            name: "Old APKs and zips"
+            tag: "all"
+            allowUpdates: true
+      - name: Release Seperately
+        uses: ncipollo/release-action@v1.21.0
+        with:
+            artifacts: |
+                ${{ env.APK_OUT }}
+            removeArtifacts: true
+            name: "LeviLauncher Unlocked BGMI"
+            tag: "levilauncher-unlocked-bgmi"
+            allowUpdates: true
