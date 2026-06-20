@@ -202,15 +202,7 @@ winlator() {
     java -jar APKEditor.jar b -i winlator-src -o winlator-patched.apk
     sign winlator-patched.apk ./release/winlator-$WINLATOR_TAG-pubgvn.apk
 }
-levilauncher() {
-    tag=$(gh release view -R 0Sombra666/LeviLaunchroidUnlocked --json tagName --jq '.tagName')
-	git clone --depth 1 --branch $tag https://github.com/0Sombra666/LeviLaunchroidUnlocked --recursive ./levilauncher
-	sed -i 's/applicationId "org\.levimc\.launcher"/applicationId "com.pubg.imobile"/' levilauncher/app/build.gradle
-       cat > app/google-services.json <<'JSON'
-	             {
-				             "project_info": {
-							               "project_number":
-}
+
 case "$1" in
     revenge-discord)
         revenge-discord
