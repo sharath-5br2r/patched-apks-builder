@@ -17,7 +17,7 @@ The following secrets are required:
 
 ## Syntax
 
-- `.github/workflows/manual-patch.yml` contains every patch you need to manually patch.
+- `.github/workflows/new_manual-patch.yml` contains every patch you need to manually patch.
 
   To add a new app:
   - Copy any one of the existing blocks.
@@ -49,7 +49,7 @@ The following secrets are required:
   - Add your check output at the end of the `check:` job.
   - Copy a patching block and modify its check variable in the `if:` field and the `org:` field.
 
-- `.github/workflows/ci_.yml` and  `.github/workflows/ci.yml` are untouched upstream files to maintain merge compatiblity.
+- `.github/workflows/ci_.yml` , `.github/workflows/manual-patch.yml` and  `.github/workflows/ci.yml` are untouched upstream files to maintain merge compatiblity.
 
 ## Instructions
 

@@ -1,0 +1,610 @@
+name: Manual Patch
+permissions: write-all
+env:
+  repository: ${{ github.repository }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  org_input: ${{ inputs.org }}
+  org_event_input: ${{ github.event.inputs.org }}
+on:
+  workflow_dispatch:
+    inputs:
+      org:
+        description: 'Which apps do you want to patch?'
+        required: true
+        default: 'All'
+        type: choice
+        options:
+          - 'All'
+          - 'Morphe YouTube'
+          - 'Morphe YouTube Music'
+          - 'piko X'
+          - 'piko Instagram'
+          - 'Paresh Proton VPN'
+          - 'Paresh JioHotstar'
+          - 'hoo-dles Prime Video'
+          - 'binarymend Symfonium'
+          - 'Revenge Discord'
+          - "Dolphin SDK 29"
+          - "Eden PUBG"
+          - "FCL CoD"
+          - "Geode PUBGKR"
+          - "Winlator PUBGVN"
+          - "Amazon India"
+          - "Amazon Alexa"
+  workflow_call:
+    inputs:
+      org:
+        required: true
+        type: string
+    secrets:
+      TDL_BACKUP:
+        required: false
+jobs:
+  patch_morphe_yt:
+    name: Patch Morphe (YouTuhe)
+    if: ${{ github.event.inputs.org == 'Morphe YouTube' || inputs.org == 'Morphe YouTube' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        id: patch
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/build/build.sh "morphe-youtube"
+      - name: Releasing APK files
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+        with:
+          name: "YouTube - Morphe"
+          tag: "youtube-morphe"
+  patch_morphe_ytm:
+    name: Patch Morphe (YouTube Music)
+    if: ${{ github.event.inputs.org == 'Morphe YouTube Music' || inputs.org == 'Morphe YouTube Music' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        id: patch
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/build/build.sh "morphe-youtube-music"
+      - name: Releasing APK files
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+        with:
+          name: "YouTube Music - Morphe"
+          tag: "youtube-music-morphe"
+
+  patch_piko_twitter:
+    name: Patch Piko (X)
+    if: ${{ github.event.inputs.org == 'piko X' || inputs.org == 'piko X' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+          TDL_BACKUP: ${{ secrets.TDL_BACKUP }}
+        id: patch
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/build/build.sh "piko-x"
+      - name: Releasing APK files
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+        with:
+          name: "Twitter - Piko"
+          tag: "twitter-piko"
+  patch_piko_instagram:
+    name: Patch Piko (Instagram)
+    if: ${{ github.event.inputs.org == 'piko Instagram' || inputs.org == 'piko Instagram' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        id: patch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/build/build.sh "piko-instagram"
+      - name: Releasing APK files
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+        with:
+          name: "Instagram - Piko"
+          tag: "instagram-piko"
+  patch_paresh_protonvpn:
+    name: Patch Paresh(ProtonVPN)
+    if: ${{ github.event.inputs.org == 'paresh Proton VPN' || inputs.org == 'paresh Proton VPN' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        id: patch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/build/build.sh "paresh-protonvpn"
+      - name: Releasing APK files
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+        with:
+          name: "Proton VPN - Paresh"
+          tag: "protonvpn-paresh"
+  patch_paresh_jiohotstar:
+    name: Patch Paresh(JioHotstar)
+    if: ${{ github.event.inputs.org == 'paresh JioHotstar' || inputs.org == 'paresh JioHotstar' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        id: patch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/build/build.sh "paresh-jiohotstar"
+      - name: Releasing APK files
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+        with:
+          name: "JioHotstar - Paresh"
+          tag: "jiohotstar-paresh"
+
+  patch_hoo-dles_prime-video:
+    name: Patch hoo-dles(Prime Video)
+    if: ${{ github.event.inputs.org == 'hoo-dles Prime Video' || inputs.org == 'hoo-dles Prime Video' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        id: patch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: |
+         bash src/build/build.sh "hoo-dles-prime-video"
+      - name: Releasing APK files
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+        with:
+          name: "Prime Video - hoo-dles"
+          tag: "prime-video-hoo-dles"
+
+  patch_binarymend_symfonium:
+    name: Patch binarymend(Symfonium)
+    if: ${{ github.event.inputs.org == 'binarymend Symfonium' || inputs.org == 'binarymend Symfonium' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        id: patch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: |
+          bash src/build/build.sh "binarymend-sympfonium"
+      - name: Releasing APK files
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+        with:
+          name: "Symfonium - binarymend"
+          tag: "symfonium-binarymend"
+
+  patch_revenge_discord:
+    name: Patch Revenge Discord
+    if: ${{ github.event.inputs.org == 'Revenge Discord' || inputs.org == 'Revenge Discord' || inputs.org == 'all' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          submodules: recursive
+      - name: Decode Keystore
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        id: patch
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: |
+         bash src/build/build.sh "revenge-discord"
+      - name: Releasing APK files
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+        with:
+          name: "Discord - Revenge"
+          tag: "discord-revenge"
+  Amazon-India:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    if: ${{ inputs.org == 'Amazon India' || github.event.inputs.org == 'Amazon India' || inputs.org == 'All' }}
+    steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
+      - name: Download and Patch Amazon India
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+          bash src/build/build.sh amazon-india
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
+        with:
+          name: "Amazon India"
+          tag: "amazon-india"
+  Amazon-Alexa:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    if: ${{ inputs.org == 'Amazon Alexa' || github.event.inputs.org == 'Amazon Alexa' || inputs.org == 'All' }}
+    steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        run: bash src/etc/connection.sh
+      - name: Download and Patch Amazon Alexa
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+          bash src/build/build.sh amazon-alexa
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
+        with:
+          name: "Amazon Alexa"
+          tag: "amazon-alexa"
+  Dolphin:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    if: ${{ inputs.org == 'Dolphin SDK 29' || github.event.inputs.org == 'Dolphin SDK 29' || inputs.org == 'All'}}
+    steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+      - name: Start FlareSolverr
+        shell: bash
+        run: |
+          docker run -d --name flaresolverr -p 8191:8191 ghcr.io/flaresolverr/flaresolverr:latest
+          echo "[*] Waiting for FlareSolverr to start..."
+          for i in $(seq 1 30); do
+            if curl -s http://localhost:8191/ > /dev/null 2>&1; then
+              echo "[+] FlareSolverr is ready."
+              break
+            fi
+            sleep 2
+          done
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: recursive
+      - name: Download and Patch Dolphin to SDK 29
+        run: |
+          echo "${{ secrets.KEYSTORE}}" | base64 --decode > ks.keystore
+          bash src/build/build.sh dolphin
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
+        with:
+          name: "Dolphin SDK 29"
+          tag: "dolphin-sdk-29"
+  Eden:
+   permissions: write-all
+   runs-on: ubuntu-latest
+   if: ${{ inputs.org == 'Eden PUBG' || github.event.inputs.org == 'Eden PUBG' || inputs.org == 'All' }}
+   steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Download and Patch Eden to PUBG
+        run: |
+          echo "${{ secrets.KEYSTORE}}" | base64 --decode > ks.keystore
+          bash src/build/build.sh eden
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+
+
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
+        with:
+          name: "Eden PUBG"
+          tag: "eden-pubg"
+  FCL:
+   permissions: write-all
+   runs-on: ubuntu-latest
+   if: ${{ inputs.org == 'FCL CoD' || github.event.inputs.org == 'FCL CoD' || inputs.org == 'All' }}
+   steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Download and Patch FCL to CoD
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+          bash src/build/build.sh fcl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
+        with:
+          name: "FCL - CoD"
+          tag: "fcl-cod"
+  Geode:
+   permissions: write-all
+   runs-on: ubuntu-latest
+   if: ${{ inputs.org == 'Geode PUBGKR' || github.event.inputs.org == 'Geode PUBGKR' || inputs.org == 'All' }}
+   steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Download and Patch Geode to PUBGKR
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+          bash src/build/build.sh geode
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
+        with:
+          name: "Geode - PUBGKR"
+          tag: "geode-pubgkr"
+
+  Winlator:
+    permissions: write-all
+    runs-on: ubuntu-latest
+    if: ${{ inputs.org == 'Winlator PUBGVN' || github.event.inputs.org == 'Winlator PUBGVN' || inputs.org == 'All' }}
+    steps:
+      - uses: actions/setup-java@v5
+        with:
+          distribution: "zulu"
+          java-version: "21"
+
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          submodules: recursive
+
+      - name: Download and Patch Winlator to PUBG VN
+        run: |
+          echo "${{ secrets.KEYSTORE}}" | base64 --decode > ks.keystore
+          bash src/build/build.sh winlator
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+
+      - name: Releasing APK files
+        id: release
+        uses: ./.github/actions/release
+        with:
+          name: "Winlator - PUBG VN"
+          tag: "winlator-pubgvn"
+

@@ -112,7 +112,7 @@ jobs:
     name: Patch Morphe
     needs: check
     if: ${{ needs.check.outputs.check_morphe == 1 }}
-    uses: ./.github/workflows/manual-patch.yml
+    uses: ./.github/workflows/new_manual-patch.yml
     secrets: inherit
     with:
       org: "Morphe YouTube"
@@ -120,7 +120,7 @@ jobs:
     name: Patch Morphe YouTube Music
     needs: check
     if: ${{ needs.check.outputs.check_morphe_ytm == 1 }}
-    uses: ./.github/workflows/manual-patch.yml
+    uses: ./.github/workflows/new_manual-patch.yml
     secrets: inherit
     with:
       org: "Morphe YouTube Music"
@@ -128,7 +128,7 @@ jobs:
     name: Patch Piko(X)
     needs: check
     if: ${{ needs.check.outputs.check_piko_x == 1 }}
-    uses: ./.github/workflows/manual-patch.yml
+    uses: ./.github/workflows/new_manual-patch.yml
     secrets: inherit
     with:
       org: "piko X"
@@ -136,7 +136,7 @@ jobs:
     name: Patch Piko(Instagram)
     needs: check
     if: ${{ needs.check.outputs.check_piko_instagram == 1 }}
-    uses: ./.github/workflows/manual-patch.yml
+    uses: ./.github/workflows/new_manual-patch.yml
     secrets: inherit
     with:
       org: "piko Instagram"
@@ -144,7 +144,7 @@ jobs:
     name: Patch Paresh Proton VPN
     needs: check
     if: ${{ needs.check.outputs.check_paresh_proton-vpn == 1 || needs.check.outputs.check_app_proton-vpn == 1 }}
-    uses: ./.github/workflows/manual-patch.yml
+    uses: ./.github/workflows/new_manual-patch.yml
     secrets: inherit
     with:
       org: "Paresh Proton VPN"
@@ -152,7 +152,7 @@ jobs:
     name: Patch Paresh JioHotstar
     needs: check
     if: ${{ needs.check.outputs.check_paresh_jiohotstar == 1 }}
-    uses: ./.github/workflows/manual-patch.yml
+    uses: ./.github/workflows/new_manual-patch.yml
     secrets: inherit
     with:
       org: "Paresh JioHotstar"
@@ -160,7 +160,7 @@ jobs:
     name: Patch binarymend Symfonium
     needs: check
     if: ${{ needs.check.outputs.check_binarymend_symfonium == 1 }}
-    uses: ./.github/workflows/manual-patch.yml
+    uses: ./.github/workflows/new_manual-patch.yml
     secrets: inherit
     with:
       org: "binarymend Symfonium"
@@ -168,7 +168,7 @@ jobs:
     name: Patch FCL
     needs: check
     if: ${{ needs.check.outputs.check_fcl == 1 }}
-    uses: ./.github/workflows/manual-patch.yml
+    uses: ./.github/workflows/new_manual-patch.yml
     secrets: inherit
     with:
       org: "FCL CoD"
@@ -176,14 +176,14 @@ jobs:
     name: Patch Geode
     needs: check
     if: ${{ needs.check.outputs.check_geode == 1 }}
-    uses: ./.github/workflows/manual-patch.yml
+    uses: ./.github/workflows/new_manual-patch.yml
     secrets: inherit
     with:
       org: "Geode PUBGKR"
   Patch-Eden-PUBG:
     name: Patch Eden(PUBG)
     needs: check
-    uses: ./.github/workflows/manual-patch.yml
+    uses: ./.github/workflows/new_manual-patch.yml
     if: ${{ needs.check.outputs.check_eden == 1 }}
     with:
       org: "Eden PUBG"
@@ -191,38 +191,38 @@ jobs:
   Patch-Winlator:
     name: Patch Winlator
     needs: check
-    uses: ./.github/workflows/manual-patch.yml
+    uses: ./.github/workflows/new_manual-patch.yml
     if: ${{ needs.check.outputs.check_winlator == 1 }}
     with:
       org: "Winlator PUBGVN"
     secrets: inherit
   Patch-Revenge-Discord:
     name: Patch Revenge(Discord)
-    uses: ./.github/workflows/manual-patch.yml
+    uses: ./.github/workflows/new_manual-patch.yml
     with:
       org: "Revenge Discord"
     secrets: inherit
   Patch-Dolphin-SDK-29:
     name: Patch Dolphin SDK 29
-    uses: ./.github/workflows/manual-patch.yml
+    uses: ./.github/workflows/new_manual-patch.yml
     with:
       org: "Dolphin SDK 29"
     secrets: inherit
   Amazon-India:
     name: Patch Amazon India
-    uses: ./.github/workflows/manual-patch.yml
+    uses: ./.github/workflows/new_manual-patch.yml
     with:
       org: "Amazon India"
     secrets: inherit
   Amazon-Alexa:
     name: Patch Amazon Alexa
-    uses: ./.github/workflows/manual-patch.yml
+    uses: ./.github/workflows/new_manual-patch.yml
     with:
       org: "Amazon Alexa"
     secrets: inherit
   Patch-hoo-dles-prime-video:
     name: Patch hoo-dles Prime Video
-    uses: ./.github/workflows/manual-patch.yml
+    uses: ./.github/workflows/new_manual-patch.yml
     secrets: inherit
     with:
       org: "hoo-dles Prime Video"
