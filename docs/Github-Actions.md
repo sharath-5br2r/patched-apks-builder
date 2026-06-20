@@ -28,11 +28,11 @@ The following secrets are required:
 
   It can be triggered manually using the **Actions** menu or from other workflows.
 
-- `src/etc/ci.sh` is the checker scrupt for GitHub and GitLab, respectively, used to determine whether a new app should be built.
+- `src/etc/check.sh` is the checker scrupt for GitHub and GitLab, respectively, used to determine whether a new app should be built.
 
   Syntax:
   ```sh
-  bash src/etc/ci.sh $source $reponame $channel $urtag
+  bash src/etc/check.sh $source $reponame $channel $urtag
   ```
 
   > Where:
@@ -41,7 +41,7 @@ The following secrets are required:
   > - `$channel` is either `latest`, `prerelease`, or `$remotetag`, which is the tag of the remote repository.
   > - `$urtag` is the name of the tag where the APK is present in your repository.
 
-- `.github/workflows/ci.yml` checks for new patches on GitHub/GitLab every 4 hours.
+- `.github/workflows/new_ci.yml` checks for new patches on GitHub/GitLab every 4 hours and runs some patches always
 
   To add a new app:
   - Copy one of the existing check blocks.
@@ -49,13 +49,7 @@ The following secrets are required:
   - Add your check output at the end of the `check:` job.
   - Copy a patching block and modify its check variable in the `if:` field and the `org:` field.
 
-- `.github/workflows/ci_.yml` runs every 4 hours regardless of changes.
-
-  It is used for apps that do not have a proper way to check for the latest version.
-
-  To add a new app:
-  - Copy an existing block.
-  - Modify the `org:` field.
+- `.github/workflows/ci_.yml` and  `.github/workflows/ci.yml` are untouched upstream files to maintain merge compatiblity.
 
 ## Instructions
 
