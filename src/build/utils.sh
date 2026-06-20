@@ -1,8 +1,15 @@
 #!/bin/bash
-ln -sf ks.keystore src/ks.keystore
-ln -sf ks.keystore src/_ks.keystore
-ln -sf ks.keystore src/morphe.keystore
-source .env
+if [ ! -f ks.keystore ]; then
+	echo "[-] Missing ks.keystore file. Please provide the keystore file."
+	exit 1
+else
+	cp ks.keystore src/ks.keystore
+    cp ks.keystore src/_ks.keystore
+    cp ks.keystore src/morphe.keystore
+fi
+if [ -f .env ]; then
+	source .env
+fi
 bcversion=$(curl -fsSL https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/maven-metadata.xml | grep -oPm1 '(?<=<release>)[^<]+')
 echo -e "\e[32m[+] Downloading Bouncy Castle Provider\e[0m"
 wget -qO bcprov.jar "https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/$bcversion/bcprov-jdk18on-$bcversion.jar"
