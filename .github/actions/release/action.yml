@@ -28,8 +28,7 @@ runs:
       uses: ncipollo/release-action@v1.21.0
       with:
         artifacts: |
-          ./release/*.apk
-          ./release/*.zip
+          ./release/*
         name: "Old APKs and zips"
         tag: "all"
         allowUpdates: true
@@ -37,8 +36,7 @@ runs:
       uses: ncipollo/release-action@v1.21.0
       with:
         artifacts: |
-          ./release/*.apk
-          ./release/*.zip
+          ./release/*
         removeArtifacts: true
         name: ${{ inputs.name }}
         tag: ${{ inputs.tag }}
