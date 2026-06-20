@@ -1,38 +1,32 @@
-name: Always CI
+name: Upstream ci_.yml
 permissions: write-all
 on:
-  schedule:
-    - cron: "0 0/4 * * *"
   workflow_dispatch:
 
 jobs:
-  Patch-Revenge-Discord:
-    name: Patch Revenge(Discord)
-    uses: ./.github/workflows/manual-patch.yml
-    with:
-      org: "Revenge Discord"
-    secrets: inherit
-  Patch-Dolphin-SDK-29:
-    name: Patch Dolphin SDK 29
-    uses: ./.github/workflows/manual-patch.yml
-    with:
-      org: "Dolphin SDK 29"
-    secrets: inherit
-  Amazon-India:
-    name: Patch Amazon India
-    uses: ./.github/workflows/manual-patch.yml
-    with:
-      org: "Amazon India"
-    secrets: inherit
-  Amazon-Alexa:
-    name: Patch Amazon Alexa
-    uses: ./.github/workflows/manual-patch.yml
-    with:
-      org: "Amazon Alexa"
-    secrets: inherit
-  Patch-hoo-dles-prime-video:
-    name: Patch hoo-dles Prime Video
-    uses: ./.github/workflows/manual-patch.yml
-    secrets: inherit
-    with:
-      org: "hoo-dles Prime Video"
+  Patch-Xposed:
+    name: Patch Xposed
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        run: [1, 2, 3]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6.0.2
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+        with:
+          install_bouncy_castle: 'true'
+      - name: Check github connection
+        id: check-gh-xposed
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        id: patch-xposed
+        if: steps.check-gh-xposed.outputs.internet_error == '0'
+        run: bash src/build/Xposed.sh ${{ matrix.run }}
+      - name: Releasing APK files
+        id: release-xposed
+        if: steps.check-gh-xposed.outputs.internet_error == '0'
+        uses: ./.github/actions/release
+
