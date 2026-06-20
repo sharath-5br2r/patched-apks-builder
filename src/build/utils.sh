@@ -28,7 +28,7 @@ check_experimental() {
 #Setup Apksigner
 if [ ! -f apksigner.jar ]; then
 	wget -qO sdk.zip "https://dl.google.com/android/repository/build-tools_r36_linux.zip"
-	unzip -q -j sdk.zip build-tools/android-16/lib/apksigner.jar
+	unzip -q -j sdk.zip android-16/lib/apksigner.jar
 	rm -f ./sdk.zip
 fi
 
