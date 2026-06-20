@@ -1,9 +1,8 @@
 name: Download patch and compile LeviLauncher
 
 on:
-  push:
-    tags:
-      - '*'
+  workflow_dispatch:
+  workflow_call:
 
 jobs:
   build:
@@ -91,7 +90,7 @@ jobs:
      
       - name: Patch
         run: sed -i 's/applicationId "org\.levimc\.launcher"/applicationId "com.pubg.imobile"/' app/build.gradle
-        
+
       - name: Build Release APK
         run: ./gradlew assembleRelease
 
