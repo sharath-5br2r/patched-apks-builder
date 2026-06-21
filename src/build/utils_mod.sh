@@ -58,7 +58,7 @@ dl_gh_v2(){
 	else
 	   urls=$(gh release view $tag --repo $repo  --json assets --jq '.assets[] | .url')
 	fi
-	if [[  ! "$urls" == *$'\n'*]]; then
+	if [[  ! "$urls" == *$'\n'* ]]; then
 	   if [ -n $output ]; then
 	        name=$(basename "$urls")
 	        green_log "[+] Downloading $name from $repo $tag to $output"
@@ -108,7 +108,7 @@ dl_gl_mod() {
   local urls
   urls=$(echo "$release" | jq -r '.assets.links[] | "\(.direct_asset_url // .url)"')
 
-  if [[  ! "$urls" == *$'\n'*]]; then
+  if [[  ! "$urls" == *$'\n'*  ]]; then
     if [ -n $output ]; then
         name=$(basename "$urls")
         green_log "[+] Downloading $name from $repo $tag to $output"
