@@ -36,22 +36,22 @@ patcher(){
 	fi
 	detect_version_mod "$pkgname" "$patchname.mpp"
 	if [[ -z $archs ]]; then
-	   get_patches_key "$pkgname-$patchname"
+	   get_patches_key "$appname-$patchname"
 	   get_apk "$pkgname" "$appname" "$apktype" 
 	   patch_mod "$appname" "$patchname" "$clitype"
        if [[ $module="true" ]]; then
-	    get_patches_key "$pkgname-$patchname-module"
+	    get_patches_key "$appname-$patchname-module"
 	    patch_mod "$appname" "$patchname" "$clitype"
 	    make_module "$pkgname" "$appname" "$patchname" "$clitype" "$archs"
 	   fi
 	else
 		for arch in $archs
 		do
-		    get_patches_key "$pkgname-$patchname"
+		    get_patches_key "$appname-$patchname"
 			get_apk "$pkgname" "$appname" "$apktype" "$arch"
 			patch_mod "$appname" "$patchname" "$clitype"
 			if [[ $module="true" ]]; then
-				get_patches_key "$pkgname-$patchname-module"
+				get_patches_key "$appname-$patchname-module"
 				patch_mod "$appname" "$patchname" "$clitype"
 				make_module "$pkgname" "$appname" "$patchname" "$clitype" "$arch"
 			fi
@@ -60,15 +60,15 @@ patcher(){
 }
 get_vars(){
 	query=$appname-$patchname
-	pkgname=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].pkgname')
-	apktype=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apktype')
-	archs=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].archs')
-	version_cmd=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].version_cmd')
-	module=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].module')
-	patchsrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].patchsrc')
-	patches=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].patches')
-	apksrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apksrc')
-	cli=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].cli')
+	pkgname=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].pkgname') || true
+	apktype=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apktype') || true
+	archs=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].archs') || true
+	version_cmd=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].version_cmd') || true
+	module=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].module') || true
+	patchsrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].patchsrc') || true
+	patches=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].patches') || true
+	apksrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apksrc') || true
+	cli=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].cli') || true
 
 }
 morphe-patch(){
