@@ -1,10 +1,10 @@
 name: Manual Patch
 permissions: write-all
+
 env:
   repository: ${{ github.repository }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  org_input: ${{ inputs.org }}
-  org_event_input: ${{ github.event.inputs.org }}
+
 on:
   workflow_dispatch:
     inputs:
@@ -24,16 +24,16 @@ on:
           - 'hoo-dles Prime Video'
           - 'binarymend Symfonium'
           - 'Revenge Discord'
-          - "Dolphin SDK 29"
-          - "Eden PUBG"
-          - "FCL CoD"
-          - "Geode PUBGKR"
-          - "Winlator PUBGVN"
-          - "Amazon India"
-          - "Amazon Alexa"
-          - "Speedtest Xtra"
-          - "Adobe Acrobat Hooman"
-          - "TikTok Icysymmetra"
+          - 'Dolphin SDK 29'
+          - 'Eden PUBG'
+          - 'FCL CoD'
+          - 'Geode PUBGKR'
+          - 'Winlator PUBGVN'
+          - 'Amazon India'
+          - 'Amazon Alexa'
+          - 'Speedtest Xtra'
+          - 'Adobe Acrobat Hooman'
+          - 'TikTok Icysymmetra'
   workflow_call:
     inputs:
       org:
@@ -42,312 +42,149 @@ on:
     secrets:
       TDL_BACKUP:
         required: false
+
 jobs:
-  patch_morphe_yt:
-    name: Patch Morphe (YouTuhe)
-    if: ${{ github.event.inputs.org == 'Morphe YouTube' || inputs.org == 'Morphe YouTube' || inputs.org == 'all' }}
+  patch:
+    name: Patch ${{ matrix.label }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
+      matrix:
+        include:
+          - org: Morphe YouTube
+            label: Morphe (YouTube)
+            build_target: morphe-youtube
+            release_name: YouTube - Morphe
+            release_tag: youtube-morphe
+          - org: Morphe YouTube Music
+            label: Morphe (YouTube Music)
+            build_target: morphe-youtube-music
+            release_name: YouTube Music - Morphe
+            release_tag: youtube-music-morphe
+          - org: piko X
+            label: Piko (X)
+            build_target: piko-x
+            release_name: X (Twitter) - Piko
+            release_tag: x-piko
+          - org: piko Instagram
+            label: Piko (Instagram)
+            build_target: piko-instagram
+            release_name: Instagram - Piko
+            release_tag: instagram-piko
+          - org: Paresh Proton VPN
+            label: Paresh (Proton VPN)
+            build_target: paresh-protonvpn
+            release_name: Proton VPN - Paresh
+            release_tag: proton-vpn-paresh
+          - org: Paresh JioHotstar
+            label: Paresh (JioHotstar)
+            build_target: paresh-jiohotstar
+            release_name: JioHotstar - Paresh
+            release_tag: jiohotstar-paresh
+          - org: hoo-dles Prime Video
+            label: hoo-dles (Prime Video)
+            build_target: hoo-dles-prime-video
+            release_name: Prime Video - hoo-dles
+            release_tag: prime-video-hoo-dles
+          - org: binarymend Symfonium
+            label: binarymend (Symfonium)
+            build_target: binarymend-symfonium
+            release_name: Symfonium - binarymend
+            release_tag: symfonium-binarymend
+          - org: Revenge Discord
+            label: Revenge Discord
+            build_target: revenge-discord
+            release_name: Discord - Revenge
+            release_tag: discord-revenge
+          - org: Amazon India
+            label: Amazon India
+            build_target: amazon-india
+            release_name: Amazon India
+            release_tag: amazon-india
+          - org: Amazon Alexa
+            label: Amazon Alexa
+            build_target: amazon-alexa
+            release_name: Amazon Alexa
+            release_tag: amazon-alexa
+          - org: Dolphin SDK 29
+            label: Dolphin SDK 29
+            build_target: dolphin-sdk-29
+            release_name: Dolphin SDK 29
+            release_tag: dolphin-sdk-29
+          - org: Eden PUBG
+            label: Eden PUBG
+            build_target: eden-pubg
+            release_name: Eden PUBG
+            release_tag: eden-pubg
+          - org: FCL CoD
+            label: FCL CoD
+            build_target: fcl-cod
+            release_name: FCL CoD
+            release_tag: fcl-cod
+          - org: Geode PUBGKR
+            label: Geode PUBGKR
+            build_target: geode-pubgkr
+            release_name: Geode PUBGKR
+            release_tag: geode-pubgkr
+          - org: Winlator PUBGVN
+            label: Winlator PUBGVN
+            build_target: winlator-pubgvn
+            release_name: Winlator PUBGVN
+            release_tag: winlator-pubgvn
+          - org: Adobe Acrobat Hooman
+            label: Adobe Acrobat Hooman
+            build_target: adobe-acrobat-hooman
+            release_name: Adobe Acrobat - Hooman
+            release_tag: adobe-acrobat-hooman
+          - org: Speedtest Xtra
+            label: Speedtest Xtra
+            build_target: speedtest-xtra
+            release_name: Speedtest Xtra
+            release_tag: speedtest-xtra
+          - org: TikTok Icysymmetra
+            label: TikTok Icysymmetra
+            build_target: tiktok-icysymmetra
+            release_name: TikTok - Icysymmetra
+            release_tag: tiktok-icysymmetra
+            
     steps:
-      - name: Patch
-        uses: ./.github/actions/build
+      - name: Check Match
+        id: match-check
+        run: |
+          if [ "${{ inputs.org }}" = "All" ] || [ "${{ inputs.org }}" = "${{ matrix.org }}" ]; then
+            echo "should_run=true" >> $GITHUB_OUTPUT
+          else
+            echo "should_run=false" >> $GITHUB_OUTPUT
+          fi
+      - name: Checkout
+        uses: actions/checkout@v7
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_target: "morphe-youtube"
-          keystore: ${{ secrets.KEYSTORE }}
-          keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-          release_name: "YouTube - Morphe"
-          release_tag: "youtube-morphe"
-  patch_morphe_ytm:
-    name: Patch Morphe (YouTube Music)
-    if: ${{ github.event.inputs.org == 'Morphe YouTube Music' || inputs.org == 'Morphe YouTube Music' || inputs.org == 'all' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Patch
-        uses: ./.github/actions/build
+          submodules: recursive
+      - name: Decode Keystore
+        shell: bash
+        run: |
+          echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
+      - name: Preparing to patch
+        uses: ./.github/actions/preparing
+      - name: Check github connection
+        id: check-gh
+        shell: bash
+        run: bash src/etc/connection.sh
+      - name: Patch apk
+        id: patch
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: |
+          bash src/build/build.sh ${{ matrix.build_target }}
+      - name: Releasing APK files
+        id: release
+        if: steps.check-gh.outputs.internet_error == '0'
+        uses: ./.github/actions/release
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_target: "morphe-youtube-music"
-          keystore: ${{ secrets.KEYSTORE }}
-          keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-          release_name: "YouTube Music - Morphe"
-          release_tag: "youtube-music-morphe"
-
-  patch_piko_twitter:
-    name: Patch Piko (X)
-    if: ${{ github.event.inputs.org == 'piko X' || inputs.org == 'piko X' || inputs.org == 'all' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Patch
-        uses: ./.github/actions/build
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_target: "piko-x"
-          keystore: ${{ secrets.KEYSTORE }}
-          keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-          release_name: "X (Twitter) - Piko"
-          release_tag: "x-piko"
-  patch_piko_instagram:
-    name: Patch Piko (Instagram)
-    if: ${{ github.event.inputs.org == 'piko Instagram' || inputs.org == 'piko Instagram' || inputs.org == 'all' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Patch
-        uses: ./.github/actions/build
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_target: "piko-instagram"
-          keystore: ${{ secrets.KEYSTORE }}
-          keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-          release_name: "Instagram - Piko"
-          release_tag: "instagram-piko"
-  patch_paresh_protonvpn:
-    name: Patch Paresh(ProtonVPN)
-    if: ${{ github.event.inputs.org == 'paresh Proton VPN' || inputs.org == 'paresh Proton VPN' || inputs.org == 'all' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Patch
-        uses: ./.github/actions/build
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_target: "paresh-protonvpn"
-          keystore: ${{ secrets.KEYSTORE }}
-          keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-          release_name: "Proton VPN - Paresh"
-          release_tag: "proton-vpn-paresh"
-  patch_paresh_jiohotstar:
-    name: Patch Paresh(JioHotstar)
-    if: ${{ github.event.inputs.org == 'paresh JioHotstar' || inputs.org == 'paresh JioHotstar' || inputs.org == 'all' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Patch
-        uses: ./.github/actions/build
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_target: "paresh-jiohotstar"
-          keystore: ${{ secrets.KEYSTORE }}
-          keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-          release_name: "JioHotstar - Paresh"
-          release_tag: "jiohotstar-paresh"
-
-  patch_hoo-dles_prime-video:
-    name: Patch hoo-dles(Prime Video)
-    if: ${{ github.event.inputs.org == 'hoo-dles Prime Video' || inputs.org == 'hoo-dles Prime Video' || inputs.org == 'all' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Patch
-        uses: ./.github/actions/build
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_target: "hoo-dles-prime-video"
-          keystore: ${{ secrets.KEYSTORE }}
-          keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-          release_name: "Prime Video - hoo-dles"
-          release_tag: "prime-video-hoo-dles"
-  patch_binarymend_symfonium:
-    name: Patch binarymend(Symfonium)
-    if: ${{ github.event.inputs.org == 'binarymend Symfonium' || inputs.org == 'binarymend Symfonium' || inputs.org == 'all' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Patch
-        uses: ./.github/actions/build
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_target: "binarymend-symfonium"
-          keystore: ${{ secrets.KEYSTORE }}
-          keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-          release_name: "Symfonium - binarymend"
-          release_tag: "symfonium-binarymend"
-  patch_revenge_discord:
-    name: Patch Revenge Discord
-    if: ${{ github.event.inputs.org == 'Revenge Discord' || inputs.org == 'Revenge Discord' || inputs.org == 'all' }}
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-    steps:
-      - name: Patch
-        uses: ./.github/actions/build
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_target: "revenge-discord"
-          keystore: ${{ secrets.KEYSTORE }}
-          keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-          release_name: "Discord - Revenge"
-          release_tag: "discord-revenge"
-  Amazon-India:
-    permissions: write-all
-    runs-on: ubuntu-latest
-    if: ${{ inputs.org == 'Amazon India' || github.event.inputs.org == 'Amazon India' || inputs.org == 'All' }}
-    steps:
-      - name : Sign
-        uses: ./.github/actions/build
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_target: "amazon-india"
-          keystore: ${{ secrets.KEYSTORE }}
-          keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-          release_name: "Amazon India"
-          release_tag: "amazon-india"
-  Amazon-Alexa:
-    permissions: write-all
-    runs-on: ubuntu-latest
-    if: ${{ inputs.org == 'Amazon Alexa' || github.event.inputs.org == 'Amazon Alexa' || inputs.org == 'All' }}
-    steps:
-      - name : Sign
-        uses: ./.github/actions/build
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_target: "amazon-alexa"
-          keystore: ${{ secrets.KEYSTORE }}
-          keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-          release_name: "Amazon Alexa"
-          release_tag: "amazon-alexa"
-  Dolphin:
-    permissions: write-all
-    runs-on: ubuntu-latest
-    if: ${{ inputs.org == 'Dolphin SDK 29' || github.event.inputs.org == 'Dolphin SDK 29' || inputs.org == 'All'}}
-    steps:
-      - name : Patch
-        uses: ./.github/actions/build
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_target: "dolphin-sdk-29"
-          keystore: ${{ secrets.KEYSTORE }}
-          keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-          release_name: "Dolphin SDK 29"
-          release_tag: "dolphin-sdk-29"
-  Eden:
-   permissions: write-all
-   runs-on: ubuntu-latest
-   if: ${{ inputs.org == 'Eden PUBG' || github.event.inputs.org == 'Eden PUBG' || inputs.org == 'All' }}
-   steps:
-    - name: Patch
-      uses: ./.github/actions/build
-      with:
-       github_token: ${{ secrets.GITHUB_TOKEN }}
-       build_target: "eden-pubg"
-       keystore: ${{ secrets.KEYSTORE }}
-       keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-       keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-       release_name: "Eden PUBG"
-       release_tag: "eden-pubg"
-  FCL:
-   permissions: write-all
-   runs-on: ubuntu-latest
-   if: ${{ inputs.org == 'FCL CoD' || github.event.inputs.org == 'FCL CoD' || inputs.org == 'All' }}
-   steps:
-    - name: Patch
-      uses: ./.github/actions/build
-      with:
-       github_token: ${{ secrets.GITHUB_TOKEN }}
-       build_target: "fcl-cod"
-       keystore: ${{ secrets.KEYSTORE }}
-       keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-       keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-       release_name: "FCL CoD"
-       release_tag: "fcl-cod"
-  Geode:
-   permissions: write-all
-   runs-on: ubuntu-latest
-   if: ${{ inputs.org == 'Geode PUBGKR' || github.event.inputs.org == 'Geode PUBGKR' || inputs.org == 'All' }}
-   steps:
-    - name: Patch
-      uses: ./.github/actions/build
-      with:
-       github_token: ${{ secrets.GITHUB_TOKEN }}
-       build_target: "geode-pubgkr"
-       keystore: ${{ secrets.KEYSTORE }}
-       keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-       keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-       release_name: "Geode PUBGKR"
-       release_tag: "geode-pubgkr"
-
-  Winlator:
-    permissions: write-all
-    runs-on: ubuntu-latest
-    if: ${{ inputs.org == 'Winlator PUBGVN' || github.event.inputs.org == 'Winlator PUBGVN' || inputs.org == 'All' }}
-    steps:
-      - name: Patch
-        uses: ./.github/actions/build
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_target: "winlator-pubgvn"
-          keystore: ${{ secrets.KEYSTORE }}
-          keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-          release_name: "Winlator PUBGVN"
-          release_tag: "winlator-pubgvn"
-   
-  Adobe-Acrobat-Hooman:
-    permissions: write-all
-    runs-on: ubuntu-latest
-    if: ${{ inputs.org == 'Adobe Acrobat Hooman' || github.event.inputs.org == 'Adobe Acrobat Hooman' || inputs.org == 'All' }}
-    steps:
-      - name: Patch
-        uses: ./.github/actions/build
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_target: "adobe-acrobat-hooman"
-          keystore: ${{ secrets.KEYSTORE }}
-          keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-          release_name: "Adobe Acrobat - Hooman"
-          release_tag: "adobe-acrobat-hooman"
-  Speedtest-Xtra:
-    permissions: write-all
-    runs-on: ubuntu-latest
-    if: ${{ inputs.org == 'Speedtest Xtra' || github.event.inputs.org == 'Speedtest Xtra' || inputs.org == 'All' }}
-    steps:
-      - name: Patch
-        uses: ./.github/actions/build
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_target: "speedtest-xtra"
-          keystore: ${{ secrets.KEYSTORE }}
-          keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-          release_name: "Speedtest Xtra"
-          release_tag: "speedtest-xtra"
-  TikTok-Icysymmetra:
-    permissions: write-all
-    runs-on: ubuntu-latest
-    if: ${{ inputs.org == 'TikTok Icysymmetra' || github.event.inputs.org == 'TikTok Icysymmetra' || inputs.org == 'All' }}
-    steps:
-      - name: Patch
-        uses: ./.github/actions/build
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          build_target: "tiktok-icysymmetra"
-          keystore: ${{ secrets.KEYSTORE }}
-          keystore_pass: ${{ secrets.KEYSTORE_PASS }}
-          keystore_alias: ${{ secrets.KEYSTORE_ALIAS }}
-          release_name: "TikTok - Icysymmetra"
-          release_tag: "tiktok-icysymmetra" 
-          
+          name: ${{ matrix.release_name }}
+          tag: ${{ matrix.release_tag }}
