@@ -44,7 +44,6 @@ patcher(){
 	    patch_mod "$appname" "$patchname" "$clitype"
 	    make_module "$pkgname" "$appname" "$patchname" "$clitype" "$archs"
 	   fi
-	fi
 	else
 		for arch in $archs: do
 		    get_patches_key "$1-$2"

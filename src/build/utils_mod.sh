@@ -259,7 +259,7 @@ make_module() {
 	echo -e "id=$2-$3\nname=$2-$3\nversion=$version (patches $3 - $tag)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$2 $3 Module\nupdateJson=https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/$2-$3/update.json" > ./module/module.prop
 	zip -r "./release/$2-$3-$version-p$tag.zip" ./module/ > /dev/null 2>&1
 	rm -rf ./module ./release/$2-$3*.apk
-	echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$4/$2-$3-$version-p$tag.zip\"\n}" > ./release/update.json|
+	echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$4/$2-$3-$version-p$tag.zip\"\n}" > ./release/update.json
 }
 
 finish() {
