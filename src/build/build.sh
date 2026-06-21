@@ -27,6 +27,39 @@ paresh_dl(){
 	dl_gh "morphe-cli" "MorpheApp" "latest"
 	dl_gl "paresh-patches" "Paresh-Maheshwari" "latest"
 }
+hooman_dl(){
+	dl_gh "morphe-cli" "MorpheApp" "latest"
+	dl_gh "hoomans-morphe-patches" "arandomhooman" "prerelease"
+}
+xtra_dl(){
+	dl_gh "morphe-cli" "MorpheApp" "latest"
+	dl_gh "android-patches-xtra" "BholeyKaBhakt" "prerelease"
+}
+adobe-acrobat-hooman(){
+	hooman_dl
+	# Patch Adobe Acrobat Reader:
+	_fs_get https://www.apkmirror.com/apk/adobe/adobe-acrobat/feed/
+	version=$(curl -s https://www.apkmirror.com/apk/adobe/adobe-acrobat/feed/ -H "Cookie: $FS_COOKIES" -H "User-Agent: $user_agent"   |  tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//' -e 's/<description>/  /' -e 's/<\/description>//' |  grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+*' | sort | tail -n 1)	get_patches_key "adobe-acrobat-hooman"
+	get_apk "com.adobe.reader" "adobe-acrobat" "bundle"
+	patch "adobe-acrobat" "hooman" "morphe"
+}
+speedtest-xtra(){
+	xtra_dl
+	get_patches_key "speedtest-xtra"
+	get_apk "org.zwanoo.android.speedtest" "speedtest" "apk" "arm64-v8a"
+	patch "speedtest" "xtra" "morphe"
+	dl_gh "android-patches-xtra" "BholeyKaBhakt" "prerelease"
+	get_apk "org.zwanoo.android.speedtest" "speedtest" "apk" "x86_64"
+	patch "speedtest" "xtra" "morphe"
+}
+tiktok-icysymmetra() {
+	# Patch Tiktok:
+	dl_gh "morphe-cli" "MorpheApp" "latest"
+	dl_gh "tiktok-patches-for-morphe" "icysymmetra" "latest"
+	get_patches_key "tiktok-icysymmetra"
+	get_apk "com.zhiliaoapp.musically" "tiktok" "apk" "arm64-v8a + armeabi-v7a" "nodpi"
+	patch "tiktok" "icysymmetra" "morphe"
+}
 revenge-discord() {
 	# Patch Revenge:
 	NPatch_dl
@@ -204,6 +237,15 @@ winlator() {
 }
 
 case "$1" in
+    adobe-acrobat-hooman)
+		adobe-acrobat-hooman
+		;;
+	tiktok-icysymmetra)
+		tiktok-icysymmetra
+		;;
+	speedtest-xtra)
+		speedtest-xtra
+		;;
     revenge-discord)
         revenge-discord
         ;;

@@ -23,6 +23,10 @@ jobs:
       - name: Check github connection
         id: check-gh
         run: bash src/etc/connection.sh
+      - name: Check new patch Speedtest(xtra)
+        id: check-speedtest-xtra
+        if: steps.check-gh.outputs.internet_error == '0'
+        run: bash src/etc/check.sh gh  BholeyKaBhakt/android-patches-xtra prerelease speedtest-xtra
       - name: Check new patch Morphe YouTube
         id: check-morphe
         if: steps.check-gh.outputs.internet_error == '0'

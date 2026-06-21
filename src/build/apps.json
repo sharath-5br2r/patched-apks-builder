@@ -20,6 +20,10 @@
 			"list_url": "https://www.apkmirror.com/uploads/?appcategory=adguard",
 			"example_url": "https://www.apkmirror.com/apk/adguard-software-limited/adguard/adguard-for-android-4-12-81-release/"
 		},
+		"com.adobe.reader": {
+			"list_url": "https://www.apkmirror.com/uploads/?appcategory=adobe-acrobat-reader-edit-pdf",
+			"example_url": "https://www.apkmirror.com/apk/adobe/adobe-acrobat/adobe-acrobat-reader-edit-pdf-26-6-0-45687-release/"
+		},
 		"com.amazon.avod.thirdpartyclient": {
 			"list_url": "https://www.apkmirror.com/uploads/?appcategory=amazon-prime-video",
 			"example_url": "https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video/amazon-prime-video-3-0-447-release/"
@@ -119,6 +123,10 @@
 		"com.zhiliaoapp.musically": {
 			"list_url": "https://www.apkmirror.com/uploads/?appcategory=tik-tok-including-musical-ly",
 			"example_url": "https://www.apkmirror.com/apk/tiktok-pte-ltd/tik-tok-including-musical-ly/tiktok-45-5-4-release/"
+		},
+		"org.zwanoo.android.speedtest": {
+			"list_url": "https://www.apkmirror.com/uploads/?appcategory=speedtest-by-ookla",
+		    "example_url": "https://www.apkmirror.com/apk/ookla/speedtest/speedtest-by-ookla-7-0-4-release/"
 		},
 		"ginlemon.flowerfree": {
 			"list_url": "https://www.apkmirror.com/uploads/?appcategory=smart-launcher",
