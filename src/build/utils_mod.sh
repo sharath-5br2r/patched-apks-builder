@@ -33,7 +33,7 @@ sign() {
 }
 
 # Check Experimental app version for Morphe
-check_experimental() {
+get_experimental_version() {
  prefer_version=$(curl  https://raw.githubusercontent.com/MorpheApp/morphe-patches/refs/tags/$(gh release list --limit 1  --repo MorpheApp/morphe-patches | awk '{print $1}')/patches-list.json  | jq --arg pkg $1 -r '[.patches[].compatiblePackages[]? | select(.packageName == $pkg) | .targets[] | select(.isExperimental == true).version] | unique | sort_by(split(".") | map(tonumber)) | last')
 }
 

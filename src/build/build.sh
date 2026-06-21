@@ -3,7 +3,7 @@ source ./src/build/utils_mod.sh
 dl_cli() {
 	case $cli in
 		MorpheApp/morphe-cli)
-			dl_gh_v2 "MorpheApp/morphe-cli" "MorpheApp" "latest" "morphe-cli.jar"
+			dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
 			clitype="morphe"
 			;;
 		*)
