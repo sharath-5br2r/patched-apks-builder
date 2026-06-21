@@ -45,7 +45,8 @@ patcher(){
 	    make_module "$pkgname" "$appname" "$patchname" "$clitype" "$archs"
 	   fi
 	else
-		for arch in $archs: do
+		for arch in $archs
+		do
 		    get_patches_key "$1-$2"
 			get_apk "$pkgname" "$appname" "$apktype" "$arch"
 			patch_mod "$appname" "$patchname" "$clitype"
