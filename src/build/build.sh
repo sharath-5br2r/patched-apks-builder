@@ -73,7 +73,7 @@ get_vars(){
 }
 morphe-patch(){
 	get_vars
-	patch
+	patcher
 }
 
 discord-revenge() {
