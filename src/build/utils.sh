@@ -1,36 +1,4 @@
 #!/bin/bash
-if [ ! -f ks.keystore ]; then
-	echo "[-] Missing ks.keystore file. Please provide the keystore file."
-	exit 1
-else
-	cp ks.keystore src/ks.keystore
-    cp ks.keystore src/_ks.keystore
-    cp ks.keystore src/morphe.keystore
-fi
-if [ -f .env ]; then
-	source .env
-fi
-bcversion=$(curl -fsSL https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/maven-metadata.xml | grep -oPm1 '(?<=<release>)[^<]+')
-echo -e "\e[32m[+] Downloading Bouncy Castle Provider\e[0m"
-wget -qO bcprov.jar "https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/$bcversion/bcprov-jdk18on-$bcversion.jar"
-LAST_PROV=$(grep "^security.provider\." "$JAVA_HOME/conf/security/java.security"  | grep -oP '(?<=security\.provider\.)\d+' | sort -n | tail -1)
-echo "security.provider.$((LAST_PROV+1))=org.bouncycastle.jce.provider.BouncyCastleProvider"  > bc.security
-sign() {
-	if [ $OSTYPE == "cygwin" ]; then
-		java -cp "bcprov.jar;apksigner.jar" com.android.apksigner.ApkSignerTool sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in "$1" --out "$2"
-    else
-        java -cp "bcprov.jar:apksigner.jar" com.android.apksigner.ApkSignerTool sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in "$1" --out "$2"
-	fi
-}		
-check_experimental() {
- prefer_version=$(curl  https://raw.githubusercontent.com/MorpheApp/morphe-patches/refs/tags/$(gh release list --limit 1  --repo MorpheApp/morphe-patches | awk '{print $1}')/patches-list.json  | jq --arg pkg $1 -r '[.patches[].compatiblePackages[]? | select(.packageName == $pkg) | .targets[] | select(.isExperimental == true).version] | unique | sort_by(split(".") | map(tonumber)) | last')
-}
-#Setup Apksigner
-if [ ! -f apksigner.jar ]; then
-	wget -qO sdk.zip "https://dl.google.com/android/repository/build-tools_r36_linux.zip"
-	unzip -q -j sdk.zip android-16/lib/apksigner.jar
-	rm -f ./sdk.zip
-fi
 
 mkdir ./release ./download
 
@@ -45,7 +13,7 @@ elif [ $(uname -m) == "aarch64" ]; then
 	pup="./pup-arm64"
 fi
 #Setup APKEditor for install combine split apks
-wget -q $(curl -fsSL https://api.github.com/repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O APKEditor.jar
+wget -q -O ./APKEditor.jar https://github.com/REAndroid/APKEditor/releases/download/V1.4.8/APKEditor-1.4.8.jar
 APKEditor="./APKEditor.jar"
 #Find lastest user_agent
 user_agent=$(wget -qO- https://www.whatismybrowser.com/guides/the-latest-user-agent/firefox | tr '\n' ' ' | sed 's#</tr>#\n#g' | grep 'Firefox (Standard)' | sed -n 's/.*<span class="code">\([^<]*Android[^<]*\)<\/span>.*/\1/p') \
@@ -105,7 +73,6 @@ dl_gh() {
             if [[ $url != *.asc ]]; then
               name=$(basename "$url")
               wget -q -O "$name" "$url"
-			  release_name=$(gh api repos/$owner/$repo/releases | jq .[0].name)
               green_log "[+] Downloading $name from $owner"
             fi
           fi
@@ -121,7 +88,6 @@ dl_gh() {
   else
     for repo in $1 ; do
       tags=$( [ "$3" == "latest" ] && echo "latest" || echo "tags/$3" )
-	  release_name=$(gh api repos/$2/$repo/releases/$tags | jq -r .name)
       wget -qO- "https://api.github.com/repos/$2/$repo/releases/$tags" \
         | jq -r '.assets[] | "\(.browser_download_url) \(.name)"' \
         | while read -r url names; do
@@ -159,7 +125,6 @@ dl_gl() {
     return 1
   fi
 
-  release_name=$(echo $release  |  jq -r '.name')
   local tag_name
   tag_name=$(echo "$release" | jq -r '.tag_name')
 
@@ -724,24 +689,15 @@ patch() {
 		if [[ "$3" = inotia || "$3" = morphe ]]; then
 			unset CI GITHUB_ACTION GITHUB_ACTIONS GITHUB_ACTOR GITHUB_ENV GITHUB_EVENT_NAME GITHUB_EVENT_PATH GITHUB_HEAD_REF GITHUB_JOB GITHUB_REF GITHUB_REPOSITORY GITHUB_RUN_ID GITHUB_RUN_NUMBER GITHUB_SHA GITHUB_WORKFLOW GITHUB_WORKSPACE RUN_ID RUN_NUMBER
 		fi
-		name_out=$1-$version-$2-$release_name
-		name_in=$1
-		eval java -jar *cli*.jar $p$b  --keystore-password=$KEYSTORE_PASS --keystore-entry-password=$KEYSTORE_PASS --keystore-entry-alias=$KEYSTORE_ALIAS $m$opt --out=./release/$name_out.apk $excludePatches$includePatches$ks $pu$force $a ./download/$name_in.apk
+		eval java -jar *cli*.jar $p$b $m$opt --out=./release/$1-$2.apk$excludePatches$includePatches$ks $pu$force $a./download/$1.apk
+  		unset version
 		unset lock_version
 		unset excludePatches
 		unset includePatches
-		rm -f *.mpp *.rvp  || true
 	else
 		red_log "[-] Not found $1.apk"
 		exit 1
 	fi
-}
-
-repatch() {
-	mv ./release/$name_out.apk ./download/
-	name_in=$name_out
-	name_out=$name_out-$2-$release_name
-	patch $name_in $1 $2
 }
 
 npatch() {
@@ -758,51 +714,15 @@ npatch() {
 			red_log "[-] Module not found: $2"
 			return 1
 		fi
-        mv jar*.jar jar-npatch.jar
-		if [[ "$OSTYPE" == "cygwin" ]]; then
-			green_log "[+] Detected Windows environment, using Windows version of npatch"
-			java -cp "bcprov.jar;jar-npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$module" -o ./release/
-		else
-			java -cp "bcprov.jar:jar-npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$module" -o ./release/
-		fi
-		mv ./release/$1-*-npatched.apk "./release/$1-$version-$3.apk"
+		java -jar jar*.jar ./download/$1.apk -k ./src/fiorenmas.ks "fiorenmas" "morphe" "fiorenmas" $4 -m "$module" -o ./release/
+		mv ./release/$1-*-npatched.apk ./release/$1-$3-npatched.apk
+		unset version
 		unset lock_version
 	else
 		red_log "[-] Not found $1.apk"
 		exit 1
 	fi
 }
-
-make_module() {
-	release_name=$(echo $release_name | sed 's/"//g')
-	local pkg_id=$1 module_name=$2
-	if [ -f "./updates/$2-$3.json" ]; then
-		yellow_log "[-] Existing update found for $2-$3, incrementing version code"
-	   code=$(jq -r '.versionCode' ./updates/$2-$3.json)
-	   rm -f ./updates/$2-$3.json
-	   code=$((code+1))
-	else
-		yellow_log "[-] No existing update found for $2-$3, starting with version code 1"
-	   code=1
-	fi
-	green_log "[+] Making module for $2-$3 with version code $code"
-	cp -r  rv_module/module/. module
-	cp ./release/$2*$3*.apk module/base.apk
-	mkdir -p ./module/stock
-	cp ./download/$2.apk ./module/stock/base.apk
-	echo -e "PKG_NAME=$1\nPKG_VER=$version\nMODULE_ARCH=$5" > ./module/config
-	echo -e "id=$2-$3\nname=$2-$3\nversion=$version (patches $3 - $release_name)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$2 $3 Module\nupdateJson=https://raw.githubusercontent.com/sharath-5br2r/patched-apks-builder/main/updates/$2-$3.json" > ./module/module.prop
-	zip -r "./release/$2-$version-$3-$release_name.zip" ./module/ > /dev/null 2>&1
-	rm -rf ./module ./release/$2*$3*.apk
-	if [[ $(git config user.name) == "github-actions[bot]" ]]; then 
-		git pull
-		echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$4/$2-$version-$3-$release_name.zip\"\n}" > ./updates/$2-$3.json
-		git add ./updates/$2-$3.json
-		git commit -am "Update $2-$3 module to version $version (patches $3 - $release_name)"
-		git push || true
-	fi
-}
-
 #################################################
 
 split_editor() {
@@ -856,7 +776,6 @@ split_arch() {
 		eval java -jar *cli*.jar patch \
 		-p *.mpp $excludePatches$includePatches--options-file ./src/options/$2.json \
 		--striplibs ${archs[i]} --purge=true \
-		--keystore-password=$KEYSTORE_PASS --keystore-entry-password=$KEYSTORE_PASS --keystore-entry-alias=$KEYSTORE_ALIAS \
 		--keystore=./src/morphe.keystore --force \
 		--out=./release/$1-${archs[i]}-$2.apk\
 		./download/$1.apk

@@ -1,12 +1,5 @@
 name: Releasing APK files
-description: "a"
-inputs:
-  name:
-    description: "Release name"
-    required: true
-  tag:
-    description: "Release tag"
-    required: true
+description: This action releases the patched APK files to GitHub Releases.
 runs:
   using: "composite"
   steps:
@@ -28,18 +21,8 @@ runs:
       uses: ncipollo/release-action@v1.21.0
       with:
         artifacts: |
-          ./release/*
-        name: "Old APKs and zips"
-        tag: "all"
+          ./release/*.apk
+        name: Revanced & Revanced Extended
+        tag: all
+        bodyFile: ${{ github.workspace }}-CHANGELOG.txt
         allowUpdates: true
-    - name: Release Seperately
-      uses: ncipollo/release-action@v1.21.0
-      with:
-        artifacts: |
-          ./release/*
-        removeArtifacts: true
-        name: ${{ inputs.name }}
-        tag: ${{ inputs.tag }}
-        allowUpdates: true
-
- 

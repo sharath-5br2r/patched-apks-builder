@@ -8,35 +8,29 @@ env:
 on:
   workflow_dispatch:
     inputs:
-      org:
-        description: 'Which apps do you want to patch?'
+      patch:
+        description: 'Which patch do you want to apply?'
         required: true
         default: 'All'
         type: choice
         options:
           - 'All'
-          - 'Morphe YouTube'
-          - 'Morphe YouTube Music'
-          - 'piko X'
-          - 'piko Instagram'
-          - 'Paresh Proton VPN'
-          - 'Paresh JioHotstar'
-          - 'hoo-dles Prime Video'
-          - 'binarymend Symfonium'
-          - 'Revenge Discord'
-          - 'Dolphin SDK 29'
-          - 'Eden PUBG'
-          - 'FCL CoD'
-          - 'Geode PUBGKR'
-          - 'Winlator PUBGVN'
-          - 'Amazon India'
-          - 'Amazon Alexa'
-          - 'Speedtest Xtra'
-          - 'Adobe Acrobat Hooman'
-          - 'TikTok Icysymmetra'
+          - 'Morphe'
+          - 'Piko'
+          - 'Paresh'
+          - 'hoo-dles'
+          - 'binarymend'
+          - 'Revenge'
+          - 'Custom'
+          - 'Sign'
+          - 'Hooman'
+          - 'Icysymmetra'
   workflow_call:
     inputs:
       org:
+        required: true
+        type: string
+      patch:
         required: true
         type: string
     secrets:
@@ -45,113 +39,100 @@ on:
 
 jobs:
   patch:
-    name: Patch ${{ matrix.label }}
+    name: Patch ${{ matrix.app }} with ${{ matrix.patch }} patch
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
         include:
-          - org: Morphe YouTube
-            label: Morphe (YouTube)
-            build_target: morphe-youtube
-            release_name: YouTube - Morphe
-            release_tag: youtube-morphe
-          - org: Morphe YouTube Music
-            label: Morphe (YouTube Music)
-            build_target: morphe-youtube-music
-            release_name: YouTube Music - Morphe
-            release_tag: youtube-music-morphe
-          - org: piko X
-            label: Piko (X)
-            build_target: piko-x
-            release_name: X (Twitter) - Piko
-            release_tag: x-piko
-          - org: piko Instagram
-            label: Piko (Instagram)
-            build_target: piko-instagram
-            release_name: Instagram - Piko
-            release_tag: instagram-piko
-          - org: Paresh Proton VPN
-            label: Paresh (Proton VPN)
-            build_target: paresh-protonvpn
-            release_name: Proton VPN - Paresh
-            release_tag: proton-vpn-paresh
-          - org: Paresh JioHotstar
-            label: Paresh (JioHotstar)
-            build_target: paresh-jiohotstar
-            release_name: JioHotstar - Paresh
-            release_tag: jiohotstar-paresh
-          - org: hoo-dles Prime Video
-            label: hoo-dles (Prime Video)
-            build_target: hoo-dles-prime-video
-            release_name: Prime Video - hoo-dles
-            release_tag: prime-video-hoo-dles
-          - org: binarymend Symfonium
-            label: binarymend (Symfonium)
-            build_target: binarymend-symfonium
-            release_name: Symfonium - binarymend
-            release_tag: symfonium-binarymend
-          - org: Revenge Discord
-            label: Revenge Discord
-            build_target: revenge-discord
-            release_name: Discord - Revenge
-            release_tag: discord-revenge
-          - org: Amazon India
-            label: Amazon India
-            build_target: amazon-india
-            release_name: Amazon India
-            release_tag: amazon-india
-          - org: Amazon Alexa
-            label: Amazon Alexa
-            build_target: amazon-alexa
-            release_name: Amazon Alexa
-            release_tag: amazon-alexa
-          - org: Dolphin SDK 29
-            label: Dolphin SDK 29
-            build_target: dolphin-sdk-29
-            release_name: Dolphin SDK 29
-            release_tag: dolphin-sdk-29
-          - org: Eden PUBG
-            label: Eden PUBG
-            build_target: eden-pubg
-            release_name: Eden PUBG
-            release_tag: eden-pubg
-          - org: FCL CoD
-            label: FCL CoD
-            build_target: fcl-cod
-            release_name: FCL CoD
-            release_tag: fcl-cod
-          - org: Geode PUBGKR
-            label: Geode PUBGKR
-            build_target: geode-pubgkr
-            release_name: Geode PUBGKR
-            release_tag: geode-pubgkr
-          - org: Winlator PUBGVN
-            label: Winlator PUBGVN
-            build_target: winlator-pubgvn
-            release_name: Winlator PUBGVN
-            release_tag: winlator-pubgvn
-          - org: Adobe Acrobat Hooman
-            label: Adobe Acrobat Hooman
-            build_target: adobe-acrobat-hooman
-            release_name: Adobe Acrobat - Hooman
-            release_tag: adobe-acrobat-hooman
-          - org: Speedtest Xtra
-            label: Speedtest Xtra
-            build_target: speedtest-xtra
-            release_name: Speedtest Xtra
-            release_tag: speedtest-xtra
-          - org: TikTok Icysymmetra
-            label: TikTok Icysymmetra
-            build_target: tiktok-icysymmetra
-            release_name: TikTok - Icysymmetra
-            release_tag: tiktok-icysymmetra
+          - app: YouTube
+            patch: Morphe
+            appname: youtube
+            patchname: morphe
+          - app: YouTube Music
+            patch: Morphe
+            appname: youtube-music
+            patchname: morphe
+          - app: X
+            patch: Piko
+            appname: x
+            patchname: piko
+          - app: Instagram
+            patch: Piko
+            appname: instagram
+            patchname: piko
+          - app: Proton VPN
+            patch: Paresh
+            appname: proton-vpn
+            patchname: paresh
+          - app: JioHotstar
+            patch: Paresh
+            appname: jiohotstar
+            patchname: paresh
+          - app: Prime Video
+            patch: hoo-dles
+            appname: prime-video
+            patchname: hoo-dles
+          - app: Symfonium
+            patch: binarymend
+            appname: symfonium
+            patchname: binarymend
+          - app: Discord
+            patch: Revenge
+            appname: discord
+            patchname: revenge
+          - app: Dolphin
+            patch: Custom
+            suffix: SDK29
+            appname: dolphin
+            patchname: sdk29
+          - app: Eden Nightly
+            patch: Custom
+            suffix: PUBG
+            appname: eden
+            patchname: pubg
+          - app: FCL 
+            suffix: CoD
+            patch: Custom
+            appname: fcl
+            patchname: cod
+          - app: Geode 
+            suffix: PUBGKR
+            patch: Custom
+            appname: geode
+            patchname: pubgkr
+          - app: Winlator 
+            suffix: PUBGVN
+            patch: Custom
+            appname: winlator
+            patchname: pubgvn
+          - app: Amazon India
+            patch: Sign
+            appname: amazon-india
+            patchname: signed
+          - app: Amazon Alexa
+            patch: Sign
+            appname: amazon-alexa
+            patchname: signed
+          - app: Speedtest
+            patch: Xtra
+            appname: speedtest
+            patchname: xtra
+          - app: Adobe Acrobat
+            patch: Hooman
+            appname: adobe-acrobat
+            patchname: hooman
+          - app: TikTok
+            patch: Icysymmetra
+            appname: tiktok
+            patchname: icysymmetra
+          
             
     steps:
       - name: Check Match
         id: match-check
         run: |
-          if [ "${{ inputs.org }}" = "All" ] || [ "${{ inputs.org }}" = "${{ matrix.org }}" ]; then
+          if [ "${{ inputs.patch }}" = "All" ] || [ "${{ inputs.patch }}" = "${{ matrix.patch }}" ]; then
             echo "should_run=true" >> $GITHUB_OUTPUT
           else
             echo "should_run=false" >> $GITHUB_OUTPUT
@@ -180,11 +161,27 @@ jobs:
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
         if: steps.check-gh.outputs.internet_error == '0'
         run: |
-          bash src/build/build.sh ${{ matrix.build_target }}
+          bash src/build/build.sh ${{ matrix.appname }}-${{ matrix.patchname }}
+          if [ ${{ matrix.patch }} = "Custom" ]; then
+            name="${{ matrix.app }}-${{ matrix.suffix }}"
+          else
+            name="${{ matrix.app }}-${{ matrix.patch }}"
+          fi
       - name: Releasing APK files
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
+        uses: ncipollo/release-action@v1.21.0
+        with:
+          artifacts: |
+            ./release/*
+          name: "Old APKs"
+          tag: "all"
+          allowUpdates: true
+          body: "Old APK files are below"
+      - name: Tailored Release
+        if: steps.check-gh.outputs.internet_error == '0'
         uses: ./.github/actions/release
         with:
-          name: ${{ matrix.release_name }}
-          tag: ${{ matrix.release_tag }}
+          name: ${{ matrix.app }} - ${{ matrix.patch }} Patch
+          tag: ${{ matrix.appname }}-${{ matrix.patchname }}
+        
