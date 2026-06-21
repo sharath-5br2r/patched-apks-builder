@@ -19,7 +19,7 @@ echo "security.provider.$((LAST_PROV+1))=org.bouncycastle.jce.provider.BouncyCas
 #Setup Apksigner
 if [ ! -f apksigner.jar ]; then
 	wget -qO sdk.zip "https://dl.google.com/android/repository/build-tools_r37_linux.zip"
-	unzip -q -j sdk.zip android-17/lib/apksigner.jar
+	unzip -q -j sdk.zip android-37.0/lib/apksigner.jar
 	rm -f ./sdk.zip
 fi
 
