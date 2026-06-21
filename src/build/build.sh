@@ -36,22 +36,22 @@ patcher(){
 	fi
 	detect_version_mod "$pkgname" "$patchname.mpp"
 	if [[ -z $archs ]]; then
-	   get_patches_key "$1-$2"
+	   get_patches_key "$pkgname-$patchname"
 	   get_apk "$pkgname" "$appname" "$apktype" 
 	   patch_mod "$appname" "$patchname" "$clitype"
        if [[ $module="true" ]]; then
-	    get_patches_key "$1-$2-module"
+	    get_patches_key "$pkgname-$patchname-module"
 	    patch_mod "$appname" "$patchname" "$clitype"
 	    make_module "$pkgname" "$appname" "$patchname" "$clitype" "$archs"
 	   fi
 	else
 		for arch in $archs
 		do
-		    get_patches_key "$1-$2"
+		    get_patches_key "$pkgname-$patchname"
 			get_apk "$pkgname" "$appname" "$apktype" "$arch"
 			patch_mod "$appname" "$patchname" "$clitype"
 			if [[ $module="true" ]]; then
-				get_patches_key "$1-$2-module"
+				get_patches_key "$pkgname-$patchname-module"
 				patch_mod "$appname" "$patchname" "$clitype"
 				make_module "$pkgname" "$appname" "$patchname" "$clitype" "$arch"
 			fi
