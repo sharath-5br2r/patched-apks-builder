@@ -1,7 +1,7 @@
 #!/bin/bash
 source ./src/build/utils_mod.sh
 adobe-acrobat-hooman(){
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest"
+	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
 	dl_gh_v2 "arandomhooman/hoomans-morphe-patches" "prerelease" "hooman.mpp"
 	# Patch Adobe Acrobat Reader:
 	_fs_get https://www.apkmirror.com/apk/adobe/adobe-acrobat/feed/
@@ -15,7 +15,7 @@ speedtest-xtra(){
 	dl_gh_v2 "MorpheApp/morphe-cli" "latest"
 	dl_gh_v2 "BholeyKaBhakt/android-patches-xtra" "prerelease" "xtra.mpp"
 	# Patch Speedtest Arm64-v8a:
-	get_version_mod "org.zwanoo.android.speedtest" "xtra.mpp"
+	detect_version_mod "org.zwanoo.android.speedtest" "xtra.mpp"
 	get_patches_key "speedtest-xtra"
 	get_apk "org.zwanoo.android.speedtest" "speedtest" "apk" "arm64-v8a"
 	patch_mod "speedtest" "xtra" "morphe"
@@ -26,7 +26,7 @@ tiktok-icysymmetra() {
 	# Patch Tiktok:
 	dl_gh_v2 "MorpheApp/morphe-cli" "latest"
 	dl_gh_v2 "icysymmetra/tiktok-patches-for-morphe" "prerelease" "icysymmetra.mpp"
-	get_version_mod "com.zhiliaoapp.musically" "icysymmetra.mpp"
+	detect_version_mod "com.zhiliaoapp.musically" "icysymmetra.mpp"
 	get_patches_key "tiktok-icysymmetra"
 	get_apk "com.zhiliaoapp.musically" "tiktok" "apk" "arm64-v8a + armeabi-v7a" "nodpi"
 	patch_mod "tiktok" "icysymmetra" "morphe"
@@ -58,7 +58,7 @@ instagram-piko() {
 	dl_gh_v2 "crimera/piko" "prerelease" "piko.mpp"
     # Patch Instagram arm64-v8a:
     get_patches_key "instagram-piko"
-	get_version_mod "com.instagram.android" "piko.mpp"
+	detect_version_mod "com.instagram.android" "piko.mpp"
     get_apk "com.instagram.android" "instagram-arm64-v8a" "bundle" "arm64-v8a" "120-640dpi"  "Android 9.0+"
     patch_mod "instagram-arm64-v8a" "piko" "morphe"
 	# Patch Instagram x86_64:
@@ -89,7 +89,7 @@ symfonium-binarymend(){
 	dl_gh_v2 "MorpheApp/morphe-cli" "latest"
 	dl_gh_v2 "binarymend/morphe-patches" "prerelease" "binarymend.mpp"
 	get_patches_key "Sympfonium-binarymend"
-	get_version_mod "app.symfonik.music.player" "sympfonium"
+	detect_version_mod "app.symfonik.music.player" "sympfonium"
 	get_apk "app.symfonik.music.player" "sympfonium" "bundle"
 	patch_mod "sympfonium" "binarymend" "morphe"
 }
@@ -98,7 +98,7 @@ youtube-morphe() {
 	dl_gh_v2 "MorpheApp/morphe-patches" "prerelease" "morphe.mpp"
 	# Patch YouTube:
 	check_experimental "com.google.android.youtube"
-	get_version_mod "com.google.android.youtube" "morphe.mpp"
+	detect_version_mod "com.google.android.youtube" "morphe.mpp"
 	get_patches_key "youtube-morphe"
 	get_apk "com.google.android.youtube" "youtube-app" "apk"
 	patch_mod "youtube-app" "morphe" "morphe"
@@ -112,7 +112,7 @@ youtube-music-morphe() {
 	dl_gh_v2 "MorpheApp/morphe-patches" "prerelease" "morphe.mpp"
 	# Patch YouTube Music x86_64:
 	check_experimental "com.google.android.apps.youtube.music"
-	get_version_mod "com.google.android.apps.youtube.music" "morphe.mpp"
+	detect_version_mod "com.google.android.apps.youtube.music" "morphe.mpp"
 	get_patches_key "youtube-music-morphe"
 	get_apk "com.google.android.apps.youtube.music" "youtube-music-x86_64" "apk" "x86_64"
 	patch_mod "youtube-music-x86_64" "morphe" "morphe"
@@ -133,7 +133,7 @@ jiohotstar-paresh() {
 	dl_gh_v2 "MorpheApp/morphe-cli" "MorpheApp" "latest"
 	dl_gl_v2 "Paresh-Maheshwari/paresh-patches" "prerelease" "paresh.mpp"
 	# Patch JioHotstar:
-	get_version_mod "in.startv.hotstar" "paresh.mpp"
+	detect_version_mod "in.startv.hotstar" "paresh.mpp"
 	get_patches_key "jiohotstar-paresh"
 	get_apk "in.startv.hotstar" "jiohotstar" "apk"
 	patch_mod "jiohotstar" "paresh" "morphe"
