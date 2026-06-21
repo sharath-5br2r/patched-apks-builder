@@ -194,7 +194,7 @@ case "$1" in
         winlator-pubgvn
         ;;
 	*)
-	    if [[ -z $2 ]]; then
+	    if [[ -n $2 ]]; then
 	        morphe-patch
 	    else
 	        echo "Not Implemented"
