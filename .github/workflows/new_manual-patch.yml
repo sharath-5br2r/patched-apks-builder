@@ -163,14 +163,12 @@ jobs:
           patchname: ${{ matrix.patchname }}
         if: steps.check-gh.outputs.internet_error == '0'
         run: |
-          bash src/build/build.sh $appname-$patchname
+          bash src/build/build.sh $appname-$patchname morphe
           if [ ${{ matrix.patch }} = "Custom" ]; then
             name="${{ matrix.app }}-${{ matrix.suffix }}"
           else
             name="${{ matrix.app }}-${{ matrix.patch }}"
           fi
-          echo -e "{ \"appname\": \"$appname\", \"patchname\": \"$patchname\" , \"appversion\": \"$version\" , \"patchversion\": \"$release_name\" }" > ./release/version.json
-          
       - name: Releasing APK files
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
