@@ -126,7 +126,6 @@ dl_gl_mod() {
     done
   fi
 }
-release_name=$tag
 # Modified version of detect_version to handle for a specific file
 detect_version_mod() {
 	if [ -z "$version" ] && [ "$lock_version" != "1" ]; then
@@ -196,7 +195,7 @@ patch_mod() {
 		if [[ "$3" = inotia || "$3" = morphe ]]; then
 			unset CI GITHUB_ACTION GITHUB_ACTIONS GITHUB_ACTOR GITHUB_ENV GITHUB_EVENT_NAME GITHUB_EVENT_PATH GITHUB_HEAD_REF GITHUB_JOB GITHUB_REF GITHUB_REPOSITORY GITHUB_RUN_ID GITHUB_RUN_NUMBER GITHUB_SHA GITHUB_WORKFLOW GITHUB_WORKSPACE RUN_ID RUN_NUMBER
 		fi
-		name_out=$1-$2-$version-p$release_name
+		name_out=$1-$2-$version-p$tag
 		name_in=$1
 		eval java -jar *cli*.jar $p$b --keystore=./ks.keystore --keystore-password=$KEYSTORE_PASS --keystore-entry-password=$KEYSTORE_PASS --keystore-entry-alias=$KEYSTORE_ALIAS $m$opt --out=./release/$name_out.apk $excludePatches$includePatches $pu$force $a ./download/$name_in.apk
 		unset lock_version
@@ -212,7 +211,7 @@ patch_mod() {
 repatch() {
 	mv ./release/$name_out.apk ./download/
 	name_in=$name_out
-	name_out=$name_out-p$release_name
+	name_out=$name_out-p$tag
 	patch_mod $name_in $1 $2
 }
 
@@ -248,31 +247,22 @@ npatch_mod() {
 
 # Make module from patched APK
 make_module() {
-	release_name=$(echo $release_name | sed 's/"//g')
+	tag=$(echo $tag | sed 's/"//g')
 	local pkg_id=$1 module_name=$2
-	if [ -f "./updates/$2-$3.json" ]; then
-		yellow_log "[-] Existing update found for $2-$3, incrementing version code"
-	   code=$(jq -r '.versionCode' ./updates/$2-$3.json)
-	   rm -f ./updates/$2-$3.json
-	   code=$((code+1))
-	else
-		yellow_log "[-] No existing update found for $2-$3, starting with version code 1"
-	   code=1
-	fi
+    code=$(curl -s https://api.github.com/repos/sharath-5br2r/patched-apks-builder/releases/tags/$2-$3 | jq -r '.assets[]? | select(.name == "update.json") | .url' | xargs wget -qO- | jq -r '.versionCode // 0') || code=0
 	green_log "[+] Making module for $2-$3 with version code $code"
 	cp -r  rv_module/module/. module
 	cp ./release/$2-$3*.apk module/base.apk
 	mkdir -p ./module/stock
 	cp ./download/$2.apk ./module/stock/base.apk
 	echo -e "PKG_NAME=$1\nPKG_VER=$version\nMODULE_ARCH=$5" > ./module/config
-	echo -e "id=$2-$3\nname=$2-$3\nversion=$version (patches $3 - $release_name)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$2 $3 Module\nupdateJson=https://raw.githubusercontent.com/sharath-5br2r/patched-apks-builder/main/updates/$2-$3.json" > ./module/module.prop
-	zip -r "./release/$2-$3-$version-p$release_name.zip" ./module/ > /dev/null 2>&1
+	echo -e "id=$2-$3\nname=$2-$3\nversion=$version (patches $3 - $tag)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$2 $3 Module\nupdateJson=https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/$2-$3/update.json" > ./module/module.prop
+	zip -r "./release/$2-$3-$version-p$tag.zip" ./module/ > /dev/null 2>&1
 	rm -rf ./module ./release/$2-$3*.apk
-	if [[ $(git config user.name) == "github-actions[bot]" ]]; then 
-		git pull
-		echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$4/$2-$3-$version-p$release_name.zip\"\n}" > ./updates/$2-$3.json
-		git add ./updates/$2-$3.json
-		git commit -am "Update $2-$3 module to version $version (patches $3 - $release_name)"
-		git push || true
-	fi
+	echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$4/$2-$3-$version-p$tag.zip\"\n}" > ./release/update.json|
+}
+
+finish() {
+    echo -e "cli"
+    echo -e "{ \"appname\": \"$appname\", \"patchname\": \"$patchname\" , \"appversion\": \"$version\" , \"patchversion\": \"$release_name\" }" > ./release/version.json
 }

@@ -1,36 +1,81 @@
 #!/bin/bash
 source ./src/build/utils_mod.sh
-adobe-acrobat-hooman(){
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar" 
-	dl_gh_v2 "arandomhooman/hoomans-morphe-patches" "prerelease" "hooman.mpp"
-	# Patch Adobe Acrobat Reader:
-	_fs_get https://www.apkmirror.com/apk/adobe/adobe-acrobat/feed/
-	version=$(curl -s https://www.apkmirror.com/apk/adobe/adobe-acrobat/feed/ -H "Cookie: $FS_COOKIES" -H "User-Agent: $user_agent"   |  tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//' -e 's/<description>/  /' -e 's/<\/description>//' |  grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+*' | sort | tail -n 1)	get_patches_key "adobe-acrobat-hooman"
-	echo $version
-	get_patches_key "adobe-acrobat-hooman"
-	get_apk "com.adobe.reader" "adobe-acrobat" "bundle"
-	patch_mod "adobe-acrobat" "hooman" "morphe"
+dl_cli() {
+	case $cli in
+		MorpheApp/morphe-cli)
+			dl_gh_v2 "MorpheApp/morphe-cli" "MorpheApp" "latest" "morphe-cli.jar"
+			clitype="morphe"
+			;;
+		*)
+			echo "Unknown CLI, exiting."
+			exit 1
+			;;
+	esac
+	cliver=$tag
 }
-speedtest-xtra(){
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
-	dl_gh_v2 "BholeyKaBhakt/android-patches-xtra" "prerelease" "xtra.mpp"
-	# Patch Speedtest Arm64-v8a:
-	detect_version_mod "org.zwanoo.android.speedtest" "xtra.mpp"
-	get_patches_key "speedtest-xtra"
-	get_apk "org.zwanoo.android.speedtest" "speedtest" "apk" "arm64-v8a"
-	patch_mod "speedtest" "xtra" "morphe"
-	get_apk "org.zwanoo.android.speedtest" "speedtest" "apk" "x86_64"
-	patch_mod "speedtest" "xtra" "morphe"
+dl_patch() {
+	case $patchsrc in
+		github)
+		    dl_gh_v2 "$patches" "prerelease" "$patchname.mpp"
+			;;
+		gitlab)
+			dl_gl_v2 "$patches" "prerelease" "$patchname.mpp"
+			;;
+		*)
+			echo "Unknown patch source, exiting."
+			exit 1
+			;;
+	esac
+	patchver=$tag
 }
-tiktok-icysymmetra() {
-	# Patch Tiktok:
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
-	dl_gh_v2 "icysymmetra/tiktok-patches-for-morphe" "prerelease" "icysymmetra.mpp"
-	detect_version_mod "com.zhiliaoapp.musically" "icysymmetra.mpp"
-	get_patches_key "tiktok-icysymmetra"
-	get_apk "com.zhiliaoapp.musically" "tiktok" "apk" "arm64-v8a + armeabi-v7a" "nodpi"
-	patch_mod "tiktok" "icysymmetra" "morphe"
+patcher(){
+	dl_cli
+	dl_patch
+	if [[ -n $version_cmd ]]; then
+	   eval "$version_cmd"
+	fi
+	detect_version_mod "$pkgname" "$patchname.mpp"
+	if [[ -z $archs ]]; then
+	   get_patches_key "$1-$2"
+	   get_apk "$pkgname" "$appname" "$apktype" 
+	   patch_mod "$appname" "$patchname" "$clitype"
+       if [[ $module="true" ]]; then
+	    get_patches_key "$1-$2-module"
+	    patch_mod "$appname" "$patchname" "$clitype"
+	    make_module "$pkgname" "$appname" "$patchname" "$clitype" "$archs"
+	   fi
+	fi
+	else
+		for arch in $archs: do
+		    get_patches_key "$1-$2"
+			get_apk "$pkgname" "$appname" "$apktype" "$arch"
+			patch_mod "$appname" "$patchname" "$clitype"
+			if [[ $module="true" ]]; then
+				get_patches_key "$1-$2-module"
+				patch_mod "$appname" "$patchname" "$clitype"
+				make_module "$pkgname" "$appname" "$patchname" "$clitype" "$arch"
+			fi
+		done
+	fi
 }
+get_vars(){
+	query=$appname-$patchname
+	pkgname=$(cat src/build/vars.json | jq -r --arg 'query' "$query"'.[$query].pkgname')
+	apktype=$(cat src/build/vars.json | jq -r --arg 'query' "$query"'.[$query].apktype')
+	archs=$(cat src/build/vars.json | jq -r --arg 'query' "$query"'.[$query].archs')
+	version_cmd=$(cat src/build/vars.json | jq -r --arg 'query' "$query"'.[$query].version_cmd')
+	module=$(cat src/build/vars.json | jq -r --arg 'query' "$query"'.[$query].module')
+	patchsrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query"'.[$query].patchsrc')
+	patches=$(cat src/build/vars.json | jq -r --arg 'query' "$query"'.[$query].patches')
+	apksrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query"'.[$query].apksrc')
+	cli=$(cat src/build/vars.json | jq -r --arg 'query' "$query"'.[$query].cli')
+
+}
+morphe-patch(){
+	get_vars
+	patch
+}
+
 discord-revenge() {
 	# Patch Revenge:
 	dl_gh_v2 "NPatch/7723mod" "latest"
@@ -42,7 +87,7 @@ discord-revenge() {
 }
 
 x-piko() {
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
+	dl_morphe_cli
     dl_gl_mod "inotia00/x-shim" "latest" "shim.mpp"
     # Patch Twitter Piko:
 	version="11.99.0-release.1"
@@ -53,91 +98,7 @@ x-piko() {
 	repatch "piko" "morphe"
 	
 }
-instagram-piko() {
-    dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
-	dl_gh_v2 "crimera/piko" "prerelease" "piko.mpp"
-    # Patch Instagram arm64-v8a:
-    get_patches_key "instagram-piko"
-	detect_version_mod "com.instagram.android" "piko.mpp"
-    get_apk "com.instagram.android" "instagram-arm64-v8a" "bundle" "arm64-v8a" "120-640dpi"  "Android 9.0+"
-    patch_mod "instagram-arm64-v8a" "piko" "morphe"
-	# Patch Instagram x86_64:
-	get_apk "com.instagram.android" "instagram-x86_64" "bundle" "x86_64" "120-640dpi"  "Android 9.0+"
-	patch_mod "instagram-x86_64" "piko" "morphe"
-}
-prime-video-hoo-dles() {
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
-	dl_gh_v2 "hoo-dles/morphe-patches" "prerelease" "hoo-dles.mpp"
-	# Patch Amazon Prime Video Arm64-v8a
-	get_patches_key "prime-video-hoo-dles"
-	_fs_get https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video/feed/
-	version=$(curl -s https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video/feed/ -H "Cookie: $FS_COOKIES" -H "User-Agent: $user_agent"   |  grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//' -e 's/<description>/  /' -e 's/<\/description>//' |  grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | grep -v - | head -n 1) 
-	get_apk "com.amazon.avod.thirdpartyclient" "prime-video" "apk" "arm64-v8a" "nodpi" "Android 9.0+"
-	patch_mod "prime-video" "hoo-dles" "morphe"
-}
-proton-vpn-paresh() {
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
-	dl_gh_v2 "Paresh-Maheshwari/paresh-patches" "prerelease" "paresh.mpp"
-	#Patch Proton VPN
-	get_patches_key "Proton-VPN-paresh"
-	_fs_get https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/feed/
-	version=$(curl -s https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/feed/ -H "Cookie: $FS_COOKIES" -H "User-Agent: $user_agent"   |  grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//' -e 's/<description>/  /' -e 's/<\/description>//' |  grep -oE '[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+' | grep -v - | head -n 1) 
-	get_apk "ch.protonvpn.android" "protonvpn" "bundle"
-	patch_mod "protonvpn" "paresh" "morphe"
-}
-symfonium-binarymend(){
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
-	dl_gh_v2 "binarymend/morphe-patches" "prerelease" "binarymend.mpp"
-	get_patches_key "Sympfonium-binarymend"
-	detect_version_mod "app.symfonik.music.player" "sympfonium"
-	get_apk "app.symfonik.music.player" "sympfonium" "bundle"
-	patch_mod "sympfonium" "binarymend" "morphe"
-}
-youtube-morphe() {
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
-	dl_gh_v2 "MorpheApp/morphe-patches" "prerelease" "morphe.mpp"
-	# Patch YouTube:
-	check_experimental "com.google.android.youtube"
-	detect_version_mod "com.google.android.youtube" "morphe.mpp"
-	get_patches_key "youtube-morphe"
-	get_apk "com.google.android.youtube" "youtube-app" "apk"
-	patch_mod "youtube-app" "morphe" "morphe"
-	get_patches_key "youtube-morphe-module"
-	get_apk "com.google.android.youtube" "youtube-module" "apk"
-	patch_mod "youtube-module" "morphe" "morphe"
-	make_module "com.google.android.youtube" "youtube-module" "morphe" youtube-morphe
-}
-youtube-music-morphe() {
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
-	dl_gh_v2 "MorpheApp/morphe-patches" "prerelease" "morphe.mpp"
-	# Patch YouTube Music x86_64:
-	check_experimental "com.google.android.apps.youtube.music"
-	detect_version_mod "com.google.android.apps.youtube.music" "morphe.mpp"
-	get_patches_key "youtube-music-morphe"
-	get_apk "com.google.android.apps.youtube.music" "youtube-music-x86_64" "apk" "x86_64"
-	patch_mod "youtube-music-x86_64" "morphe" "morphe"
-	# Patch YouTube Music Arm64-v8a:
-	get_apk "com.google.android.apps.youtube.music" "youtube-music-arm64" "apk" "arm64-v8a"
-	patch_mod "youtube-music-arm64" "morphe" "morphe"
-	# Patch YouTube Music x86_64 module:
-	get_apk "com.google.android.apps.youtube.music" "youtube-music-x86_64-module" "apk" "x86_64"
-	get_patches_key "youtube-music-morphe-module"
-	patch_mod "youtube-music-x86_64-module" "morphe" "morphe"
-	make_module "com.google.android.apps.youtube.music" "youtube-music-x86_64-module" "morphe" youtube-music-morphe x86_64
-	# Patch YouTube Music Arm64-v8a module:
-	get_apk "com.google.android.apps.youtube.music" "youtube-music-arm64-module" "apk" "arm64-v8a"
-	patch_mod "youtube-music-arm64-module" "morphe" "morphe"
-	make_module "com.google.android.apps.youtube.music" "youtube-music-arm64-module" "morphe" youtube-music-morphe arm64
-}
-jiohotstar-paresh() {
-	dl_gh_v2 "MorpheApp/morphe-cli" "MorpheApp" "latest"
-	dl_gl_v2 "Paresh-Maheshwari/paresh-patches" "prerelease" "paresh.mpp"
-	# Patch JioHotstar:
-	detect_version_mod "in.startv.hotstar" "paresh.mpp"
-	get_patches_key "jiohotstar-paresh"
-	get_apk "in.startv.hotstar" "jiohotstar" "apk"
-	patch_mod "jiohotstar" "paresh" "morphe"
-}
+
 amazon-india-signed(){
 	_fs_get https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay/feed/
 	version=$(curl -s https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay/feed/ -H "Cookie: $FS_COOKIES" -H "User-Agent: $user_agent"   |  grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//' -e 's/<description>/  /' -e 's/<\/description>//' |  grep -oE '[0-9]+\.[0-9]+.*' |  awk -F ' by' '{print $1}'| head -n 1 )
@@ -205,41 +166,11 @@ winlator-pubgvn() {
 }
 
 case "$1" in
-    adobe-acrobat-hooman)
-		adobe-acrobat-hooman
-		;;
-	tiktok-icysymmetra)
-		tiktok-icysymmetra
-		;;
-	speedtest-xtra)
-		speedtest-xtra
-		;;
     discord-revenge)
         discord-revenge
         ;;
 	x-piko)
 		x-piko
-		;;
-	instagram-piko)
-		instagram-piko
-		;;
-	prime-video-hoo-dles)
-		prime-video-hoo-dles
-		;;
-	proton-vpn-paresh)
-		proton-vpn-paresh
-		;;
-	jiohotstar-paresh)
-		jiohotstar-paresh
-		;;
-	youtube-morphe)
-		youtube-morphe
-		;;
-	symfonium-binarymend)
-		symfonium-binarymend
-		;;
-	youtube-music-morphe)
-		youtube-music-morphe
 		;;
 	amazon-india-signed)
 		amazon-india-signed
@@ -262,4 +193,12 @@ case "$1" in
     winlator-pubgvn)
         winlator-pubgvn
         ;;
+	*)
+	    if [[ -z $2 ]]; then
+	        morphe-patch
+	    else
+	        echo "Not Implemented"
+			exit 1
+	    fi
+		;;
 esac

@@ -159,14 +159,18 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
+          appname: ${{ matrix.appname }}
+          patchname: ${{ matrix.patchname }}
         if: steps.check-gh.outputs.internet_error == '0'
         run: |
-          bash src/build/build.sh ${{ matrix.appname }}-${{ matrix.patchname }}
+          bash src/build/build.sh $appname-$patchname
           if [ ${{ matrix.patch }} = "Custom" ]; then
             name="${{ matrix.app }}-${{ matrix.suffix }}"
           else
             name="${{ matrix.app }}-${{ matrix.patch }}"
           fi
+          echo -e "{ \"appname\": \"$appname\", \"patchname\": \"$patchname\" , \"appversion\": \"$version\" , \"patchversion\": \"$release_name\" }" > ./release/version.json
+          
       - name: Releasing APK files
         id: release
         if: steps.check-gh.outputs.internet_error == '0'
@@ -180,8 +184,12 @@ jobs:
           body: "Old APK files are below"
       - name: Tailored Release
         if: steps.check-gh.outputs.internet_error == '0'
-        uses: ./.github/actions/release
+        uses: ncipollo/release-action@v1.21.0
         with:
+          artifacts: |
+            ./release/*
           name: ${{ matrix.app }} - ${{ matrix.patch }} Patch
           tag: ${{ matrix.appname }}-${{ matrix.patchname }}
+          allowUpdates: true
+          body: "App: ${{ matrix.app }} with ${{ matrix.patch }} patch"
         

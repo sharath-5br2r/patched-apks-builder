@@ -1,0 +1,105 @@
+{
+    "adobe-acrobat-hooman": 
+    {
+        "cli": "MorpheApp/morphe-cli",
+        "patches": "arandomhooman/hoomans-morphe-patches",
+        "patchsrc": "github",
+        "pkgname": "com.adobe.reader",
+        "apksrc": "apkmirror",
+        "apktype": "bundle",
+        "version_cmd": "_fs_get https://www.apkmirror.com/apk/adobe/adobe-acrobat/feed/ && version=$(curl -s https://www.apkmirror.com/apk/adobe/adobe-acrobat/feed/ -H \"Cookie: $FS_COOKIES\" -H \"User-Agent: $user_agent\" | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\\/title>//' -e 's/<description>/  /' -e 's/<\\/description>//' | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+' | sort | tail -n 1)" 
+    },
+    "speedtest-xtra": 
+    {
+        "cli": "MorpheApp/morphe-cli",
+        "patches": "BholeyKaBhakt/android-patches-xtra",
+        "patchsrc": "github",
+        "pkgname": "org.zwanoo.android.speedtest",
+        "apksrc": "apkmirror",
+        "apktype": "apk",
+        "archs": "arm64-v8a\nx86_64"
+    },
+    "tiktok-icysymmetra": 
+    {
+        "cli": "MorpheApp/morphe-cli",
+        "patches": "icysymmetra/tiktok-patches-for-morphe",
+        "patchsrc": "github",
+        "pkgname": "com.zhiliaoapp.musically",
+        "apksrc": "apkmirror",
+        "apktype": "apk",
+        "archs": "arm64-v8a + armeabi-v7a"
+    },
+    "youtube-morphe": 
+    {
+        "cli": "MorpheApp/morphe-cli",
+        "patches": "MorpheApp/morphe-patches",
+        "patchsrc": "github",
+        "pkgname": "com.google.android.youtube",
+        "apksrc": "apkmirror",
+        "apktype": "apk",
+        "module": "true",
+        "version_cmd": "get_experimental_version com.google.android.youtube"
+    },
+    "youtube-music-morphe": 
+    {
+        "cli": "MorpheApp/morphe-cli",
+        "patches": "MorpheApp/morphe-patches",
+        "patchsrc": "github",
+        "pkgname": "com.google.android.apps.youtube.music",
+        "apksrc": "apkmirror",
+        "apktype": "apk",
+        "module": "true",
+        "archs": "arm64-v8a\nx86_64",
+        "version_cmd": "get_experimental_version com.google.android.apps.youtube.music"
+    },
+    "instgram-piko":
+    {
+        "cli": "MorpheApp/morphe-cli",
+        "patches": "crimera/piko",
+        "patchsrc": "github",
+        "pkgname": "com.instagram.android",
+        "apksrc": "apkmirror",
+        "apktype": "bundle",
+        "archs": "arm64-v8a\nx86_64"
+    },
+    "prime-video-hoo-dles":
+    {
+        "cli": "MorpheApp/morphe-cli",
+        "patches": "hoo-dles/morphe-patches",
+        "patchsrc": "github",
+        "pkgname": "com.amazon.avod.thirdpartyclient",
+        "apksrc": "apkmirror",
+        "apktype": "apk",
+        "archs": "arm64-v8a",
+        "version_cmd": "_fs_get https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video/feed/ && version=$(curl -s https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video/feed/ -H \"Cookie: $FS_COOKIES\" -H \"User-Agent: $user_agent\" | grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\\/title>//' -e 's/<description>/  /' -e 's/<\\/description>//' | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+' | grep -v - | head -n 1)"
+    },
+    "proton-vpn-paresh": 
+    {
+        "cli": "MorpheApp/morphe-cli",
+        "patches": "Paresh-Maheswari/paresh-patches",
+        "patchsrc": "gitlab",
+        "pkgname": "com.protonvpn.android",
+        "apksrc": "apkmirror",
+        "apktype": "bundle",
+        "version_cmd": "_fs_get https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/feed/ && version=$(curl -s https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/feed/ -H \"Cookie: $FS_COOKIES\" -H \"User-Agent: $user_agent\" | grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\\/title>//' -e 's/<description>/  /' -e 's/<\\/description>//' | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+' | grep -v - | head -n 1)"
+
+    },
+    "jiohotstar-paresh": 
+    {
+        "cli": "MorpheApp/morphe-cli",
+        "patches": "Paresh-Maheswari/paresh-patches",
+        "patchsrc": "gitlab",
+        "pkgname": "in.startv.hotstar",
+        "apksrc": "apkmirror",
+        "apktype": "apk"
+    },
+    "symfonium-binarymend": 
+    {
+        "cli": "MorpheApp/morphe-cli",
+        "patches": "binarymend/morphe-patches",
+        "patchsrc": "github",
+        "pkgname": "app.symfonik.music.player",
+        "apksrc": "apkmirror",
+        "apktype": "bundle"
+    }
+}
