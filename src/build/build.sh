@@ -1,7 +1,7 @@
 #!/bin/bash
 source ./src/build/utils_mod.sh
 adobe-acrobat-hooman(){
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
+	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar" 
 	dl_gh_v2 "arandomhooman/hoomans-morphe-patches" "prerelease" "hooman.mpp"
 	# Patch Adobe Acrobat Reader:
 	_fs_get https://www.apkmirror.com/apk/adobe/adobe-acrobat/feed/
@@ -12,7 +12,7 @@ adobe-acrobat-hooman(){
 	patch_mod "adobe-acrobat" "hooman" "morphe"
 }
 speedtest-xtra(){
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest"
+	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
 	dl_gh_v2 "BholeyKaBhakt/android-patches-xtra" "prerelease" "xtra.mpp"
 	# Patch Speedtest Arm64-v8a:
 	detect_version_mod "org.zwanoo.android.speedtest" "xtra.mpp"
@@ -24,7 +24,7 @@ speedtest-xtra(){
 }
 tiktok-icysymmetra() {
 	# Patch Tiktok:
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest"
+	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
 	dl_gh_v2 "icysymmetra/tiktok-patches-for-morphe" "prerelease" "icysymmetra.mpp"
 	detect_version_mod "com.zhiliaoapp.musically" "icysymmetra.mpp"
 	get_patches_key "tiktok-icysymmetra"
@@ -42,7 +42,7 @@ discord-revenge() {
 }
 
 x-piko() {
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest"
+	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
     dl_gl_mod "inotia00/x-shim" "latest" "shim.mpp"
     # Patch Twitter Piko:
 	version="11.99.0-release.1"
@@ -54,7 +54,7 @@ x-piko() {
 	
 }
 instagram-piko() {
-    dl_gh_v2 "MorpheApp/morphe-cli" "latest"
+    dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
 	dl_gh_v2 "crimera/piko" "prerelease" "piko.mpp"
     # Patch Instagram arm64-v8a:
     get_patches_key "instagram-piko"
@@ -66,7 +66,7 @@ instagram-piko() {
 	patch_mod "instagram-x86_64" "piko" "morphe"
 }
 prime-video-hoo-dles() {
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest"
+	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
 	dl_gh_v2 "hoo-dles/morphe-patches" "prerelease" "hoo-dles.mpp"
 	# Patch Amazon Prime Video Arm64-v8a
 	get_patches_key "prime-video-hoo-dles"
@@ -76,7 +76,7 @@ prime-video-hoo-dles() {
 	patch_mod "prime-video" "hoo-dles" "morphe"
 }
 proton-vpn-paresh() {
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest"
+	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
 	dl_gh_v2 "Paresh-Maheshwari/paresh-patches" "prerelease" "paresh.mpp"
 	#Patch Proton VPN
 	get_patches_key "Proton-VPN-paresh"
@@ -86,7 +86,7 @@ proton-vpn-paresh() {
 	patch_mod "protonvpn" "paresh" "morphe"
 }
 symfonium-binarymend(){
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest"
+	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
 	dl_gh_v2 "binarymend/morphe-patches" "prerelease" "binarymend.mpp"
 	get_patches_key "Sympfonium-binarymend"
 	detect_version_mod "app.symfonik.music.player" "sympfonium"
@@ -94,7 +94,7 @@ symfonium-binarymend(){
 	patch_mod "sympfonium" "binarymend" "morphe"
 }
 youtube-morphe() {
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest"
+	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
 	dl_gh_v2 "MorpheApp/morphe-patches" "prerelease" "morphe.mpp"
 	# Patch YouTube:
 	check_experimental "com.google.android.youtube"
@@ -108,7 +108,7 @@ youtube-morphe() {
 	make_module "com.google.android.youtube" "youtube-module" "morphe" youtube-morphe
 }
 youtube-music-morphe() {
-	dl_gh_v2 "MorpheApp/morphe-cli" "latest"
+	dl_gh_v2 "MorpheApp/morphe-cli" "latest" "morphe-cli.jar"
 	dl_gh_v2 "MorpheApp/morphe-patches" "prerelease" "morphe.mpp"
 	# Patch YouTube Music x86_64:
 	check_experimental "com.google.android.apps.youtube.music"
