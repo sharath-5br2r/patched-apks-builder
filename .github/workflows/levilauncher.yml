@@ -1,4 +1,4 @@
-name: Download patch and compile LeviLauncher into BGMI
+name: Build and patch LeviLauncher into BGMI
 permissions: write-all
 on:
   workflow_dispatch:
