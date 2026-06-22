@@ -21,3 +21,5 @@ bc.security
 module/*
 apksigner.jar
 pup
+pup.zip
+morphe-data/*

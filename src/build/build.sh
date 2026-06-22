@@ -55,7 +55,9 @@ patcher(){
 	   eval "$version_cmd"
 	fi
 	while read -r line; do
-		lineno=1
+        if [[ -z "$lineno" ]]; then
+			lineno=1
+		fi
 		module=$(jq -r '.module // "false"' <<< "$line")
 		patchname=$(jq -r '.patchname // ""' <<< "$line")
 		patchsrc=$(jq -r '.patchsrc // ""' <<< "$line")
@@ -72,8 +74,8 @@ patcher(){
 			if [[ $module == "true" ]]; then
 				mv "$patchname.mpp" "$patchname-module.mpp"
 				get_patches_key "$appname-$patchname-module"
-				patch_mod "$patchkey-$arch" "$patchname-module" "$clitype"
-				make_module "$pkgname" "$patchkey-$arch" "$patchname-module" "$arch"
+				patch_mod "$appname-$arch" "$patchname-module" "$clitype"
+				make_module "$pkgname" "$appname-$arch" "$patchname-module" "$arch"
 			fi
 		lineno=$((lineno + 1))
 		done < <(jq -r '.[]' <<< "$archs")
