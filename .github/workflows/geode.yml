@@ -2,9 +2,7 @@ name: Build and Patch Geode launcher into PUBG KR
 
 on:
   workflow_dispatch:
-  push:
-    branches: '*'
-
+  workflow_call:
 jobs:
   build:    
     runs-on: ubuntu-latest
