@@ -158,25 +158,16 @@ jobs:
           appname: ${{ matrix.appname }}
           patchname: ${{ matrix.patchname }}
         run: |
-          bash src/build/build.sh $appname-$patchname morphe
-          if [ ${{ matrix.patch }} = "Custom" ]; then
+          if [ ${{ matrix.patch }} == "Custom" ]; then
             name="${{ matrix.app }}-${{ matrix.suffix }}"
+            bash src/build/misc_build.sh $appname-$patchname ${{ matrix.suffix }}
           else
             name="${{ matrix.app }}-${{ matrix.patch }}"
+            bash src/build/build.sh
           fi
-      - name: Releasing APK files
-        id: release
-        uses: ncipollo/release-action@v1.21.0
-        with:
-          artifacts: |
-            ./release/*
-          name: "Old APKs"
-          tag: "all"
-          allowUpdates: true
-          makeLatest: true
-          body: "Old APK files are below"
       - name: Tailored Release
         uses: ncipollo/release-action@v1.21.0
+        if: steps.patch.outcome == 'success' && steps.match-check.outputs.should_run == 'true'
         with:
           artifacts: |
             ./release/*
@@ -184,5 +175,5 @@ jobs:
           tag: ${{ matrix.appname }}-${{ matrix.patchname }}
           allowUpdates: true
           removeArtifacts: true
-          body: "App: ${{ matrix.app }} with ${{ matrix.patch }} patch"
+          bodyFile: CHANGELOG.md
         
