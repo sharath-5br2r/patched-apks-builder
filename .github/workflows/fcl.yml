@@ -43,14 +43,26 @@ jobs:
         run: |
           chmod +x gradlew
           ./gradlew assemblerelease -Darch=all --no-daemon
-       
+      - name: Setup Keystore and resign with own signature
+        run: |
+            echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore   
+            bcversion=$(curl -fsSL https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/maven-metadata.xml | grep -oPm1 '(?<=<release>)[^<]+')
+            echo -e "\e[32m[+] Downloading Bouncy Castle Provider\e[0m"
+            wget -qO bcprov.jar "https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/$bcversion/bcprov-jdk18on-$bcversion.jar"
+            LAST_PROV=$(grep "^security.provider\." "$JAVA_HOME/conf/security/java.security"  | grep -oP '(?<=security\.provider\.)\d+' | sort -n | tail -1)
+            echo "security.provider.$((LAST_PROV+1))=org.bouncycastle.jce.provider.BouncyCastleProvider"  > bc.security
+            wget -qO sdk.zip "https://dl.google.com/android/repository/build-tools_r36_linux.zip"
+            unzip -q -j sdk.zip android-16/lib/apksigner.jar
+            java -cp "bcprov.jar:apksigner.jar" com.android.apksigner.ApkSignerTool sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in ./app/build/outputs/apk/release/*.apk --out fcl-cod-$TAG.apk
+          
+
       - name: Release
         uses: ncipollo/release-action@v1.21.0
         with:
           artifacts: |
-            ./app/build/outputs/apk/release/*.apk
+            ./fcl-cod-$TAG.apk
           name: "Fold Craft Launcher"
           tag: "fcl-cod"
           allowUpdates: true
           makeLatest: true
-          body: "FCL Dynamic Patching for COD Mobile is here! This release includes patched APKs for all supported architectures, ensuring a seamless gaming experience. Download now and enjoy enhanced performance and stability on your device!"
+          body: "FCL Dynamic Patching for COD Mobile, uses Github Actions of patch before compiling. Version ${{env.TAG}}"
