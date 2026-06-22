@@ -249,7 +249,12 @@ npatch_mod() {
 make_module() {
 	patchversion=$(echo $patchversion | sed 's/"//g')
 	local pkg_id=$1 module_name=$2
-    code=$(gh api /repos/sharath-5br2r/patched-apks-builder/releases/tags/$2-$3 | jq -r '.assets[]? | select(.name == "update.json") | .url' | xargs wget -qO- | jq -r '.versionCode // 0') || code=0
+    code=$(gh api /repos/sharath-5br2r/patched-apks-builder/releases/tags/$2-$3 | jq -r '.assets[]? | select(.name == "update.json") | .url' | xargs wget -qO- | jq -r '.versionCode // 0') || yes
+	if [ -z "$code" ] ; then
+		code=1
+	else
+		code=$((code + 1))
+	fi
 	green_log "[+] Making module for $2-$3 with version code $code"
 	cp -r  rv_module/module/. module
 	cp ./release/$2-$3*.apk module/base.apk
