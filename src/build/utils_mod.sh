@@ -245,7 +245,7 @@ make_module() {
 	cp ./release/$2*$3*.apk module/base.apk
 	mkdir -p ./module/stock
 	cp ./download/$2.apk ./module/stock/base.apk
-	if [ $4 != "arm64-v8a"|| $4 != "armeabi-v7a"  || $4 != "x86_64" || $4 != "x86" ]; then
+	if [[ $4 != "arm64-v8a" && $4 != "armeabi-v7a" && $4 != "x86_64" && $4 != "x86" ]]; then
 		archname=""
 	else
 		archname=$4
