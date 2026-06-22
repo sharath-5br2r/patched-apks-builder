@@ -3,6 +3,9 @@
 mkdir ./release ./download
 
 #Setup pup for download apk files
+if [ -f "./pup" ] || [ -f "./pup.exe" ] || [ -f "./pup-arm64" ]; then
+	rm -f ./pup
+fi
 wget -q -O ./pup.zip https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_linux_amd64.zip
 unzip "./pup.zip" -d "./" > /dev/null 2>&1
 rm -f "./pup.zip"

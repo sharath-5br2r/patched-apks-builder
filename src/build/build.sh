@@ -16,10 +16,10 @@ dl_cli() {
 dl_patch() {
 	case $source in
 		github)
-		    dl_gh_v2 "$patchesrc" "prerelease" "$patchname.mpp"
+		    dl_gh_v2 "$patchsrc" "prerelease" "$patchname.mpp"
 			;;
 		gitlab)
-			dl_gl_mod "$patchesrc" "prerelease" "$patchname.mpp"
+			dl_gl_mod "$patchsrc" "prerelease" "$patchname.mpp"
 			;;
 		*)
 			echo "Unknown patch source, exiting."
@@ -42,6 +42,14 @@ get_app(){
 	esac
 }
 patcher(){
+	query=$appname-$patchname
+	pkgname=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].pkgname // "" ') || true
+	apktype=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apktype // "" ') || true
+	version_cmd=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].version_cmd // "" ') || true
+	archs=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].archs // "" ') || true
+	patches=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].patches // "" ') || true
+	apksrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apksrc // "" ') || true
+	cli=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].cli // "" ') || true	
 	dl_cli
 	if [[ -n $version_cmd ]]; then
 	   eval "$version_cmd"
@@ -70,24 +78,12 @@ patcher(){
 				patch_mod "$patchkey-$arch" "$patchname-module" "$clitype"
 				make_module "$pkgname" "$patchkey-$arch" "$patchname-module" "$arch"
 			fi
-		done < <(jq -r '.archs[]' <<< "$line")
+		done < <(jq -r '.[]' <<< "$archs")
 
 
 	done < <(jq -c '.[]'  <<< "$patches")
 }
-get_vars(){
-	query=$appname-$patchname
-	pkgname=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].pkgname // "" ') || true
-	apktype=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apktype // "" ') || true
-	version_cmd=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].version_cmd // "" ') || true
-	archs=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].archs // "" ') || true
-	patches=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].patches // "" ') || true
-	apksrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apksrc // "" ') || true
-	cli=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].cli // "" ') || true
-
-}
 morphe-patch(){
-	get_vars
 	patcher
 }
 

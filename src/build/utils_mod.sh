@@ -162,7 +162,7 @@ detect_version_mod() {
 
 # Modified version of patch to  handle custom keystore and file name.
 patch_mod() {
-	if [ $1 == "repatch"]; then
+	if [ $1 == "repatch" ]; then
 	 	mv ./release/$name_out.apk ./download/
 		name_in=$name_out
 		name_out=$name_out-p$patchversion
@@ -176,6 +176,7 @@ patch_mod() {
 			p="patch " b="-p $2.rvp" m="" a="" pu="--purge=true" opt="--legacy-options=./src/options/$2.json" force=" --force"
 			toolmsg= "Revanced-cli inotia"
 		elif [ "$3" = morphe ]; then
+		    p="patch " b="-p $2.mpp" m="" a="" pu="--purge=true" opt="--options-file ./src/options/$2.json" force=" --force --continue-on-error"
 			toolmsg="Morphe"
 		else
 			if [[ $(ls revanced-cli-*.jar) =~ revanced-cli-([0-9]+) ]]; then
