@@ -23,7 +23,7 @@ dl_patch() {
 	case $source in
 		github)
 			if [[ -n "$filter" ]]; then
-				dl_gh_v2 "$patchsrc" "prerelease" "$patchname$patchext" "$filter"
+				dl_gh_v2 "$patchsrc" "prerelease" "$patchname$patchext" "$filter" "$patchexclude"
 			else
 				dl_gh_v2 "$patchsrc" "prerelease" "$patchname$patchext"
 			fi
@@ -45,6 +45,12 @@ get_app(){
 			;;
 		apkpure)
 			get_apkpure "$pkgname" "$appname-$arch" "$apktype"
+			;;
+		github)
+			dl_gh_v2 "$apprepo" "prerelease" "$appname-$arch.apk"  "$appfilter" "$appexclude"
+			;;
+		custom)
+		    eval "$appdl_cmd"
 			;;
 		*)
 			echo "Unknown APK source, skipping."
@@ -142,6 +148,16 @@ patcher(){
 			arch=$(echo "$archs" | jq -r '.[0]') || true
 			version="$(java -jar ./APKEditor.jar info -i ./download/$appname-$arch.apk -version-name)"
 			sign "$appname-$arch.apk" "./release/$appname-$arch-signed-$version.apk"
+			;;
+		sed)
+		    get_app
+			arch=$(echo "$archs" | jq -r '.[0]') || true
+			version="$(java -jar ./APKEditor.jar info -i ./download/$appname-$arch.apk -version-name)"
+			sedfilter=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].sedfilter // "" ') || true
+			java -jar APKEditor.jar d -i ./download/$appname-$arch.apk -o ./download/$appname-$arch-src -t xml -dex
+			eval sed -i "$sedfilter" ./download/$appname-$arch-src/AndroidManifest.xml
+			java -jar APKEditor.jar b -i ./download/$appname-$arch-src -o ./release/$appname-$arch-patched.apk
+			sign "$appname-$arch-patched.apk" "./release/$appname-$arch-signed-$version.apk"
 			;;
 		*)
 			echo "Unknown CLI type, exiting."

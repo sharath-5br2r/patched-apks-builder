@@ -1,0 +1,56 @@
+name: Build
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  release_build:
+    name: Build for all
+    env:
+      CURSE_API_KEY: "$2a$10$bL4bIL5pUWqfcO7KQtnMReakwtfHbNKh6v1uTpKlzhwoueEJQnPnm"
+      OAUTH_API_KEY: ${{ secrets.FCL_OAUTH_KEY }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get FCL tag
+        id: get_tag
+        run:  |
+            echo "TAG=$(gh release view -R FCL-Team/FoldCraftLauncher --json tagName --jq '.tagName' )" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          submodules: recursive
+          ref: ${{ env.TAG }}
+          repository: FCL-Team/FoldCraftLauncher
+
+      - name: set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: "temurin"
+          java-version: 17
+    
+      - name: Patch
+        run: |
+          sed -i 's/signingConfig = signingConfigs\.getByName("FCLKey")/signingConfig = signingConfigs.getByName("FCLDebugKey")/' FCL/build.gradle.kts
+          sed -i 's/applicationId = "com\.tungsten\.fcl"/applicationId = "com.activision.callofduty.shooter"/' FCL/build.gradle.kts
+          sed -i 's#<string name="app_name" translatable="false">Fold Craft Launcher</string>#<string name="app_name" translatable="false">Fold Craft Launcher (CoDM)</string>#' FCL/src/main/res/values/strings.xml
+
+      - name: Build All .apk
+        run: |
+          chmod +x gradlew
+          ./gradlew assemblerelease -Darch=all --no-daemon
+       
+      - name: Release
+        uses: ncipollo/release-action@v1.21.0
+        with:
+          artifacts: |
+            ./app/build/outputs/apk/release/*.apk
+          name: "Fold Craft Launcher"
+          tag: "fcl-cod"
+          allowUpdates: true
+          makeLatest: true
+          body: "FCL Dynamic Patching for COD Mobile is here! This release includes patched APKs for all supported architectures, ensuring a seamless gaming experience. Download now and enjoy enhanced performance and stability on your device!"

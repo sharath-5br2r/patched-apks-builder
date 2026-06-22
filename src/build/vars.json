@@ -207,6 +207,16 @@
         "apksrc": "apkmirror",
         "apktype": "bundle",
         "archs": ["universal"]
+    },
+    "fcl-cod"
+    {
+        "cli": "sed",
+        "apprepo": "FCL-Team/FoldCraftLauncher",
+        "appfilter": "all.apk",
+        "apksrc": "github",
+        "apktype": "apk",
+        "archs": ["universal"],
+        "sedfilter": " -e 's/package=\"com\\.tungsten\\.fcl\"/package=\"com.activision.callofduty.shooter\"/' -e 's/com\\.tungsten\.fcl\.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/com.activision.callofduty.shooter.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/g' -e 's/com\\.tungsten\\.fcl\\.document\\.provider/com.activision.callofduty.shooter.document.provider/g' -e 's/com\\.tungsten\\.fcl\\.provider/com.activision.callofduty.shooter.provider/g' -e 's/com\\.tungsten\\.fcl\\.crashreporterinitprovider/com.activision.callofduty.shooter.crashreporterinitprovider/g' -e 's/com\\.tungsten\\.fcl\\.androidx-startup/com.activision.callofduty.shooter.androidx-startup/g' "
     }
     
 }
