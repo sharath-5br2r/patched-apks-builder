@@ -10,15 +10,17 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Get LeviLauncher tag
+    - name: Get Geode tag
       id: get_tag
       run:  |
-        echo "TAG=$(gh release view -R 0Sombra666/LeviLaunchroidUnlocked --json tagName --jq '.tagName' )" >> $GITHUB_ENV
+        echo "TAG=$(gh release view -R geode-sdk/android-launcher --json tagName --jq '.tagName' )" >> $GITHUB_ENV
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         
     - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
-
+      with:
+        repository: geode-sdk/android-launcher
+        ref: ${{ env.TAG }}
     - name: Setup Java JDK
       uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
       with:
