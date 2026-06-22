@@ -51,12 +51,12 @@ dl_gh_v2(){
     local exclude=$5
 	if [ -n "$filter" ]; then
        if [ $exclude=="exclude" ]; then
-          urls=$(gh release view $tag --repo $repo  --json assets | jq --arg filter "$filter" '.assets[] | select(.name | contains($filter) | not ) | .url')
+          urls=$(gh release view $tag --repo $repo  --json assets | jq --arg filter "$filter" -r '.assets[] | select(.name | contains($filter) | not ) | .url')
        else
-	      urls=$(gh release view $tag --repo $repo  --json assets | jq --arg filter "$filter" '.assets[] | select(.name | contains($filter)) | .url')
+	      urls=$(gh release view $tag --repo $repo  --json assets | jq --arg filter "$filter" -r '.assets[] | select(.name | contains($filter)) | .url')
        fi
 	else
-	   urls=$(gh release view $tag --repo $repo  --json assets --jq '.assets[] | .url')
+	   urls=$(gh release view $tag --repo $repo  --json assets | jq -r '.assets[] | .url')
 	fi
 	if [[  ! "$urls" == *$'\n'* ]]; then
 	   if [ -n $output ]; then
@@ -107,7 +107,6 @@ dl_gl_mod() {
   tag=$(echo "$release" | jq -r '.tag_name')
   local urls
   urls=$(echo "$release" | jq -r '.assets.links[] | "\(.direct_asset_url // .url)"')
-
   if [[  ! "$urls" == *$'\n'*  ]]; then
     if [ -n $output ]; then
         name=$(basename "$urls")
