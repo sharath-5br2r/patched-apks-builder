@@ -52,7 +52,7 @@ rvpatcher(){
 	cli=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].cli // "" ') || true	
 	dl_cli
 	if [[ $version_cmd == "latest" ]]; then
-	   version="latest"
+	   lock_version=1
 	elif [[ -n $version_cmd ]]; then
 	   eval "$version_cmd"
 	fi
@@ -89,8 +89,8 @@ rvpatcher(){
 
 discord-revenge() {
 	# Patch Revenge:
-	dl_gh_v2 "7723mod/NPatch" "latest" "jar" "npatch.jar"
-	dl_gh_v2 "revenge-mod/revenge-xposed" "latest" "app-release.apk" "revenge.apk"
+	dl_gh_v2 "7723mod/NPatch" "latest" "npatch.jar" "jar"
+	dl_gh_v2 "revenge-mod/revenge-xposed" "latest" "revenge.apk" "app-release.apk"
 	get_apk "com.discord" "discord" "bundle"
 	npatch_mod "discord" "app-release" "revenge"
 }

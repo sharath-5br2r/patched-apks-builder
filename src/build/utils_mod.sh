@@ -50,7 +50,7 @@ dl_gh_v2(){
 	local filter=$4
     local exclude=$5
 	if [ -n "$filter" ]; then
-       if [ $exclude="exclude" ]; then
+       if [ $exclude=="exclude" ]; then
           urls=$(gh release view $tag --repo $repo  --json assets | jq --arg filter "$filter" '.assets[] | select(.name | contains($filter) | not ) | .url')
        else
 	      urls=$(gh release view $tag --repo $repo  --json assets | jq --arg filter "$filter" '.assets[] | select(.name | contains($filter)) | .url')
