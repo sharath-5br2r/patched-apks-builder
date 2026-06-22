@@ -45,6 +45,7 @@ jobs:
           ./gradlew assemblerelease -Darch=all --no-daemon
       - name: Setup Keystore and resign with own signature
         run: |
+            tree -a
             echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore   
             bcversion=$(curl -fsSL https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/maven-metadata.xml | grep -oPm1 '(?<=<release>)[^<]+')
             echo -e "\e[32m[+] Downloading Bouncy Castle Provider\e[0m"

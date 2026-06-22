@@ -40,6 +40,7 @@ jobs:
     - name: Sign universal apk and sign
       id: rename_apk_universal
       run: |
+        tree -a
         APK_PATH=${{github.workspace}}/app/build/outputs/apk/release/app-universal-release.apk
         echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore   
         bcversion=$(curl -fsSL https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/maven-metadata.xml | grep -oPm1 '(?<=<release>)[^<]+')
