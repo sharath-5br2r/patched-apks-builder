@@ -162,41 +162,46 @@ detect_version_mod() {
 
 # Modified version of patch to  handle custom keystore and file name.
 patch_mod() {
-	green_log "[+] Patching $1:"
+	if [ $1 == "repatch"]; then
+	 	mv ./release/$name_out.apk ./download/
+		name_in=$name_out
+		name_out=$name_out-p$patchversion
+	else 
+		name_out=$1-$2-$version-p$patchversion
+		name_in=$1
+    fi
 	if [ -f "./download/$1.apk" ]; then
 		local p b m ks a pu opt force
 		if [ "$3" = inotia ]; then
 			p="patch " b="-p $2.rvp" m="" a="" pu="--purge=true" opt="--legacy-options=./src/options/$2.json" force=" --force"
-			echo "Patching with Revanced-cli inotia"
+			toolmsg= "Revanced-cli inotia"
 		elif [ "$3" = morphe ]; then
-			p="patch " b="-p $2.mpp" m="" a=""  pu="--purge=true" opt="--options-file ./src/options/$2.json" force=" --force --continue-on-error"
-			echo "Patching with Morphe"
+			toolmsg="Morphe"
 		else
 			if [[ $(ls revanced-cli-*.jar) =~ revanced-cli-([0-9]+) ]]; then
 				num=${BASH_REMATCH[1]}
 				if [ $num -eq 6 ]; then
 					p="patch " b="-bp $2.rvp" m="" a="" pu="--purge=true" opt="" force=" --force"
-					echo "Patching with Revanced-cli version 6+"
+					toolmsg="Revanced-cli"
 				elif [ $num -eq 5 ]; then
 					p="patch " b="-p $2.rvp" m="" a="" pu="--purge=true" opt="" force=" --force"
-					echo "Patching with Revanced-cli version 5"
+					toolmsg="Revanced-cli"
 				elif [ $num -eq 4 ]; then
 					p="patch " b="--patch-bundle *patch*.jar" m="--merge *integration*.apk " a="" ks=" --keystore=./src/ks.keystore" pu="--purge=true" opt="--options=./src/options/$2.json "
-					echo "Patching with Revanced-cli version 4"
+					toolmsg="Revanced-cli"
 				elif [ $num -eq 3 ]; then
 					p="patch " b="--patch-bundle *patch*.jar" m="--merge *integration*.apk " a="" ks=" --keystore=./src/_ks.keystore" pu="--purge=true" opt="--options=./src/options/$2.json "
-					echo "Patching with Revanced-cli version 3"
+					toolmsg="Revanced-cli"
 				elif [ $num -eq 2 ]; then
 					p="" b="--bundle *patch*.jar" m="--merge *integration*.apk " a="--apk " ks=" --keystore=./src/_ks.keystore" pu="--clean" opt="--options=./src/options/$2.json " force=" --experimental"
-					echo "Patching with Revanced-cli version 2"
+					toolmsg="Revanced-cli"
 				fi
 			fi
 		fi
 		if [[ "$3" = inotia || "$3" = morphe ]]; then
 			unset CI GITHUB_ACTION GITHUB_ACTIONS GITHUB_ACTOR GITHUB_ENV GITHUB_EVENT_NAME GITHUB_EVENT_PATH GITHUB_HEAD_REF GITHUB_JOB GITHUB_REF GITHUB_REPOSITORY GITHUB_RUN_ID GITHUB_RUN_NUMBER GITHUB_SHA GITHUB_WORKFLOW GITHUB_WORKSPACE RUN_ID RUN_NUMBER
 		fi
-		name_out=$1-$2-$version-p$patchversion
-		name_in=$1
+		green_log "[+] Patching $name_in with $toolmsg $cliver and $patchname $patchversion"
 		eval java -jar *cli*.jar $p$b --keystore=./ks.keystore --keystore-password=$KEYSTORE_PASS --keystore-entry-password=$KEYSTORE_PASS --keystore-entry-alias=$KEYSTORE_ALIAS $m$opt --out=./release/$name_out.apk $excludePatches$includePatches $pu$force $a ./download/$name_in.apk
 		unset lock_version
 		unset excludePatches
@@ -207,13 +212,6 @@ patch_mod() {
 	fi
 }
 
-# Repach APK with new patch
-repatch() {
-	mv ./release/$name_out.apk ./download/
-	name_in=$name_out
-	name_out=$name_out-p$patchversion
-	patch_mod $name_in $1 $2
-}
 
 # Modified version of npatch to handle custom keystore and bouncy castle provider.
 npatch_mod() {
@@ -257,14 +255,20 @@ make_module() {
 	fi
 	green_log "[+] Making module for $2-$3 with version code $code"
 	cp -r  rv_module/module/. module
-	cp ./release/$2-$3*.apk module/base.apk
+	cp ./release/$2*$3*.apk module/base.apk
 	mkdir -p ./module/stock
 	cp ./download/$2.apk ./module/stock/base.apk
-	echo -e "PKG_NAME=$1\nPKG_VER=$version-p$patchversion\nMODULE_ARCH=$5" > ./module/config
+	if [ $4 != "arm64-v8a"|| $4 != "armeabi-v7a"  || $4 != "x86_64" || $4 != "x86" ]; then
+		archname=""
+	else
+		archname=$4
+	fi
+	echo -e "PKG_NAME=$1\nPKG_VER=$version-p$patchversion\nMODULE_ARCH=$archname" > ./module/config
 	echo -e "id=$2-$3\nname=$2-$3\nversion=$version (patches $3 - $tag)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$2 $3 Module\nupdateJson=https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/$2-$3/update.json" > ./module/module.prop
 	zip -r "./release/$2-$3-$version-p$patchversion.zip" ./module/ > /dev/null 2>&1
+	green_log "[+] Module created: ./release/$2-$3-$version-p$patchversion.zip"
 	rm -rf ./module ./release/$2-$3*.apk
-	echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$4/$2-$3-$version-p$patchversion.zip\"\n}" > ./release/update.json
+	echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$2-$3/$2-$3-$version-p$patchversion.zip\"\n}" > ./release/update.json
 }
 
 finish() {

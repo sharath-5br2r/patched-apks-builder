@@ -14,12 +14,12 @@ dl_cli() {
 	cliver=$tag
 }
 dl_patch() {
-	case $patchsrc in
+	case $source in
 		github)
-		    dl_gh_v2 "$patches" "prerelease" "$patchname.mpp"
+		    dl_gh_v2 "$patchesrc" "prerelease" "$patchname.mpp"
 			;;
 		gitlab)
-			dl_gl_mod "$patches" "prerelease" "$patchname.mpp"
+			dl_gl_mod "$patchesrc" "prerelease" "$patchname.mpp"
 			;;
 		*)
 			echo "Unknown patch source, exiting."
@@ -28,50 +28,59 @@ dl_patch() {
 	esac
 	patchversion=$tag
 }
+get_app(){
+	case $apksrc in
+		apkmirror)
+		    get_apk "$pkgname" "$appname-$arch" "$apktype"
+			;;
+		apkpure)
+			get_apkpure "$pkgname" "$appname-$arch" "$apktype"
+			;;
+		*)
+			echo "Unknown APK source, skipping."
+			;;
+	esac
+}
 patcher(){
 	dl_cli
-	dl_patch
 	if [[ -n $version_cmd ]]; then
 	   eval "$version_cmd"
 	fi
-	detect_version_mod "$pkgname" "$patchname.mpp"
-	if [[ -z $archs ]]; then
-	   get_patches_key "$appname-$patchname"
-	   get_apk "$pkgname" "$appname" "$apktype" 
-	   patch_mod "$appname" "$patchname" "$clitype"
-       if [[ $module == "true" ]]; then
-	    mv "$patchname.mpp" "$patchname-module.mpp"
-	    get_patches_key "$appname-$patchname-module"
-	    patch_mod "$appname" "$patchname-module" "$clitype"
-	    make_module "$pkgname" "$appname" "$patchname-module" "$clitype" "$archs"
-	   fi
-	else
-	    local oldIFS
-	    oldIFS=$IFS
-		IFS=','
-		for arch in $archs
-		do
+	while read -r line; do
+		lineno=1
+		module=$(jq -r '.module // "false"' <<< "$line")
+		patchname=$(jq -r '.patchname // ""' <<< "$line")
+		patchsrc=$(jq -r '.patchsrc // ""' <<< "$line")
+		source=$(jq -r '.source // ""' <<< "$line")
+		dl_patch
+		detect_version_mod "$pkgname" "$patchname.mpp"
+		local patchkey
+		if [[ $lineno -eq 1 ]]; then
+		    patchkey="$appname"
+		else
+		    patchkey="repatch"
+		fi
+		while read -r arch; do
 		    get_patches_key "$appname-$patchname"
-			get_apk "$pkgname" "$appname-$arch" "$apktype" "$arch"
-			patch_mod "$appname-$arch" "$patchname" "$clitype"
+			get_app
+			patch_mod "$patchkey-$arch" "$patchname" "$clitype"
 			if [[ $module == "true" ]]; then
-			    mv "$patchname.mpp" "$patchname-module.mpp"
+				mv "$patchname.mpp" "$patchname-module.mpp"
 				get_patches_key "$appname-$patchname-module"
-				patch_mod "$appname-$arch" "$patchname-module" "$clitype"
-				make_module "$pkgname" "$appname-$arch" "$patchname-module" "$clitype" "$arch"
+				patch_mod "$patchkey-$arch" "$patchname-module" "$clitype"
+				make_module "$pkgname" "$patchkey-$arch" "$patchname-module" "$arch"
 			fi
-		done
-		IFS=$oldIFS
-	fi
+		done < <(jq -r '.archs[]' <<< "$line")
+
+
+	done < <(jq -c '.[]'  <<< "$patches")
 }
 get_vars(){
 	query=$appname-$patchname
 	pkgname=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].pkgname // "" ') || true
 	apktype=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apktype // "" ') || true
-	archs=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].archs // "" ') || true
 	version_cmd=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].version_cmd // "" ') || true
-	module=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].module // "" ') || true
-	patchsrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].patchsrc // "" ') || true
+	archs=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].archs // "" ') || true
 	patches=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].patches // "" ') || true
 	apksrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apksrc // "" ') || true
 	cli=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].cli // "" ') || true
@@ -93,14 +102,21 @@ discord-revenge() {
 }
 
 x-piko() {
-	dl_morphe_cli
-    dl_gl_mod "inotia00/x-shim" "latest" "shim.mpp"
-    # Patch Twitter Piko:
+	cli="MorpheApp/morphe-cli"
+	dl_cli
+	patchname="shim"
+	patches="inotia00/x-shim"
+	patchsrc="gitlab"
+    dl_patch
+	# Patch Twitter Piko:
 	version="11.99.0-release.1"
     get_apk "com.twitter.android" "x" "bundle"
     patch_mod "x" "shim" "morphe"
+	patchname="piko"
+	patches="crimera/piko"
+	patchsrc="github"
+	dl_patch
 	get_patches_key "x-piko"
-	dl_gh_v2 "crimera/piko" "prerelease" "piko.mpp"
 	repatch "piko" "morphe"
 	
 }
