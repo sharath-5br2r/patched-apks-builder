@@ -67,6 +67,7 @@ rvpatcher(){
 		dl_patch
 		detect_version_mod "$pkgname" "$patchname.mpp"
 		if [[ $lineno -ne 1 ]]; then
+		    origapksrc=$apksrc
 		    apksrc="repatch"
 		fi
 		while read -r arch; do
@@ -79,9 +80,10 @@ rvpatcher(){
 				patch_mod "$appname-$arch" "$patchname-module" "$clitype"
 				make_module "$pkgname" "$appname-$arch" "$patchname-module" "$arch"
 			fi
-		lineno=$((lineno + 1))
-		done < <(jq -r '.[]' <<< "$archs")
 
+		done < <(jq -r '.[]' <<< "$archs")
+		lineno=$((lineno + 1))
+		apksrc=$origapksrc
 
 	done < <(jq -c '.[]'  <<< "$patches")
 }

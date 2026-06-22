@@ -50,7 +50,7 @@ dl_gh_v2(){
 	local filter=$4
     local exclude=$5
 	if [ -n "$filter" ]; then
-       if [ $exclude == "exclude" ]; then
+       if [[ "$exclude" == "exclude" ]]; then
           urls=$(gh release view $tag --repo $repo  --json assets | jq --arg filter "$filter" -r '.assets[] | select(.name | contains($filter) | not ) | .url')
        else
 	      urls=$(gh release view $tag --repo $repo  --json assets | jq --arg filter "$filter" -r '.assets[] | select(.name | contains($filter)) | .url')
@@ -205,7 +205,7 @@ npatch_mod() {
 	version=$(java -jar ./APKEditor.jar info -i ./release/$1.apk -version-name)
 	green_log "[+] Patching $1:"
 	if [ -f "./download/$1.apk" ]; then
-		if [[ ! -f "$module" ]]; then
+		if [[ ! -f "$2" ]]; then
 			red_log "[-] Module not found: $2"
 			return 1
 		fi
