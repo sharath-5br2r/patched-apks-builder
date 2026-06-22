@@ -51,12 +51,12 @@ patcher(){
 		for arch in $archs
 		do
 		    get_patches_key "$appname-$patchname"
-			get_apk "$pkgname" "$appname" "$apktype" "$arch"
-			patch_mod "$appname" "$patchname" "$clitype"
+			get_apk "$pkgname" "$appname-$arch" "$apktype" "$arch"
+			patch_mod "$appname-$arch" "$patchname" "$clitype"
 			if [[ $module="true" ]]; then
 				get_patches_key "$appname-$patchname-module"
-				patch_mod "$appname" "$patchname" "$clitype"
-				make_module "$pkgname" "$appname" "$patchname" "$clitype" "$arch"
+				patch_mod "$appname-$arch" "$patchname" "$clitype"
+				make_module "$pkgname" "$appname-$arch" "$patchname" "$clitype" "$arch"
 			fi
 		done
 		IFS=$oldIFS
