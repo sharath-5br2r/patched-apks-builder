@@ -1,4 +1,4 @@
-name: Build
+name: Build and Patch FCL into CoD Mobile
 
 on:
   workflow_call:
@@ -54,7 +54,10 @@ jobs:
             wget -qO sdk.zip "https://dl.google.com/android/repository/build-tools_r36_linux.zip"
             unzip -q -j sdk.zip android-16/lib/apksigner.jar
             java -cp "bcprov.jar:apksigner.jar" com.android.apksigner.ApkSignerTool sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in ./app/build/outputs/apk/release/*.apk --out fcl-cod-$TAG.apk
-          
+        env:
+          KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+          KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Release
         uses: ncipollo/release-action@v1.21.0

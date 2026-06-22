@@ -1,0 +1,67 @@
+name: Build and Patch Geode launcher into PUBG KR
+
+on:
+  workflow_dispatch:
+  push:
+    branches: '*'
+
+jobs:
+  build:    
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Get LeviLauncher tag
+      id: get_tag
+      run:  |
+        echo "TAG=$(gh release view -R 0Sombra666/LeviLaunchroidUnlocked --json tagName --jq '.tagName' )" >> $GITHUB_ENV
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        
+    - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+    - name: Setup Java JDK
+      uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
+      with:
+        java-version: 21
+        distribution: temurin
+        cache: gradle
+
+    - name: Fix gradle permissions
+      run: chmod +x ./gradlew
+    - name: Patch
+      run: |
+        sed -i 's/applicationId = "com\.geode\.launcher"/applicationId = "com.pubg.krmobile"/' app/build.gradle.kts
+        sed -i 's#<string name="app_name" translatable="false">Geode</string>#<string name="app_name" translatable="false">Geode (PUBG:KR)</string>#' app/src/main/res/values/strings.xml
+
+    - name: Build project
+      run: |
+        ./gradlew app:assembleRelease --no-daemon
+
+    - name: Sign universal apk and sign
+      id: rename_apk_universal
+      run: |
+        SHORT_SHA=${GITHUB_SHA::7}
+        APK_PATH=${{github.workspace}}/app/build/outputs/apk/release/app-universal-releasde.apk
+        echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore   
+        bcversion=$(curl -fsSL https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/maven-metadata.xml | grep -oPm1 '(?<=<release>)[^<]+')
+        echo -e "\e[32m[+] Downloading Bouncy Castle Provider\e[0m"
+        wget -qO bcprov.jar "https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/$bcversion/bcprov-jdk18on-$bcversion.jar"
+        LAST_PROV=$(grep "^security.provider\." "$JAVA_HOME/conf/security/java.security"  | grep -oP '(?<=security\.provider\.)\d+' | sort -n | tail -1)
+        echo "security.provider.$((LAST_PROV+1))=org.bouncycastle.jce.provider.BouncyCastleProvider"  > bc.security
+        wget -qO sdk.zip "https://dl.google.com/android/repository/build-tools_r36_linux.zip"
+        unzip -q -j sdk.zip android-16/lib/apksigner.jar
+        java -cp "bcprov.jar:apksigner.jar" com.android.apksigner.ApkSignerTool sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in $APK_PATH --out geode-pubgkr-$TAG.apk
+      env:
+        KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
+        KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Release
+      uses: ncipollo/release-action@v1.21.0
+      with:
+          artifacts: |
+              ./geode-pubgkr-$TAG.apk
+          name: "Geode Launcher (PUBG:KR)"
+          tag: "geode-pubgkr"
+          allowUpdates: true
+          makeLatest: true
+          body: "Geode Launcher dynamically patched for PUBG:KR, using Github Actions. Version ${{env.TAG}}"
