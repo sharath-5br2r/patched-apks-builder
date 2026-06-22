@@ -17,7 +17,7 @@
         "pkgname": "org.zwanoo.android.speedtest",
         "apksrc": "apkmirror",
         "apktype": "apk",
-        "archs": "arm64-v8a\nx86_64"
+        "archs": "arm64-v8a,x86_64"
     },
     "tiktok-icysymmetra": 
     {
@@ -49,7 +49,7 @@
         "apksrc": "apkmirror",
         "apktype": "apk",
         "module": "true",
-        "archs": "arm64-v8a\nx86_64",
+        "archs": "arm64-v8a,x86_64",
         "version_cmd": "get_experimental_version com.google.android.apps.youtube.music"
     },
     "instgram-piko":
@@ -60,7 +60,7 @@
         "pkgname": "com.instagram.android",
         "apksrc": "apkmirror",
         "apktype": "bundle",
-        "archs": "arm64-v8a\nx86_64"
+        "archs": "arm64-v8a,x86_64"
     },
     "prime-video-hoo-dles":
     {

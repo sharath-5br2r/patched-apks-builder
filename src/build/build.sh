@@ -47,7 +47,7 @@ patcher(){
 	else
 	    local oldIFS
 	    oldIFS=$IFS
-		IFS='\n'
+		IFS=','
 		for arch in $archs
 		do
 		    get_patches_key "$appname-$patchname"
