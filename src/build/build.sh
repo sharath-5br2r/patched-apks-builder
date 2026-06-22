@@ -64,15 +64,15 @@ patcher(){
 }
 get_vars(){
 	query=$appname-$patchname
-	pkgname=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].pkgname') || true
-	apktype=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apktype') || true
-	archs=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].archs') || true
-	version_cmd=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].version_cmd') || true
-	module=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].module') || true
-	patchsrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].patchsrc') || true
-	patches=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].patches') || true
-	apksrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apksrc') || true
-	cli=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].cli') || true
+	pkgname=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].pkgname // "" ') || true
+	apktype=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apktype // "" ') || true
+	archs=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].archs // "" ') || true
+	version_cmd=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].version_cmd // "" ') || true
+	module=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].module // "" ') || true
+	patchsrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].patchsrc // "" ') || true
+	patches=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].patches // "" ') || true
+	apksrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apksrc // "" ') || true
+	cli=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].cli // "" ') || true
 
 }
 morphe-patch(){
