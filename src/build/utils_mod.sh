@@ -201,27 +201,7 @@ patch_mod() {
 
 
 # Modified version of npatch to handle custom keystore and bouncy castle provider.
-npatch_mod() {
-	version=$(java -jar ./APKEditor.jar info -i ./release/$1.apk -version-name)
-	green_log "[+] Patching $1:"
-	if [ -f "./download/$1.apk" ]; then
-		if [[ ! -f "$2" ]]; then
-			red_log "[-] Module not found: $2"
-			return 1
-		fi
-		if [[ "$OSTYPE" == "cygwin" ]]; then
-			green_log "[+] Detected Windows environment, using Windows version of npatch"
-			java -cp "bcprov.jar;npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$2" -o ./release/
-		else
-			java -cp "bcprov.jar:npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$2" -o ./release/
-		fi
-		mv ./release/$1-*-npatched.apk "./release/$1-$3-$version.apk"
-		unset lock_version
-	else
-		red_log "[-] Not found $1.apk"
-		exit 1
-	fi
-}
+
 
 # Make module from patched APK
 make_module() {

@@ -175,6 +175,38 @@
         "apksrc": "apkmirror",
         "apktype": "bundle",
         "archs": ["arm64-v8a", "x86_64"]
+    },
+    "discord-revenge":
+    {
+        "cli": "7723mod/NPatch",
+        "patches": [
+            {
+                "patchname": "revenge",
+                "patchsrc": "revenge-mod/revenge-xposed",
+                "source": "github",
+                "filter": "app-release.apk"
+            }
+        ],
+        "pkgname": "com.discord",
+        "apksrc": "apkmirror",
+        "apktype": "bundle",
+        "archs": ["universal"]
+    },
+    "amazon-india-signed":
+    {
+        "cli": "apksigner.jar",
+        "pkgname": "in.amazon.mShop.android.shopping",
+        "apksrc": "apkmirror",
+        "apktype": "bundle",
+        "archs": ["arm64-v8a"]
+    },
+    "amazon-alexa-signed":
+    {
+        "cli": "apksigner.jar",
+        "pkgname": "com.amazon.dee.app",
+        "apksrc": "apkmirror",
+        "apktype": "bundle",
+        "archs": ["universal"]
     }
     
 }
