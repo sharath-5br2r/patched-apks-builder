@@ -247,7 +247,7 @@ npatch_mod() {
 
 # Make module from patched APK
 make_module() {
-	tag=$(echo $tag | sed 's/"//g')
+	patchversion=$(echo $patchversion | sed 's/"//g')
 	local pkg_id=$1 module_name=$2
     code=$(gh api /repos/sharath-5br2r/patched-apks-builder/releases/tags/$2-$3 | jq -r '.assets[]? | select(.name == "update.json") | .url' | xargs wget -qO- | jq -r '.versionCode // 0') || code=0
 	green_log "[+] Making module for $2-$3 with version code $code"

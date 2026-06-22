@@ -41,8 +41,8 @@ patcher(){
 	   patch_mod "$appname" "$patchname" "$clitype"
        if [[ $module == "true" ]]; then
 	    get_patches_key "$appname-$patchname-module"
-	    patch_mod "$appname" "$patchname" "$clitype"
-	    make_module "$pkgname" "$appname" "$patchname" "$clitype" "$archs"
+	    patch_mod "$appname" "$patchname-module" "$clitype"
+	    make_module "$pkgname" "$appname" "$patchname-module" "$clitype" "$archs"
 	   fi
 	else
 	    local oldIFS
@@ -55,8 +55,8 @@ patcher(){
 			patch_mod "$appname-$arch" "$patchname" "$clitype"
 			if [[ $module == "true" ]]; then
 				get_patches_key "$appname-$patchname-module"
-				patch_mod "$appname-$arch" "$patchname" "$clitype"
-				make_module "$pkgname" "$appname-$arch" "$patchname" "$clitype" "$arch"
+				patch_mod "$appname-$arch" "$patchname-module" "$clitype"
+				make_module "$pkgname" "$appname-$arch" "$patchname-module" "$clitype" "$arch"
 			fi
 		done
 		IFS=$oldIFS
