@@ -234,15 +234,15 @@ npatch_mod() {
 make_module() {
 	patchversion=$(echo $patchversion | sed 's/"//g')
 	local pkg_id=$1 module_name=$2
-    code=$(gh api /repos/sharath-5br2r/patched-apks-builder/releases/tags/$2-$3 | jq -r '.assets[]? | select(.name == "update.json") | .url' | xargs wget -qO- | jq -r '.versionCode // 0') || yes
+    code=$(gh api /repos/sharath-5br2r/patched-apks-builder/releases/tags/$2-$3 | jq -r '.assets[]? | select(.name == "update-$4.json") | .url' | xargs wget -qO- | jq -r '.versionCode // 0') || yes
 	if [ -z "$code" ] ; then
 		code=1
 	else
 		code=$((code + 1))
 	fi
-	green_log "[+] Making module for $2-$3 with version code $code"
+	green_log "[+] Making module for $2-$3-$4 with version code $code"
 	cp -r  rv_module/module/. module
-	cp ./release/$2*$3*.apk module/base.apk
+	cp ./release/$2*$4*$3*.apk module/base.apk
 	mkdir -p ./module/stock
 	cp ./download/$2.apk ./module/stock/base.apk
 	if [[ $4 != "arm64-v8a" && $4 != "armeabi-v7a" && $4 != "x86_64" && $4 != "x86" ]]; then
@@ -251,11 +251,11 @@ make_module() {
 		archname=$4
 	fi
 	echo -e "PKG_NAME=$1\nPKG_VER=$version-p$patchversion\nMODULE_ARCH=$archname" > ./module/config
-	echo -e "id=$2-$3\nname=$2-$3\nversion=$version (patches $3 - $tag)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$2 $3 Module\nupdateJson=https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/$2-$3/update.json" > ./module/module.prop
-	zip -r "./release/$2-$3-$version-p$patchversion.zip" ./module/ > /dev/null 2>&1
-	green_log "[+] Module created: ./release/$2-$3-$version-p$patchversion.zip"
+	echo -e "id=$2-$3-$4\nname=$2-$3-$4\nversion=$version (patches $3 - $tag)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$2 $3 $4 Module\nupdateJson=https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/$2-$3/update-$4.json" > ./module/module.prop
+	zip -r "./release/$2-$3-$4-$version-p$patchversion.zip" ./module/ > /dev/null 2>&1
+	green_log "[+] Module created: ./release/$2-$3-$4-$version-p$patchversion.zip"
 	rm -rf ./module ./release/$2-$3*.apk
-	echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$2-$3/$2-$3-$version-p$patchversion.zip\"\n}" > ./release/update.json
+	echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$2-$3/$2-$3-$version-p$patchversion.zip\"\n}" > ./release/update-$4.json
 }
 
 finish() {
