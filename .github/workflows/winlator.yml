@@ -56,7 +56,7 @@ jobs:
         echo "security.provider.$((LAST_PROV+1))=org.bouncycastle.jce.provider.BouncyCastleProvider"  > bc.security
         wget -qO sdk.zip "https://dl.google.com/android/repository/build-tools_r36_linux.zip"
         unzip -q -j sdk.zip android-16/lib/apksigner.jar
-        java -cp "bcprov.jar:apksigner.jar" com.android.apksigner.ApkSignerTool sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS "app/build/outputs/apk/release/app-release.apk" "winlator-pubgvn-$TAG.apk"
+        java -cp "bcprov.jar:apksigner.jar" com.android.apksigner.ApkSignerTool sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in "app/build/outputs/apk/release/app-release.apk" --out "winlator-pubgvn-$TAG.apk"
       env:
         KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
         KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}

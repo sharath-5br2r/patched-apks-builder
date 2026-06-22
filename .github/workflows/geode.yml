@@ -42,6 +42,7 @@ jobs:
       run: |
         APK_PATH=${{github.workspace}}/app/build/outputs/apk/release/app-universal-release.apk
         echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore   
+        ls $APK_PATH
         bcversion=$(curl -fsSL https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/maven-metadata.xml | grep -oPm1 '(?<=<release>)[^<]+')
         echo -e "\e[32m[+] Downloading Bouncy Castle Provider\e[0m"
         wget -qO bcprov.jar "https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/$bcversion/bcprov-jdk18on-$bcversion.jar"
@@ -49,7 +50,7 @@ jobs:
         echo "security.provider.$((LAST_PROV+1))=org.bouncycastle.jce.provider.BouncyCastleProvider"  > bc.security
         wget -qO sdk.zip "https://dl.google.com/android/repository/build-tools_r36_linux.zip"
         unzip -q -j sdk.zip android-16/lib/apksigner.jar
-        java -cp "bcprov.jar:apksigner.jar" com.android.apksigner.ApkSignerTool sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS $APK_PATH "geode-pubgkr-$TAG.apk"
+        java -cp "bcprov.jar:apksigner.jar" com.android.apksigner.ApkSignerTool sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in $APK_PATH --out "geode-pubgkr-$TAG.apk"
       env:
         KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
         KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
