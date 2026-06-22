@@ -39,7 +39,7 @@ patcher(){
 	   get_patches_key "$appname-$patchname"
 	   get_apk "$pkgname" "$appname" "$apktype" 
 	   patch_mod "$appname" "$patchname" "$clitype"
-       if [[ $module="true" ]]; then
+       if [[ $module == "true" ]]; then
 	    get_patches_key "$appname-$patchname-module"
 	    patch_mod "$appname" "$patchname" "$clitype"
 	    make_module "$pkgname" "$appname" "$patchname" "$clitype" "$archs"
@@ -53,7 +53,7 @@ patcher(){
 		    get_patches_key "$appname-$patchname"
 			get_apk "$pkgname" "$appname-$arch" "$apktype" "$arch"
 			patch_mod "$appname-$arch" "$patchname" "$clitype"
-			if [[ $module="true" ]]; then
+			if [[ $module == "true" ]]; then
 				get_patches_key "$appname-$patchname-module"
 				patch_mod "$appname-$arch" "$patchname" "$clitype"
 				make_module "$pkgname" "$appname-$arch" "$patchname" "$clitype" "$arch"
