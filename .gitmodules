@@ -1,4 +1,0 @@
-[submodule "rv_module"]
-	path = rv_module
-	url = https://github.com/j-hc/revanced-magisk-module
-	branch = main
