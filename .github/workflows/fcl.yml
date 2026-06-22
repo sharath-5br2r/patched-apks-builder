@@ -1,5 +1,5 @@
 name: Build and Patch FCL into CoD Mobile
-
+permissions: write-all
 on:
   workflow_call:
   workflow_dispatch:

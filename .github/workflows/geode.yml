@@ -1,5 +1,5 @@
 name: Build and Patch Geode launcher into PUBG KR
-
+permissions: write-all
 on:
   workflow_dispatch:
   workflow_call:
