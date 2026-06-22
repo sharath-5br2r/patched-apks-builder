@@ -51,9 +51,9 @@ dl_gh_v2(){
     local exclude=$5
 	if [ -n "$filter" ]; then
        if [ $exclude="exclude" ]; then
-          urls=$(gh release view $tag --repo $repo  --json assets --jq '.assets[] | select(.name | contains("'$filter'") | not ) | .url')
+          urls=$(gh release view $tag --repo $repo  --json assets | jq --arg filter "$filter" '.assets[] | select(.name | contains($filter) | not ) | .url')
        else
-	      urls=$(gh release view $tag --repo $repo  --json assets --jq '.assets[] | select(.name | contains("'$filter'")) | .url')
+	      urls=$(gh release view $tag --repo $repo  --json assets | jq --arg filter "$filter" '.assets[] | select(.name | contains($filter)) | .url')
        fi
 	else
 	   urls=$(gh release view $tag --repo $repo  --json assets --jq '.assets[] | .url')
@@ -151,9 +151,10 @@ patch_mod() {
 	if [ $1 == "repatch" ]; then
 	 	mv ./release/$name_out.apk ./download/
 		name_in=$name_out
-		name_out=$name_out-p$patchversion
+		name_out="$name_out-p$patchversion"
 	else 
-		name_out=$1-$2-$version-p$patchversion
+		version=$(java -jar ./APKEditor.jar info -i ./release/$1.apk -version-name)
+		name_out="$1-$2-$version-p$patchversion"
 		name_in=$1
     fi
 	if [ -f "./download/$1.apk" ]; then
@@ -202,25 +203,18 @@ patch_mod() {
 
 # Modified version of npatch to handle custom keystore and bouncy castle provider.
 npatch_mod() {
+	version=$(java -jar ./APKEditor.jar info -i ./release/$1.apk -version-name)
 	green_log "[+] Patching $1:"
 	if [ -f "./download/$1.apk" ]; then
-		local module
-		if [[ "$2" == *.apk ]]; then
-			local -a matches=($2)
-			module="${matches[0]}"
-		else
-			module="$2.apk"
-		fi
 		if [[ ! -f "$module" ]]; then
 			red_log "[-] Module not found: $2"
 			return 1
 		fi
-        mv jar*.jar jar-npatch.jar
 		if [[ "$OSTYPE" == "cygwin" ]]; then
 			green_log "[+] Detected Windows environment, using Windows version of npatch"
-			java -cp "bcprov.jar;jar-npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$module" -o ./release/
+			java -cp "bcprov.jar;npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$2" -o ./release/
 		else
-			java -cp "bcprov.jar:jar-npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$module" -o ./release/
+			java -cp "bcprov.jar:npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$2" -o ./release/
 		fi
 		mv ./release/$1-*-npatched.apk "./release/$1-$3-$version.apk"
 		unset lock_version
@@ -240,9 +234,9 @@ make_module() {
 	else
 		code=$((code + 1))
 	fi
-	green_log "[+] Making module for $2-$3-$4 with version code $code"
+	green_log "[+] Making module for $2-$3 with version code $code"
 	cp -r  rv_module/module/. module
-	cp ./release/$2*$4*$3*.apk module/base.apk
+	cp ./release/$2*$3*.apk module/base.apk
 	mkdir -p ./module/stock
 	cp ./download/$2.apk ./module/stock/base.apk
 	if [[ $4 != "arm64-v8a" && $4 != "armeabi-v7a" && $4 != "x86_64" && $4 != "x86" ]]; then
@@ -251,9 +245,9 @@ make_module() {
 		archname=$4
 	fi
 	echo -e "PKG_NAME=$1\nPKG_VER=$version-p$patchversion\nMODULE_ARCH=$archname" > ./module/config
-	echo -e "id=$2-$3-$4\nname=$2-$3-$4\nversion=$version (patches $3 - $tag)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$2 $3 $4 Module\nupdateJson=https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/$2-$3/update-$4.json" > ./module/module.prop
-	zip -r "./release/$2-$3-$4-$version-p$patchversion.zip" ./module/ > /dev/null 2>&1
-	green_log "[+] Module created: ./release/$2-$3-$4-$version-p$patchversion.zip"
+	echo -e "id=$2-$3\nname=$2-$3\nversion=$version (patches $3 - $tag)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$2 $3 Module\nupdateJson=https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/$2-$3/update-$4.json" > ./module/module.prop
+	zip -r "./release/$2-$3-$version-p$patchversion.zip" ./module/ > /dev/null 2>&1
+	green_log "[+] Module created: ./release/$2-$3-$version-p$patchversion.zip"
 	rm -rf ./module ./release/$2-$3*.apk
 	echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$2-$3/$2-$3-$version-p$patchversion.zip\"\n}" > ./release/update-$4.json
 }

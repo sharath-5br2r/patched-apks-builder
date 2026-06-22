@@ -13,7 +13,7 @@
         "apksrc": "apkmirror",
         "apktype": "bundle",
         "archs": ["universal"],
-        "version_cmd": "_fs_get https://www.apkmirror.com/apk/adobe/adobe-acrobat/feed/ && version=$(curl -s https://www.apkmirror.com/apk/adobe/adobe-acrobat/feed/ -H \"Cookie: $FS_COOKIES\" -H \"User-Agent: $user_agent\" | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\\/title>//' -e 's/<description>/  /' -e 's/<\\/description>//' | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+' | sort | tail -n 1)" 
+        "version_cmd": "latest"
     },
     "speedtest-xtra": 
     {
@@ -93,7 +93,7 @@
         "apksrc": "apkmirror",
         "apktype": "apk",
         "archs": ["arm64-v8a"],
-        "version_cmd": "_fs_get https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video/feed/ && version=$(curl -s https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-prime-video/feed/ -H \"Cookie: $FS_COOKIES\" -H \"User-Agent: $user_agent\" | grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\\/title>//' -e 's/<description>/  /' -e 's/<\\/description>//' | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+' | grep -v - | head -n 1)"
+        "version_cmd": "latest"
     },
     "proton-vpn-paresh": 
     {
@@ -109,8 +109,7 @@
         "apksrc": "apkmirror",
         "apktype": "bundle",
         "archs": ["universal"],
-        "version_cmd": "_fs_get https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/feed/ && version=$(curl -s https://www.apkmirror.com/apk/proton-technologies-ag/protonvpn-secure-and-free-vpn/feed/ -H \"Cookie: $FS_COOKIES\" -H \"User-Agent: $user_agent\" | grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\\/title>//' -e 's/<description>/  /' -e 's/<\\/description>//' | grep -oE '[0-9]+\\.[0-9]+\\.[0-9]+\\.[0-9]+' | grep -v - | head -n 1)"
-
+        "version_cmd": "latest"
     },
     "jiohotstar-paresh": 
     {

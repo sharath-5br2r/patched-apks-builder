@@ -41,7 +41,7 @@ get_app(){
 			;;
 	esac
 }
-patcher(){
+rvpatcher(){
 	query=$appname-$patchname
 	pkgname=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].pkgname // "" ') || true
 	apktype=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apktype // "" ') || true
@@ -51,7 +51,9 @@ patcher(){
 	apksrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apksrc // "" ') || true
 	cli=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].cli // "" ') || true	
 	dl_cli
-	if [[ -n $version_cmd ]]; then
+	if [[ $version_cmd == "latest" ]]; then
+	   version="latest"
+	elif [[ -n $version_cmd ]]; then
 	   eval "$version_cmd"
 	fi
 	while read -r line; do
@@ -83,52 +85,27 @@ patcher(){
 
 	done < <(jq -c '.[]'  <<< "$patches")
 }
-morphe-patch(){
-	patcher
-}
+
 
 discord-revenge() {
 	# Patch Revenge:
-	dl_gh_v2 "NPatch/7723mod" "latest"
-	dl_gh_v2 "revenge-xposed/revenge-mod" "latest"
-	_fs_get https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/feed/
-	version=$(curl -s https://www.apkmirror.com/apk/discord/discord-chat-for-gamers/feed/  -H "Cookie: $FS_COOKIES" -H "User-Agent: $user_agent"   |  grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//' -e 's/<description>/  /' -e 's/<\/description>//' |  grep -oE '[0-9]+\.[0-9]+.*' |  awk -F ' by' '{print $1}' | grep Beta | head -n 1 )
+	dl_gh_v2 "7723mod/NPatch" "latest" "jar" "npatch.jar"
+	dl_gh_v2 "revenge-mod/revenge-xposed" "latest" "app-release.apk" "revenge.apk"
 	get_apk "com.discord" "discord" "bundle"
 	npatch_mod "discord" "app-release" "revenge"
 }
 
-x-pikoleg() {
-	cli="MorpheApp/morphe-cli"
-	dl_cli
-	patchname="shim"
-	patches="inotia00/x-shim"
-	patchsrc="gitlab"
-    dl_patch
-	# Patch Twitter Piko:
-	version="11.99.0-release.1"
-    get_apk "com.twitter.android" "x" "bundle"
-    patch_mod "x" "shim" "morphe"
-	patchname="piko"
-	patches="crimera/piko"
-	patchsrc="github"
-	dl_patch
-	get_patches_key "x-piko"
-	repatch "piko" "morphe"
-	
-}
 
 amazon-india-signed(){
-	_fs_get https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay/feed/
-	version=$(curl -s https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-india-shop-pay/feed/ -H "Cookie: $FS_COOKIES" -H "User-Agent: $user_agent"   |  grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//' -e 's/<description>/  /' -e 's/<\/description>//' |  grep -oE '[0-9]+\.[0-9]+.*' |  awk -F ' by' '{print $1}'| head -n 1 )
 	get_apk "in.amazon.mShop.android.shopping" "amazon-india" "bundle"
 	java -jar APKEditor.jar m -i ./download/amazon-india.apkm -o amazon-india.apk
+	version=$(java -jar ./APKEditor.jar info -i ./download/amazon-india.apkm -version-name)
 	sign "amazon-india.apk" ./release/amazon-india-signed-$version.apk
 }
 amazon-alexa-signed(){
-	_fs_get https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/feed/
-	version=$(curl -s https://www.apkmirror.com/apk/amazon-mobile-llc/amazon-alexa/feed/ -H "Cookie: $FS_COOKIES" -H "User-Agent: $user_agent"   |  grep -E '(title>|description>)' | tail -n +4 | sed -e 's/^[ \t]*//' | sed -e 's/<title>//' -e 's/<\/title>//' -e 's/<description>/  /' -e 's/<\/description>//' |  grep -oE '[0-9]+\.[0-9]+.*' |  awk -F ' by' '{print $1}'| head -n 1 )
 	get_apk "com.amazon.dee.app" "amazon-alexa" "bundle"
 	java -jar APKEditor.jar m -i ./download/amazon-alexa.apkm -o amazon-alexa.apk
+	version=$(java -jar ./APKEditor.jar info -i ./download/amazon-alexa.apkm -version-name)
 	sign "amazon-alexa.apk" ./release/amazon-alexa-signed-$version.apk
 }
 dolphin-sdk29() {
@@ -164,7 +141,7 @@ fcl-cod() {
     java -jar APKEditor.jar d -i fcl-orig.apk -o fcl-src -t xml -dex
     sed -i -e 's/package="com\.tungsten\.fcl"/package="com.activision.callofduty.shooter"/' -e 's/com\.tungsten\.fcl\.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/com.activision.callofduty.shooter.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/g' -e 's/com\.tungsten\.fcl\.document\.provider/com.activision.callofduty.shooter.document.provider/g' -e 's/com\.tungsten\.fcl\.provider/com.activision.callofduty.shooter.provider/g' -e 's/com\.tungsten\.fcl\.crashreporterinitprovider/com.activision.callofduty.shooter.crashreporterinitprovider/g' -e 's/com\.tungsten\.fcl\.androidx-startup/com.activision.callofduty.shooter.androidx-startup/g' fcl-src/AndroidManifest.xml
     java -jar APKEditor.jar b -i fcl-src -o fcl-patched.apk
-    sign fcl-patched.apk ./release/FCL-release-cod-$release_name.apk
+    sign fcl-patched.apk ./release/FCL-release-cod-$tag.apk
 }
 
 geode-pubgkr() {
@@ -172,7 +149,7 @@ geode-pubgkr() {
     java -jar APKEditor.jar d -i geode-orig.apk -o geode-src -t xml -dex
     sed -i -e 's/package="com\.geode\.launcher"/package="com.pubg.krmobile"/' -e '/package="com\.pubg\.krmobile"/a\    android:compileSdkVersion="36"\n    android:compileSdkVersionCodename="16"' -e '/android:compileSdkVersion="36"/d' -e '/android:compileSdkVersionCodename="16"/d' -e '0,/package="com\.pubg\.krmobile"/s//android:compileSdkVersion="36"\n    android:compileSdkVersionCodename="16"\n    package="com.pubg.krmobile"/' -e 's/com\.geode\.launcher\.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/com.pubg.krmobile.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION/g' -e 's/com\.geode\.launcher\.user/com.pubg.krmobile.user/g' -e 's/com\.geode\.launcher\.fileprovider/com.pubg.krmobile.fileprovider/g' -e 's/com\.geode\.launcher\.androidx-startup/com.pubg.krmobile.androidx-startup/g' geode-src/AndroidManifest.xml         
     java -jar APKEditor.jar b -i geode-src -o geode-patched.apk
-    sign geode-patched.apk ./release/geode-launcher-pubgkr-$release_name.apk
+    sign geode-patched.apk ./release/geode-launcher-pubgkr-$tag.apk
 }
 
 winlator-pubgvn() {
@@ -180,7 +157,7 @@ winlator-pubgvn() {
     java -jar APKEditor.jar d -i winlator-orig.apk -o winlator-src -t xml -dex
     sed -i -e 's/package="com\.tencent\.ig"/package="com.vng.pubgmobile"/' -e 's/com\.tencent\.ig\.tileprovider/com.vng.pubgmobile.tileprovider/' -e 's/com\.tencent\.ig\.core\.WinlatorFilesProvider/com.vng.pubgmobile.core.WinlatorFilesProvider/' -e 's/com\.tencent\.ig\.androidx-startup/com.vng.pubgmobile.androidx-startup/' winlator-src/AndroidManifest.xml
     java -jar APKEditor.jar b -i winlator-src -o winlator-patched.apk
-    sign winlator-patched.apk ./release/winlator-pubgvn-$release_name.apk
+    sign winlator-patched.apk ./release/winlator-pubgvn-$tag.apk
 }
 
 case "$1" in
@@ -210,7 +187,7 @@ case "$1" in
         ;;
 	*)
 	    if [[ -n $2 ]]; then
-	        morphe-patch
+	        rvpatcher
 	    else
 	        echo "Not Implemented"
 			exit 1
