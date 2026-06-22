@@ -92,7 +92,7 @@ discord-revenge() {
 	dl_gh_v2 "7723mod/NPatch" "latest" "npatch.jar" "jar"
 	dl_gh_v2 "revenge-mod/revenge-xposed" "latest" "revenge.apk" "app-release.apk"
 	get_apk "com.discord" "discord" "bundle"
-	npatch_mod "discord" "app-release" "revenge"
+	npatch_mod "discord" "revenge.apk" "revenge"
 }
 
 
