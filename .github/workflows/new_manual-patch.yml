@@ -147,10 +147,6 @@ jobs:
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
       - name: Preparing to patch
         uses: ./.github/actions/preparing
-      - name: Check github connection
-        id: check-gh
-        shell: bash
-        run: bash src/etc/connection.sh
       - name: Patch apk
         id: patch
         shell: bash
@@ -161,7 +157,6 @@ jobs:
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
           appname: ${{ matrix.appname }}
           patchname: ${{ matrix.patchname }}
-        if: steps.check-gh.outputs.internet_error == '0'
         run: |
           bash src/build/build.sh $appname-$patchname morphe
           if [ ${{ matrix.patch }} = "Custom" ]; then
@@ -171,7 +166,6 @@ jobs:
           fi
       - name: Releasing APK files
         id: release
-        if: steps.check-gh.outputs.internet_error == '0'
         uses: ncipollo/release-action@v1.21.0
         with:
           artifacts: |
@@ -181,7 +175,6 @@ jobs:
           allowUpdates: true
           body: "Old APK files are below"
       - name: Tailored Release
-        if: steps.check-gh.outputs.internet_error == '0'
         uses: ncipollo/release-action@v1.21.0
         with:
           artifacts: |

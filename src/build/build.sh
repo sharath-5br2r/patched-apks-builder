@@ -26,7 +26,7 @@ dl_patch() {
 			exit 1
 			;;
 	esac
-	patchver=$tag
+	patchversion=$tag
 }
 patcher(){
 	dl_cli

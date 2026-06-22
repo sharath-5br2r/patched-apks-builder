@@ -195,7 +195,7 @@ patch_mod() {
 		if [[ "$3" = inotia || "$3" = morphe ]]; then
 			unset CI GITHUB_ACTION GITHUB_ACTIONS GITHUB_ACTOR GITHUB_ENV GITHUB_EVENT_NAME GITHUB_EVENT_PATH GITHUB_HEAD_REF GITHUB_JOB GITHUB_REF GITHUB_REPOSITORY GITHUB_RUN_ID GITHUB_RUN_NUMBER GITHUB_SHA GITHUB_WORKFLOW GITHUB_WORKSPACE RUN_ID RUN_NUMBER
 		fi
-		name_out=$1-$2-$version-p$tag
+		name_out=$1-$2-$version-p$patchversion
 		name_in=$1
 		eval java -jar *cli*.jar $p$b --keystore=./ks.keystore --keystore-password=$KEYSTORE_PASS --keystore-entry-password=$KEYSTORE_PASS --keystore-entry-alias=$KEYSTORE_ALIAS $m$opt --out=./release/$name_out.apk $excludePatches$includePatches $pu$force $a ./download/$name_in.apk
 		unset lock_version
@@ -211,7 +211,7 @@ patch_mod() {
 repatch() {
 	mv ./release/$name_out.apk ./download/
 	name_in=$name_out
-	name_out=$name_out-p$tag
+	name_out=$name_out-p$patchversion
 	patch_mod $name_in $1 $2
 }
 
@@ -249,17 +249,17 @@ npatch_mod() {
 make_module() {
 	tag=$(echo $tag | sed 's/"//g')
 	local pkg_id=$1 module_name=$2
-    code=$(curl -s https://api.github.com/repos/sharath-5br2r/patched-apks-builder/releases/tags/$2-$3 | jq -r '.assets[]? | select(.name == "update.json") | .url' | xargs wget -qO- | jq -r '.versionCode // 0') || code=0
+    code=$(gh api /repos/sharath-5br2r/patched-apks-builder/releases/tags/$2-$3 | jq -r '.assets[]? | select(.name == "update.json") | .url' | xargs wget -qO- | jq -r '.versionCode // 0') || code=0
 	green_log "[+] Making module for $2-$3 with version code $code"
 	cp -r  rv_module/module/. module
 	cp ./release/$2-$3*.apk module/base.apk
 	mkdir -p ./module/stock
 	cp ./download/$2.apk ./module/stock/base.apk
-	echo -e "PKG_NAME=$1\nPKG_VER=$version\nMODULE_ARCH=$5" > ./module/config
+	echo -e "PKG_NAME=$1\nPKG_VER=$version-p$patchversion\nMODULE_ARCH=$5" > ./module/config
 	echo -e "id=$2-$3\nname=$2-$3\nversion=$version (patches $3 - $tag)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$2 $3 Module\nupdateJson=https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/$2-$3/update.json" > ./module/module.prop
-	zip -r "./release/$2-$3-$version-p$tag.zip" ./module/ > /dev/null 2>&1
+	zip -r "./release/$2-$3-$version-p$patchversion.zip" ./module/ > /dev/null 2>&1
 	rm -rf ./module ./release/$2-$3*.apk
-	echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$4/$2-$3-$version-p$tag.zip\"\n}" > ./release/update.json
+	echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$4/$2-$3-$version-p$patchversion.zip\"\n}" > ./release/update.json
 }
 
 finish() {
