@@ -162,7 +162,7 @@
         "archs": ["universal"],
         "apktype": "bundle"
     },
-    "instgram-piko":
+    "instagram-piko":
     {
         "cli": "MorpheApp/morphe-cli",
         "patches": [

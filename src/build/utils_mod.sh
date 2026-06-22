@@ -128,36 +128,22 @@ dl_gl_mod() {
 }
 # Modified version of detect_version to handle for a specific file
 detect_version_mod() {
-	if [ -z "$version" ] && [ "$lock_version" != "1" ]; then
-	  for spec in "revanced-cli-|5|*.rvp" "morphe-cli-|1|*.mpp"; do
-		IFS="|" read -r jar_prefix min_major patch_glob <<<"$spec"
-
-		if [[ $(ls "${jar_prefix}"*.jar 2>/dev/null) =~ ${jar_prefix}([0-9]+) ]]; then
-		  num=${BASH_REMATCH[1]}
-
-		  if [ "$num" -ge "$min_major" ]; then
-			if [[ "$jar_prefix" == "morphe-cli-" ]]; then
-			  list_patches_flags="list-patches --with-packages --with-versions --with-options --patches"
-			elif [ "$num" -ge 6 ]; then
-			  list_patches_flags="list-patches --packages --versions --options -bp"
+	    if [ -z "$version" ] && [ "$lock_version" != "1" ]; then
+			if [[ "$clitype" == "morphe" ]]; then
+				list_patches_flags="list-patches --with-packages --with-versions --with-options --patches"
+			elif [ "$cliver" -ge 6 ]; then
+				list_patches_flags="list-patches --packages --versions --options -bp"
 			else
-			  list_patches_flags="list-patches --with-packages --with-versions"
+				list_patches_flags="list-patches --with-packages --with-versions"
 			fi
 			version=$(java -jar *cli*.jar $list_patches_flags $2 | awk -v pkg="$1" '
-			  BEGIN { found = 0; printing = 0 }
-			  /^Index:/ { if (printing) exit; found = 0 }
-			  /Package name: / { if ($3 == pkg) found = 1 }
-			  /Compatible versions:/ { if (found) printing = 1; next }
-			  printing && $1 ~ /^[0-9]+\./ { print $1 }
-			' | sort -V | tail -n1)
-		  else
-			version=$(jq -r '[.. | objects | select(.name == "'"$1"'" and .versions != null) | .versions[]] | reverse | .[0] // ""' *.json 2>/dev/null | uniq)
-		  fi
+				BEGIN { found = 0; printing = 0 }
+				/^Index:/ { if (printing) exit; found = 0 }
+				/Package name: / { if ($3 == pkg) found = 1 }
+				/Compatible versions:/ { if (found) printing = 1; next }
+				printing && $1 ~ /^[0-9]+\./ { print $1 }
+			' | sort -V | tail -n1)				
 		fi
-
-		[ -n "$version" ] && break
-	  done
-	fi
 }
 
 # Modified version of patch to  handle custom keystore and file name.

@@ -62,22 +62,20 @@ patcher(){
 		source=$(jq -r '.source // ""' <<< "$line")
 		dl_patch
 		detect_version_mod "$pkgname" "$patchname.mpp"
-		local patchkey
-		if [[ $lineno -eq 1 ]]; then
-		    patchkey="$appname"
-		else
-		    patchkey="repatch"
+		if [[ $lineno -ne 1 ]]; then
+		    apksrc="repatch"
 		fi
 		while read -r arch; do
 		    get_patches_key "$appname-$patchname"
 			get_app
-			patch_mod "$patchkey-$arch" "$patchname" "$clitype"
+			patch_mod "$appname-$arch" "$patchname" "$clitype"
 			if [[ $module == "true" ]]; then
 				mv "$patchname.mpp" "$patchname-module.mpp"
 				get_patches_key "$appname-$patchname-module"
 				patch_mod "$patchkey-$arch" "$patchname-module" "$clitype"
 				make_module "$pkgname" "$patchkey-$arch" "$patchname-module" "$arch"
 			fi
+		lineno=$((lineno + 1))
 		done < <(jq -r '.[]' <<< "$archs")
 
 
@@ -97,7 +95,7 @@ discord-revenge() {
 	npatch_mod "discord" "app-release" "revenge"
 }
 
-x-piko() {
+x-pikoleg() {
 	cli="MorpheApp/morphe-cli"
 	dl_cli
 	patchname="shim"
@@ -186,9 +184,6 @@ winlator-pubgvn() {
 case "$1" in
     discord-revenge)
         discord-revenge
-        ;;
-	x-piko)
-		x-piko
 		;;
 	amazon-india-signed)
 		amazon-india-signed
