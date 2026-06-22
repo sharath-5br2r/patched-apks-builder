@@ -45,6 +45,9 @@ patcher(){
 	    make_module "$pkgname" "$appname" "$patchname" "$clitype" "$archs"
 	   fi
 	else
+	    local oldIFS
+	    oldIFS=$IFS
+		IFS='\n'
 		for arch in $archs
 		do
 		    get_patches_key "$appname-$patchname"
@@ -56,6 +59,7 @@ patcher(){
 				make_module "$pkgname" "$appname" "$patchname" "$clitype" "$arch"
 			fi
 		done
+		IFS=$oldIFS
 	fi
 }
 get_vars(){
