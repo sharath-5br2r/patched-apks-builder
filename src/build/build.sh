@@ -19,7 +19,7 @@ dl_patch() {
 		    dl_gh_v2 "$patches" "prerelease" "$patchname.mpp"
 			;;
 		gitlab)
-			dl_gl_v2 "$patches" "prerelease" "$patchname.mpp"
+			dl_gl_mod "$patches" "prerelease" "$patchname.mpp"
 			;;
 		*)
 			echo "Unknown patch source, exiting."
@@ -40,6 +40,7 @@ patcher(){
 	   get_apk "$pkgname" "$appname" "$apktype" 
 	   patch_mod "$appname" "$patchname" "$clitype"
        if [[ $module == "true" ]]; then
+	    mv "$patchname.mpp" "$patchname-module.mpp"
 	    get_patches_key "$appname-$patchname-module"
 	    patch_mod "$appname" "$patchname-module" "$clitype"
 	    make_module "$pkgname" "$appname" "$patchname-module" "$clitype" "$archs"
@@ -54,6 +55,7 @@ patcher(){
 			get_apk "$pkgname" "$appname-$arch" "$apktype" "$arch"
 			patch_mod "$appname-$arch" "$patchname" "$clitype"
 			if [[ $module == "true" ]]; then
+			    mv "$patchname.mpp" "$patchname-module.mpp"
 				get_patches_key "$appname-$patchname-module"
 				patch_mod "$appname-$arch" "$patchname-module" "$clitype"
 				make_module "$pkgname" "$appname-$arch" "$patchname-module" "$clitype" "$arch"
