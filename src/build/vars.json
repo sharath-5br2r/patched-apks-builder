@@ -43,7 +43,7 @@
         "pkgname": "com.zhiliaoapp.musically",
         "apksrc": "apkmirror",
         "apktype": "apk",
-        "archs": ["arm64-v8a + armeabi-v7a"]
+        "archs": ["arm64-v8a"]
     },
     "youtube-morphe": 
     {

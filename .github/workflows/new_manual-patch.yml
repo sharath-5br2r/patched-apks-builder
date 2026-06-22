@@ -173,6 +173,7 @@ jobs:
           name: "Old APKs"
           tag: "all"
           allowUpdates: true
+          makeLatest: true
           body: "Old APK files are below"
       - name: Tailored Release
         uses: ncipollo/release-action@v1.21.0
@@ -182,5 +183,6 @@ jobs:
           name: ${{ matrix.app }} - ${{ matrix.patch }} Patch
           tag: ${{ matrix.appname }}-${{ matrix.patchname }}
           allowUpdates: true
+          removeArtifacts: true
           body: "App: ${{ matrix.app }} with ${{ matrix.patch }} patch"
         
