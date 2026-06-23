@@ -34,7 +34,10 @@ on:
 jobs:
   patch:
     name: Patch ${{ matrix.app }} with ${{ matrix.patch }} patch
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     strategy:
       fail-fast: false
       matrix:
@@ -115,7 +118,6 @@ jobs:
     steps:
       - name: Check Match
         id: match-check
-        shell: bash
         run: |
           if [ "${{ inputs.patch }}" = "All" ] || [ "${{ inputs.patch }}" = "${{ matrix.patch }}" ]; then
             echo "should_run=true" >> $GITHUB_OUTPUT
@@ -127,19 +129,11 @@ jobs:
         with:
           submodules: recursive
       - name: Decode Keystore
-        shell: bash
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
       - name: Download and Setup FlareSolverr
-        shell: bash
         run: |
-          if [[ $OSTYPE == "cygwin" ]]; then
-            gh release download -R FlareSolverr/FlareSolverr --pattern "*windows*"
-            unzip -q *windows*.zip
-            flaresolverr/flaresolverr.exe &
-          else
-            docker run -d --name flaresolverr -p 8191:8191 ghcr.io/flaresolverr/flaresolverr:latest
-          fi
+          docker run -d --name flaresolverr -p 8191:8191 ghcr.io/flaresolverr/flaresolverr:latest
           echo "[*] Waiting for FlareSolverr to start..."
           for i in $(seq 1 30); do
             if curl -s http://localhost:8191/ > /dev/null 2>&1; then
@@ -150,7 +144,6 @@ jobs:
           done
       - name: Patch APK
         id: patch
-        shell: bash
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}

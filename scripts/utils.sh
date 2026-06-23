@@ -25,7 +25,7 @@ fi
 
 # Sign APK
 sign() {
-	if [ $OSTYPE == "cygwin" ]; then
+	if [[ $OSTYPE == "cygwin" ]]; then
 		java -cp "bcprov.jar;apksigner.jar" com.android.apksigner.ApkSignerTool sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in "$1" --out "$2"
     else
         java -cp "bcprov.jar:apksigner.jar" com.android.apksigner.ApkSignerTool sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in "$1" --out "$2"
@@ -41,9 +41,9 @@ get_experimental_version() {
 dl_gh_v2(){
 	local repo="$1"
     tag="$2"
-	if [ "$tag" == "latest" ]; then
+	if [[ "$tag" == "latest" ]]; then
 	   tag=$(gh release list --repo $repo --exclude-pre-releases --limit 1 --json tagName --jq '.[].tagName')
-	elif [ "$tag" == "prerelease" ]; then
+	elif [[ "$tag" == "prerelease" ]]; then
 	   tag=$(gh release list --repo $repo --limit 1 --json tagName --jq '.[].tagName')
 	fi
 	local output=$3

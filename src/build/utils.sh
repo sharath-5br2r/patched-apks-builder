@@ -5,7 +5,7 @@ mkdir ./release ./download
 #Setup pup for download apk files
 rm -f ./pup ./pup.exe
 echo -e "\e[32m[+] Setting up pup for HTML parsing\e[0m"
-if [ $OSTYPE == "cygwin" ]; then
+if [[ $OSTYPE == "cygwin" ]]; then
 	wget -q -O ./pup.zip https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_windows_amd64.zip
 	unzip "./pup.zip" -d "./" > /dev/null 2>&1
 	rm -f "./pup.zip"

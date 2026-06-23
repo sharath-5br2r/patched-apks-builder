@@ -1,4 +1,8 @@
 #!/bin/bash
+if [[ -n $1 ]] && [[ -n $2 ]]; then
+	appname=$1
+	patchname=$2
+fi
 source ./scripts/utils.sh
 dl_cli() {
 	case $cli in
@@ -18,7 +22,8 @@ dl_cli() {
 			;;
 	esac
 	cliver=$tag
-	echo -e "CLI: $cli\nVersion: $cliver\n\n" > CHANGELOG.md
+	echo -e "CLI: $cli\nVersion: $cliver\n\n" >> CHANGELOG.md
+	echo -e "{ \"cli\": \"$cli\", \"version\": \"$cliver\" }\n" >> ./release/version.json
 }
 dl_patch() {
 	case $source in
@@ -39,6 +44,7 @@ dl_patch() {
 			;;
 	esac
 	patchversion=$tag
+	echo -e "{ \"patchname\": \"$patchname\", \"patchsrc\": \"$patchsrc\", \"version\": \"$patchversion\" }\n" >> ./release/version.json
 	echo -e "Patch: $patchname\nSource: $patchsrc\nVersion: $patchversion\nChangelog: $changelog_url\n\n" >> CHANGELOG.md
 }
 get_app(){
@@ -61,6 +67,7 @@ get_app(){
 		
 	esac
 	version=$(java -jar ./APKEditor.jar info -i ./download/$appname-$arch.apk -version-name  -t json | jq -r '.[].VersionName')
+	echo -e "{ \"appname\": \"$appname\", \"version\": \"$version\" }\n" >> ./release/version.json
 	echo -e "App: $appname\nVersion: $version\n\n" >> CHANGELOG.md
 	
 }
