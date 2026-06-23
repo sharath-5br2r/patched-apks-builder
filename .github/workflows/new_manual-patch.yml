@@ -56,7 +56,7 @@ jobs:
           - app: X
             patch: Piko
             appname: x
-            patchname: piko
+            patchname: shim-piko
           - app: Instagram
             patch: Piko
             appname: instagram
@@ -91,16 +91,6 @@ jobs:
             suffix: PUBG
             appname: eden
             patchname: pubg
-          - app: FCL 
-            suffix: CoD
-            patch: Custom
-            appname: fcl
-            patchname: cod
-          - app: Geode 
-            suffix: PUBGKR
-            patch: Custom
-            appname: geode
-            patchname: pubgkr
           - app: Winlator 
             suffix: PUBGVN
             patch: Custom
