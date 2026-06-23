@@ -119,14 +119,14 @@ npatcher() {
 }	
 patcher(){
 	query=$appname-$patchname
-	pkgname=$(cat build.json | jq -r --arg 'query' "$query" '.[$query].pkgname // "" ') || true
-	apktype=$(cat build.json | jq -r --arg 'query' "$query" '.[$query].apktype // "" ') || true
-	version_cmd=$(cat build.json | jq -r --arg 'query' "$query" '.[$query].version_cmd // "" ') || true
-	archs=$(cat build.json | jq -r --arg 'query' "$query" '.[$query].archs // "" ') || true
-	patches=$(cat build.json | jq -r --arg 'query' "$query" '.[$query].patches // "" ') || true
-	apksrc=$(cat build.json | jq -r --arg 'query' "$query" '.[$query].apksrc // "" ') || true
-	cli=$(cat build.json | jq -r --arg 'query' "$query" '.[$query].cli // "" ') || true	
-	module=$(cat build.json | jq -r --arg 'query' "$query" '.[$query].module // "" ') || true
+	pkgname=$(cat build.yml | yq eval '.[strenv(query)].pkgname') || true
+	apktype=$(cat build.yml | yq eval '.[strenv(query)].apktype') || true
+	version_cmd=$(cat build.yml | yq eval '.[strenv(query)].version_cmd') || true
+	archs=$(cat build.yml | yq eval '.[strenv(query)].archs' -o=j -I=0) || true
+	patches=$(cat build.yml | yq eval '.[strenv(query)].patches' -o=j -I=0) || true
+	apksrc=$(cat build.yml | yq eval '.[strenv(query)].apksrc') || true
+	cli=$(cat build.yml | yq eval '.[strenv(query)].cli') || true	
+	module=$(cat build.yml | yq eval '.[strenv(query)].module') || true
 	case $cli in
 		MorpheApp/morphe-cli)
 			dl_cli
