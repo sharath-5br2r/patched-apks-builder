@@ -1,5 +1,5 @@
 #!/bin/bash
-source scripts/utils_mod.sh
+source scripts/utils.sh
 dolphin-sdk29() {
     _fs_get https://dolphin-emu.org/download/
     export DOLPHIN_LATEST=$(gh release view "Dolphin-SDK29" --json  assets | jq .[].[0].name)

@@ -1,3 +1,3 @@
 export appname=$1
 export patchname=$2
-bash -x scripts/build.sh
+bash scripts/build.sh

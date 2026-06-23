@@ -1,4 +1,4 @@
-name: Original Manual Patch
+name: Upstream Manual Patch
 permissions: write-all
 env:
   repository: ${{ github.repository }}

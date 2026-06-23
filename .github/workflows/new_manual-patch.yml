@@ -1,4 +1,4 @@
-name: Manual Patch
+name: Build and Patch
 permissions: write-all
 
 env:
@@ -151,10 +151,10 @@ jobs:
         run: |
           if [ ${{ matrix.patch }} == "Custom" ]; then
             name="${{ matrix.app }}-${{ matrix.suffix }}"
-            bash src/build/misc_build.sh $appname-$patchname ${{ matrix.suffix }}
+            bash scripts/custom_patches.sh $appname-$patchname ${{ matrix.suffix }}
           else
             name="${{ matrix.app }}-${{ matrix.patch }}"
-            bash src/build/build.sh
+            bash scripts/build.sh
           fi
       - name: Tailored Release
         uses: ncipollo/release-action@v1.21.0
