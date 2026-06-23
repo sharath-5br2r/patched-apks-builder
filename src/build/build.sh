@@ -110,28 +110,17 @@ npatcher() {
 	while read -r arch; do
 		get_app
 		green_log "[+] Patching $appname-$arch:"
-		if [ -f "./download/$appname-$arch.apk" ]; then
-			if [[ ! -f "$2" ]]; then
-				red_log "[-] Module not found: $2"
-				return 1
-			fi
-			if [[ "$OSTYPE" == "cygwin" ]]; then
-				green_log "[+] Detected Windows environment, using Windows version of npatch"
-				java -cp "bcprov.jar;npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$appname-$arch.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$2" -o ./release/
-			else
-				java -cp "bcprov.jar:npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$appname-$arch.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$2" -o ./release/
-			fi
-			mv ./release/$appname-$arch-*-npatched.apk "./release/$appname-$arch-$patchname-$version-$patchversion.apk"
-			unset lock_version
+		if [[ "$OSTYPE" == "cygwin" ]]; then
+			green_log "[+] Detected Windows environment, using Windows version of npatch"
+			java -cp "bcprov.jar;npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$appname-$arch.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$patchname.apk" -o ./release/
 		else
-			red_log "[-] Not found $appname-$arch.apk"
-			exit 1
-		fi	
+			java -cp "bcprov.jar:npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$appname-$arch.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$patchname.apk" -o ./release/
+		fi
+		mv ./release/$appname-$arch-*-npatched.apk "./release/$appname-$arch-$patchname-$version-$patchversion.apk"
+		unset lock_version	
 	done < <(jq -r '.[]' <<< "$archs")
 
-	
-}
-
+}	
 patcher(){
 	query=$appname-$patchname
 	pkgname=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].pkgname // "" ') || true
@@ -152,10 +141,11 @@ patcher(){
 			npatcher
 			;;
 		apksigner.jar)
-		    get_app
-			arch=$(echo "$archs" | jq -r '.[0]') || true
-			version="$(java -jar ./APKEditor.jar info -i ./download/$appname-$arch.apk -version-name -t json | jq -r '.[].VersionName')"
-			sign "$appname-$arch.apk" "./release/$appname-$arch-signed-$version.apk"
+		    archs=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].archs // "" ') || true
+		    while read -r arch; do
+				get_app
+				version="$(java -jar ./APKEditor.jar info -i ./download/$appname-$arch.apk -version-name -t json | jq -r '.[].VersionName')"
+				sign "$appname-$arch.apk" "./release/$appname-$arch-signed-$version.apk"
 			;;
 		*)
 			echo "Unknown CLI type, exiting."
