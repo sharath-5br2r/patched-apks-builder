@@ -130,9 +130,25 @@ jobs:
         shell: bash
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
-      - name: Preparing to patch
-        uses: ./.github/actions/preparing
-      - name: Patch apk
+      - name: Download and Setup FlareSolverr
+        shell: bash
+        run: |
+          if [[ $OSTYPE == "cygwin" ]]; then
+            gh release download -R FlareSolverr/FlareSolverr --pattern "*windows*"
+            unzip -q *windows*.zip
+            flaresolverr/flaresolverr.exe &
+          else
+            docker run -d --name flaresolverr -p 8191:8191 ghcr.io/flaresolverr/flaresolverr:latest
+          fi
+          echo "[*] Waiting for FlareSolverr to start..."
+          for i in $(seq 1 30); do
+            if curl -s http://localhost:8191/ > /dev/null 2>&1; then
+              echo "[+] FlareSolverr is ready."
+              break
+            fi
+            sleep 2
+          done
+      - name: Patch APK
         id: patch
         shell: bash
         env:
