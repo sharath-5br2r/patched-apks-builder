@@ -203,7 +203,7 @@ patch_mod() {
 		unset options
 		if [[ $makemodule == "true" ]]; then
 		    repotag="$apppname$pname"
-			code=$(gh api /repos/$github_repo/releases/tags/$repotag | jq -r '.assets[]? | select(.name == "update-$arch.json") | .url' | xargs wget -qO- | jq -r '.versionCode // 0') || yes
+			code=$(gh api "/repos/$github_repo/releases/tags/$repotag" | jq -r '.assets[]? | select(.name == "update-$arch.json") | .url' | xargs wget -qO- | jq -r '.versionCode // 0') || yes
 			if [ -z "$code" ] ; then
 				code=1
 			else
@@ -220,12 +220,12 @@ patch_mod() {
 			else
 				archname=$arch
 			fi
-			echo -e "PKG_NAME=$pkgname\nPKG_VER=$version-p$patchversion\nMODULE_ARCH=$archname" > ./module/config
-			echo -e "id=$n\nname=$name_in$pname\nversion=$version (patches $pname - $pversion)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$appname $pname Module\nupdateJson=https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/$repotag/update-$arch.json" > ./module/module.prop
+			echo -e "PKG_NAME=$pkgname\nPKG_VER=$version\nMODULE_ARCH=$archname" > ./module/config
+			echo -e "id=$appname-$arch\nname=$appname$pname\nversion=$version (patches $pname - $pversion)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$appname $pname Module\nupdateJson=https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/$repotag/update-$arch.json" > ./module/module.prop
 			zip -r "./release/$name_out.zip" ./module/ > /dev/null 2>&1
 			green_log "[+] Module created: ./release/$name_out.zip"
 			rm -rf ./module ./release/$name_out.apk ./rv_module
-			echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/$github_repo/releases/download/$repotag/$name_out.zip\"\n}" > ./release/update-$arch.json
+			echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$repotag/$name_out.zip\"\n}" > ./release/update-$arch.json
 
 		fi
 	else

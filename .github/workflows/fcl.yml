@@ -69,3 +69,12 @@ jobs:
           allowUpdates: true
           makeLatest: true
           body: "FCL Dynamic Patching for COD Mobile, uses Github Actions of patch before compiling. Version ${{env.TAG}}"
+      - name: Upload to Archive Release
+        uses: ncipollo/release-action@v1.21.0
+        with:
+          artifacts: |
+            ./fcl-cod*.apk
+          name: "Old APKs"
+          tag: "archive"
+          allowUpdates: true
+          body: "This release contains all the old APKs that have been patched and released in the past. You can download any of the old APKs from this release."

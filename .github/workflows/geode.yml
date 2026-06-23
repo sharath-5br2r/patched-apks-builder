@@ -64,3 +64,12 @@ jobs:
           allowUpdates: true
           makeLatest: true
           body: "Geode Launcher dynamically patched for PUBG:KR, using Github Actions. Version ${{env.TAG}}"
+    - name: Upload to Archive Release
+      uses: ncipollo/release-action@v1.21.0
+      with:
+        artifacts: |
+          ./geode-pubgkr*.apk
+        name: "Old APKs"
+        tag: "archive"
+        allowUpdates: true
+        body: "This release contains all the old APKs that have been patched and released in the past. You can download any of the old APKs from this release."
