@@ -176,16 +176,13 @@ patch_mod() {
 		fi
 		options=""
 		pname=""
-		pversion=""
 		rootclioptions=""
 		if [[ "$clitype" == "morphe" ]]; then
 		    while read -r line; do
-               echo $patches
-			   echo $b
-			   clioptions=$(jq -r '.clioptions // ""' <<< "$line")
-			   options="$options $b $clioptions"
+               clioptions=$(jq -r '.clioptions // ""' <<< "$line")
+			   patchname=$(jq -r '.patchname // ""' <<< "$line")
+			   options="$options -p $patchname.mpp $clioptions"  
 			   pname="$pname-$patchname"
-			   pversion="$pversion-p$patchversion"
 			   rootclioptions="$rootclioptions $(jq -r '.rootclioptions // ""' <<< "$line")"
 			done < <(jq -c '.[]'  <<< "$patches")
 			name_out="$name_out$pname-$version$pversion"
@@ -193,7 +190,7 @@ patch_mod() {
             rootclioptions=$(jq -r '.rootclioptions // ""' < <(jq -c '.[0]'  <<< "$patches"))
 		    clioptions=$(jq -r '.clioptions // ""' < <(jq -c '.[0]'  <<< "$patches"))
 			pname=$(jq -r '.patchname // ""' < <(jq -c '.[0]'  <<< "$patches"))
-			pversion=$(jq -r '.patchversion // ""' < <(jq -c '.[0]'  <<< "$patches"))
+			pversion=$patchversion
 		    name_out="$name_out-$pname-$version-p$patchversion"
 			options="$b $clioptions"
 	    fi   

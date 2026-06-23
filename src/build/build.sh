@@ -73,7 +73,7 @@ rvpatcher(){
 		source=$(jq -r '.source // ""' <<< "$line")
 		filter=$(jq -r '.filter // ""' <<< "$line")
 		dl_patch
-		pversion="$patchversion"
+		pversion="$pversion-p$patchversion"
 		if [[ $lineno -eq 1 ]]; then
 		    detect_version_mod "$pkgname" "$patchname.mpp"
 		fi
@@ -107,26 +107,29 @@ npatcher() {
 	source=$(echo "$patches" | jq -r '.[0].source // ""')
 	filter=$(echo "$patches" | jq -r '.[0].filter // ""') || true
 	dl_patch
-	get_app
-	version="$(java -jar ./APKEditor.jar info -i ./download/$1.apk -version-name -t json | jq -r '.[].VersionName')"
-	green_log "[+] Patching $1:"
-	if [ -f "./download/$1.apk" ]; then
-		if [[ ! -f "$2" ]]; then
-			red_log "[-] Module not found: $2"
-			return 1
-		fi
-		if [[ "$OSTYPE" == "cygwin" ]]; then
-			green_log "[+] Detected Windows environment, using Windows version of npatch"
-			java -cp "bcprov.jar;npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$2" -o ./release/
+	while read -r arch; do
+		get_app
+		green_log "[+] Patching $appname-$arch:"
+		if [ -f "./download/$appname-$arch.apk" ]; then
+			if [[ ! -f "$2" ]]; then
+				red_log "[-] Module not found: $2"
+				return 1
+			fi
+			if [[ "$OSTYPE" == "cygwin" ]]; then
+				green_log "[+] Detected Windows environment, using Windows version of npatch"
+				java -cp "bcprov.jar;npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$appname-$arch.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$2" -o ./release/
+			else
+				java -cp "bcprov.jar:npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$appname-$arch.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$2" -o ./release/
+			fi
+			mv ./release/$appname-$arch-*-npatched.apk "./release/$appname-$arch-$patchname-$version-$patchversion.apk"
+			unset lock_version
 		else
-			java -cp "bcprov.jar:npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$2" -o ./release/
-		fi
-		mv ./release/$1-*-npatched.apk "./release/$1-$3-$version.apk"
-		unset lock_version
-	else
-		red_log "[-] Not found $1.apk"
-		exit 1
-	fi
+			red_log "[-] Not found $appname-$arch.apk"
+			exit 1
+		fi	
+	done < <(jq -r '.[]' <<< "$archs")
+
+	
 }
 
 patcher(){
