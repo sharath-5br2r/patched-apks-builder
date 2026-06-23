@@ -96,7 +96,7 @@ rvpatcher(){
 	while read -r arch; do
 		get_app
 		patch_mod
-		if [[ -n $module ]]; then
+		if [[ $module == "true" ]]; then
 		    makemodule="true"
 			patch_mod
 			unset makemodule
@@ -125,7 +125,7 @@ npatcher() {
 
 }	
 patcher(){
-	query=$appname-$patchname
+	export query=$appname-$patchname
 	pkgname=$(cat build.yml | yq eval '.[strenv(query)].pkgname') || true
 	apktype=$(cat build.yml | yq eval '.[strenv(query)].apktype') || true
 	version_cmd=$(cat build.yml | yq eval '.[strenv(query)].version_cmd') || true
