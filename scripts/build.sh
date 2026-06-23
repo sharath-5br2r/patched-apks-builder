@@ -1,5 +1,5 @@
 #!/bin/bash
-source ./src/build/utils_mod.sh
+source ./scripts/utils_mod.sh
 dl_cli() {
 	case $cli in
 		MorpheApp/morphe-cli)
@@ -18,7 +18,7 @@ dl_cli() {
 			;;
 	esac
 	cliver=$tag
-	echo -e "CLI: $cli\nVersion: $cliver" > CHANGELOG.md
+	echo -e "CLI: $cli\nVersion: $cliver\n\n" > CHANGELOG.md
 }
 dl_patch() {
 	case $source in
@@ -39,7 +39,7 @@ dl_patch() {
 			;;
 	esac
 	patchversion=$tag
-	echo -e "Patch: $patchname\nSource: $patchsrc\nVersion: $patchversion\nChangelog: $changelog_url\n" >> CHANGELOG.md
+	echo -e "Patch: $patchname\nSource: $patchsrc\nVersion: $patchversion\nChangelog: $changelog_url\n\n" >> CHANGELOG.md
 }
 get_app(){
 	case $apksrc in
@@ -61,7 +61,7 @@ get_app(){
 		
 	esac
 	version=$(java -jar ./APKEditor.jar info -i ./download/$appname-$arch.apk -version-name  -t json | jq -r '.[].VersionName')
-	echo -e "App: $appname\nVersion: $version\n" >> CHANGELOG.md
+	echo -e "App: $appname\nVersion: $version\n\n" >> CHANGELOG.md
 	
 }
 rvpatcher(){
@@ -119,14 +119,14 @@ npatcher() {
 }	
 patcher(){
 	query=$appname-$patchname
-	pkgname=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].pkgname // "" ') || true
-	apktype=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apktype // "" ') || true
-	version_cmd=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].version_cmd // "" ') || true
-	archs=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].archs // "" ') || true
-	patches=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].patches // "" ') || true
-	apksrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apksrc // "" ') || true
-	cli=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].cli // "" ') || true	
-	module=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].module // "" ') || true
+	pkgname=$(cat build.json | jq -r --arg 'query' "$query" '.[$query].pkgname // "" ') || true
+	apktype=$(cat build.json | jq -r --arg 'query' "$query" '.[$query].apktype // "" ') || true
+	version_cmd=$(cat build.json | jq -r --arg 'query' "$query" '.[$query].version_cmd // "" ') || true
+	archs=$(cat build.json | jq -r --arg 'query' "$query" '.[$query].archs // "" ') || true
+	patches=$(cat build.json | jq -r --arg 'query' "$query" '.[$query].patches // "" ') || true
+	apksrc=$(cat build.json | jq -r --arg 'query' "$query" '.[$query].apksrc // "" ') || true
+	cli=$(cat build.json | jq -r --arg 'query' "$query" '.[$query].cli // "" ') || true	
+	module=$(cat build.json | jq -r --arg 'query' "$query" '.[$query].module // "" ') || true
 	case $cli in
 		MorpheApp/morphe-cli)
 			dl_cli
@@ -137,7 +137,6 @@ patcher(){
 			npatcher
 			;;
 		apksigner.jar)
-		    archs=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].archs // "" ') || true
 		    while read -r arch; do
 				get_app
 				sign "$appname-$arch.apk" "./release/$appname-$arch-signed-$version.apk"

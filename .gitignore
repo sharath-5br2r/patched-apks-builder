@@ -13,7 +13,7 @@ APKEditor.jar
 *tdl*
 tg_export.json
 tg_tmp_*/
-*.keystore
+/ks.keystore
 jar*.jar
 bcprov*.jar
 bc.security
@@ -24,3 +24,4 @@ pup
 pup.zip
 morphe-data/*
 npatch.jar
+CHANGELOG.md
