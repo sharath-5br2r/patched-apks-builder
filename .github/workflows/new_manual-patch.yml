@@ -147,6 +147,7 @@ jobs:
           GITHUB_REPOSITORY: $GITHUB_REPOSITORY
           appname: ${{ matrix.appname }}
           patchname: ${{ matrix.patchname }}
+          github_repo: $GITHUB_REPOSITORY
         run: |
           if [ ${{ matrix.patch }} == "Custom" ]; then
             name="${{ matrix.app }}-${{ matrix.suffix }}"
