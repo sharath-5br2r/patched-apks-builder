@@ -63,37 +63,32 @@ rvpatcher(){
 	elif [[ -n $version_cmd ]]; then
 	   eval "$version_cmd"
 	fi
+	pversion=""
 	while read -r line; do
-        if [[ -z "$lineno" ]]; then
-			lineno=1
-		fi
-		module=$(jq -r '.module // "false"' <<< "$line")
+	    if [[ -z $lineno ]]; then
+	        lineno=1
+	    fi
 		patchname=$(jq -r '.patchname // ""' <<< "$line")
 		patchsrc=$(jq -r '.patchsrc // ""' <<< "$line")
 		source=$(jq -r '.source // ""' <<< "$line")
 		filter=$(jq -r '.filter // ""' <<< "$line")
 		dl_patch
-		detect_version_mod "$pkgname" "$patchname.mpp"
-		if [[ $lineno -ne 1 ]]; then
-		    origapksrc=$apksrc
-		    apksrc="repatch"
+		pversion="$patchversion"
+		if [[ $lineno -eq 1 ]]; then
+		    detect_version_mod "$pkgname" "$patchname.mpp"
 		fi
-		while read -r arch; do
-		    clioptions=$(jq -r '.clioptions // ""' <<< "$line")
-			get_app
-			patch_mod "$appname-$arch" "$patchname" "$clitype"
-			if [[ $module == "true" ]]; then
-			    rootclioptions=$(jq -r '.rootclioptions // ""' <<< "$line")
-				mv "$patchname.mpp" "$patchname-module.mpp"
-				patch_mod "$appname-$arch" "$patchname-module" "$clitype"
-				make_module "$pkgname" "$appname-$arch" "$patchname-module" "$arch"
-			fi
-
-		done < <(jq -r '.[]' <<< "$archs")
 		lineno=$((lineno + 1))
-		apksrc=$origapksrc
-
 	done < <(jq -c '.[]'  <<< "$patches")
+	while read -r arch; do
+		get_app
+		patch_mod
+		if [[ -n $module ]]; then
+		    makemodule="true"
+			patch_mod
+			unset makemodule
+		fi
+	done < <(jq -r '.[]' <<< "$archs")
+
 	case $source in
 	    github)
 	        changelog_url="https://github.com/$patchsrc/releases/tag/$patchversion"
@@ -113,7 +108,7 @@ npatcher() {
 	filter=$(echo "$patches" | jq -r '.[0].filter // ""') || true
 	dl_patch
 	get_app
-	version="$(java -jar ./APKEditor.jar info -i ./download/$1.apk -version-name)"
+	version="$(java -jar ./APKEditor.jar info -i ./download/$1.apk -version-name -t json | jq -r '.[].VersionName')"
 	green_log "[+] Patching $1:"
 	if [ -f "./download/$1.apk" ]; then
 		if [[ ! -f "$2" ]]; then
@@ -143,7 +138,7 @@ patcher(){
 	patches=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].patches // "" ') || true
 	apksrc=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].apksrc // "" ') || true
 	cli=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].cli // "" ') || true	
-	
+	module=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].module // "" ') || true
 	case $cli in
 		MorpheApp/morphe-cli)
 			dl_cli
@@ -156,7 +151,7 @@ patcher(){
 		apksigner.jar)
 		    get_app
 			arch=$(echo "$archs" | jq -r '.[0]') || true
-			version="$(java -jar ./APKEditor.jar info -i ./download/$appname-$arch.apk -version-name)"
+			version="$(java -jar ./APKEditor.jar info -i ./download/$appname-$arch.apk -version-name -t json | jq -r '.[].VersionName')"
 			sign "$appname-$arch.apk" "./release/$appname-$arch-signed-$version.apk"
 			;;
 		*)

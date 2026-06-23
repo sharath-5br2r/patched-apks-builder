@@ -53,11 +53,11 @@
                 "patchname": "morphe",
                 "patchsrc": "MorpheApp/morphe-patches",
                 "source": "github",
-                "module": "true",
-                "clioptions": "-e Custom branding -OcustomName='YouTube Morphe' -e Theme -OdarkThemeBackgroundColor=#000000 -d 'Custom Header'",
+                "clioptions": "-e 'Custom branding' -OcustomName='YouTube Morphe' -e Theme -OdarkThemeBackgroundColor=#000000 -d 'Custom Header'",
                 "rootclioptions": "-d 'GmsCore Support'"
             }
         ],
+        "module": "true",
         "pkgname": "com.google.android.youtube",
         "apksrc": "apkmirror",
         "apktype": "apk",
@@ -72,11 +72,11 @@
                 "patchname": "morphe",
                 "patchsrc": "MorpheApp/morphe-patches",
                 "source": "github",
-                "module": "true",
-                "clioptions":"-e Custom branding -OcustomName='YouTube Morphe' -e Theme -OdarkThemeBackgroundColor=#000000",
+                "clioptions":"-e 'Custom branding' -OcustomName='YouTube Morphe' -e Theme -OdarkThemeBackgroundColor=#000000",
                 "rootclioptions": "-d 'GmsCore Support'"
             }
         ],
+        "module": "true",
         "pkgname": "com.google.android.apps.youtube.music",
         "apksrc": "apkmirror",
         "apktype": "apk",

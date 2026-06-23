@@ -3,20 +3,27 @@
 mkdir ./release ./download
 
 #Setup pup for download apk files
-if [ -f "./pup" ] || [ -f "./pup.exe" ] || [ -f "./pup-arm64" ]; then
-	rm -f ./pup
-fi
-wget -q -O ./pup.zip https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_linux_amd64.zip
-unzip "./pup.zip" -d "./" > /dev/null 2>&1
-rm -f "./pup.zip"
-pup="./pup"
+rm -f ./pup ./pup.exe
+echo -e "\e[32m[+] Setting up pup for HTML parsing\e[0m"
 if [ $OSTYPE == "cygwin" ]; then
+	wget -q -O ./pup.zip https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_windows_amd64.zip
+	unzip "./pup.zip" -d "./" > /dev/null 2>&1
+	rm -f "./pup.zip"
 	pup="./pup.exe"
-elif [ $(uname -m) == "aarch64" ]; then
-	pup="./pup-arm64"
+elif [[ $(uname) == "Linux" && $(uname -m) == "aarch64" ]]; then
+	wget -q -O ./pup.zip https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_linux_arm64.zip
+	unzip "./pup.zip" -d "./" > /dev/null 2>&1
+	rm -f "./pup.zip"
+	pup="./pup"
+elif [[ $(uname) == "Linux" && $(uname -m) == "x86_64" ]]; then
+	wget -q -O ./pup.zip https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_linux_amd64.zip
+	unzip "./pup.zip" -d "./" > /dev/null 2>&1
+	rm -f "./pup.zip"
+	pup="./pup"
 fi
 #Setup APKEditor for install combine split apks
-wget -q -O ./APKEditor.jar https://github.com/REAndroid/APKEditor/releases/download/V1.4.8/APKEditor-1.4.8.jar
+echo -e "\e[32m[+] Setting up APKEditor for combining apks\e[0m"
+wget -q $(curl -fsSL https://api.github.com/repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O APKEditor.jar
 APKEditor="./APKEditor.jar"
 #Find lastest user_agent
 user_agent=$(wget -qO- https://www.whatismybrowser.com/guides/the-latest-user-agent/firefox | tr '\n' ' ' | sed 's#</tr>#\n#g' | grep 'Firefox (Standard)' | sed -n 's/.*<span class="code">\([^<]*Android[^<]*\)<\/span>.*/\1/p') \

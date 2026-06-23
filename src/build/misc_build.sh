@@ -15,6 +15,7 @@ dolphin-sdk29() {
     else
        exit 0
     fi
+    echo -e "Patched $DOLPHIN_NAME with SDK 29" > CHANGELOG.md
 }
 
 eden-pubg() {
@@ -26,6 +27,8 @@ eden-pubg() {
     sed -i 's/dev\.eden\.eden_emulator\.nightly/com.tencent.ig/g' eden-src/AndroidManifest.xml
     java -jar APKEditor.jar b -i eden-src -o eden-patched.apk
     sign eden-patched.apk ./release/Eden-Android-pubg-$date1-$EDEN_NAME.apk
+    echo -e "Patched $EDEN_NAME with com.tencent.ig package name" > CHANGELOG.md
+    echo -e "{ \"appname\": \"Eden-Android\", \"patchname\": \"pubg\" , \"appversion\": \"$date1\" }" > ./release/version.json
 }
 
 winlator-pubgvn() {
@@ -34,6 +37,8 @@ winlator-pubgvn() {
     sed -i -e 's/package="com\.tencent\.ig"/package="com.vng.pubgmobile"/' -e 's/com\.tencent\.ig\.tileprovider/com.vng.pubgmobile.tileprovider/' -e 's/com\.tencent\.ig\.core\.WinlatorFilesProvider/com.vng.pubgmobile.core.WinlatorFilesProvider/' -e 's/com\.tencent\.ig\.androidx-startup/com.vng.pubgmobile.androidx-startup/' winlator-src/AndroidManifest.xml
     java -jar APKEditor.jar b -i winlator-src -o winlator-patched.apk
     sign winlator-patched.apk ./release/winlator-pubgvn-$tag.apk
+    echo -e "Patched Winlator-Ludashi with com.vng.pubgmobile package name" > CHANGELOG.md
+    echo -e "{ \"appname\": \"Winlator-Ludashi\", \"patchname\": \"pubgvn\" , \"appversion\": \"$tag\" }" > ./release/version.json
 }
 case $1 in
     "dolphin-sdk29")
