@@ -1,5 +1,5 @@
 #!/bin/bash
-source ./scripts/utils_mod.sh
+source ./scripts/utils.sh
 dl_cli() {
 	case $cli in
 		MorpheApp/morphe-cli)
