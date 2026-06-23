@@ -18,6 +18,7 @@ dl_cli() {
 			;;
 	esac
 	cliver=$tag
+	echo -e "CLI: $cli\nVersion: $cliver" > CHANGELOG.md
 }
 dl_patch() {
 	case $source in
@@ -27,16 +28,18 @@ dl_patch() {
 			else
 				dl_gh_v2 "$patchsrc" "prerelease" "$patchname$patchext"
 			fi
+			changelog_url="https://github.com/$patchsrc/releases/tag/$tag"
 			;;
 		gitlab)
 			dl_gl_mod "$patchsrc" "prerelease" "$patchname$patchext"
+			changelog_url="https://gitlab.com/$patchsrc/-/tags/$tag"
 			;;
 		*)
-			echo "Unknown patch source, exiting."
-			exit 1
+			echo "Unknown patch source, skipping."
 			;;
 	esac
 	patchversion=$tag
+	echo -e "Patch: $patchname\nSource: $patchsrc\nVersion: $patchversion\nChangelog: $changelog_url\n" >> CHANGELOG.md
 }
 get_app(){
 	case $apksrc in
@@ -55,7 +58,11 @@ get_app(){
 		*)
 			echo "Unknown APK source, skipping."
 			;;
+		
 	esac
+	version=$(java -jar ./APKEditor.jar info -i ./download/$appname-$arch.apk -version-name  -t json | jq -r '.[].VersionName')
+	echo -e "App: $appname\nVersion: $version\n" >> CHANGELOG.md
+	
 }
 rvpatcher(){
 	if [[ $version_cmd == "latest" ]]; then
@@ -88,17 +95,6 @@ rvpatcher(){
 			unset makemodule
 		fi
 	done < <(jq -r '.[]' <<< "$archs")
-
-	case $source in
-	    github)
-	        changelog_url="https://github.com/$patchsrc/releases/tag/$patchversion"
-	        ;;
-	    gitlab)
-	        changelog_url="https://gitlab.com/$patchsrc/-/releases/$patchversion"
-	        ;;
-	esac
-	echo -e "CLI: $cli $cliver\nPatches: $patchsrc $patchversion \n[Changelog]($changelog_url)\n App: $appname $version" > CHANGELOG.md
-	echo -e "{ \"appname\": \"$appname\", \"patchname\": \"$patchname\" , \"appversion\": \"$version\" , \"patchversion\": \"$release_name\" }" > ./release/version.json
 }
 
 npatcher() {
@@ -144,7 +140,6 @@ patcher(){
 		    archs=$(cat src/build/vars.json | jq -r --arg 'query' "$query" '.[$query].archs // "" ') || true
 		    while read -r arch; do
 				get_app
-				version="$(java -jar ./APKEditor.jar info -i ./download/$appname-$arch.apk -version-name -t json | jq -r '.[].VersionName')"
 				sign "$appname-$arch.apk" "./release/$appname-$arch-signed-$version.apk"
 			;;
 		*)

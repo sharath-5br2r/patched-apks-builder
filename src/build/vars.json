@@ -146,7 +146,7 @@
         "apktype": "bundle",
         "archs": ["universal"]
     },
-    "x-piko":
+    "x-shim-piko":
     {
         "cli": "MorpheApp/morphe-cli",
         "patches": [

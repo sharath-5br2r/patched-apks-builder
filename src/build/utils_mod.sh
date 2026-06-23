@@ -149,7 +149,6 @@ detect_version_mod() {
 patch_mod() {
 	name_in=$appname-$arch
 	orig_name_in=$appname-$arch
-	version=$(java -jar ./APKEditor.jar info -i ./download/$name_in.apk -version-name  -t json | jq -r '.[].VersionName')
 	name_out="$name_in"
 	if [ -f "./download/$name_in.apk" ]; then
 		local p b m ks a pu opt force
