@@ -160,17 +160,6 @@ jobs:
             name="${{ matrix.app }}-${{ matrix.patch }}"
             bash scripts/build.sh
           fi
-      - name: Upload to Archive Release
-        uses: ncipollo/release-action@v1
-        if: steps.patch.outcome == 'success' && steps.match-check.outputs.should_run == 'true'
-        with:
-          artifacts: |
-            ./release/*
-          name: "Old APKs"
-          tag: "archive"
-          allowUpdates: true
-          makeLatest: true
-          body: "This release contains all the old APKs that have been patched and released in the past. You can download any of the old APKs from this release."
       - name: Tailored Release
         uses: ncipollo/release-action@v1
         if: steps.patch.outcome == 'success' && steps.match-check.outputs.should_run == 'true'
@@ -182,4 +171,16 @@ jobs:
           allowUpdates: true
           removeArtifacts: true
           bodyFile: CHANGELOG.md
+      - name: Upload to Archive Release
+        uses: ncipollo/release-action@v1
+        if: steps.patch.outcome == 'success' && steps.match-check.outputs.should_run == 'true'
+        with:
+          artifacts: |
+            ./release/*
+          name: "Old APKs"
+          tag: "archive"
+          allowUpdates: true
+          makeLatest: true
+          body: "This release contains all the old APKs that have been patched and released in the past. You can download any of the old APKs from this release."
+
         

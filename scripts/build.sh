@@ -24,7 +24,7 @@ dl_cli() {
 	esac
 	cliver=$tag
 	echo -e "CLI: $cli\nVersion: $cliver\n\n" >> CHANGELOG.md
-	echo -e "{ \"cli\": \"$cli\", \"version\": \"$cliver\" }\n" >> ./release/version.json
+	echo -e "{ \"cli\": \"$cli\", \"version\": \"$cliver\" }" >> ./release/version.jsonl
 }
 dl_patch() {
 	case $source in
@@ -45,7 +45,7 @@ dl_patch() {
 			;;
 	esac
 	patchversion=$tag
-	echo -e "{ \"patchname\": \"$patchname\", \"patchsrc\": \"$patchsrc\", \"version\": \"$patchversion\" }\n" >> ./release/version.json
+	echo -e "{ \"patchname\": \"$patchname\", \"patchsrc\": \"$patchsrc\", \"source\": \"$source\", \"version\": \"$patchversion\" }" >> ./release/version.jsonl
 	echo -e "Patch: $patchname\nSource: $patchsrc\nVersion: $patchversion\nChangelog: $changelog_url\n\n" >> CHANGELOG.md
 }
 get_app(){
@@ -68,7 +68,7 @@ get_app(){
 		
 	esac
 	version=$(java -jar ./APKEditor.jar info -i ./download/$appname-$arch.apk -version-name  -t json | jq -r '.[].VersionName')
-	echo -e "{ \"appname\": \"$appname\", \"version\": \"$version\" }\n" >> ./release/version.json
+	echo -e "{ \"appname\": \"$appname\", \"version\": \"$version\" }" >> ./release/version.jsonl
 	echo -e "App: $appname\nVersion: $version\n\n" >> CHANGELOG.md
 	
 }

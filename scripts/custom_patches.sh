@@ -6,14 +6,15 @@ dolphin-sdk29() {
     DOLPHIN_LATEST=${DOLPHIN_LATEST%%.*}
     DOLPHIN_APK_URL=$(echo $html | grep -Eo 'https://dl\.dolphin-emu\.org/builds/[a-z0-9/]+/dolphin-master-[0-9]+-[0-9]+\.apk' | awk -F'[-/.]' '{v=$(NF-2); b=$(NF-1);if (v>V || (v==V && b>B)) {V=v; B=b; U=$0}} END{print U}')
     DOLPHIN_NAME=$(basename "$DOLPHIN_APK_URL" .apk)
-    if [[ $DOLPHIN_NAME != $DOLPHIN_LATEST ]] || [[ "$GITHUB_EVENT_NAME" == "workflow_dispatch" ]]; then
+    if [[ $DOLPHIN_NAME != $DOLPHIN_LATEST ]] || [[ "$GITHUB_EVENT_NAME" != "workflow_call" ]]; then
         curl -L "$DOLPHIN_APK_URL" -H "Cookie: $FS_COOKIES" -H "User-Agent: $user_agent"  -o dolphin-orig.apk
         java -jar APKEditor.jar d -i dolphin-orig.apk -o dolphin-src -t xml -dex
         sed -i 's/android:targetSdkVersion="[^"]*"/android:targetSdkVersion="29"/g' dolphin-src/AndroidManifest.xml
         java -jar APKEditor.jar b -i dolphin-src -o dolphin-patched.apk
         sign dolphin-patched.apk ./release/$DOLPHIN_NAME-signed.apk
     else
-       exit 0
+       echo "[*] No new version found, skipping build."
+       exit 1
     fi
     echo -e "Patched $DOLPHIN_NAME with SDK 29" > CHANGELOG.md
 }
@@ -22,13 +23,12 @@ eden-pubg() {
     export EDEN_ID=$(gh run list -R Eden-CI/Workflow -w nightly.yml --status success --limit 1 --json databaseId -q ".[0].databaseId")
     date1=$(gh run list -R Eden-CI/Workflow -w nightly.yml --status success --limit 1 --json updatedAt  -q ".[0].updatedAt")
     export EDEN_NAME=$(gh run view $EDEN_ID -R Eden-CI/Workflow | grep standard.apk | cut -d'-' -f3 )
-    gh api "/repos/Eden-CI/Workflow/actions/artifacts/$(gh api repos/Eden-CI/Workflow/actions/runs/$EDEN_ID/artifacts --jq '.artifacts[] | select(.name| contains("standard.apk")) | .id')/zip" > eden-orig.apk
+    gh api "/repos/Eden-CI/Workflow/actions/artifacts/$(gh api repos/Eden-CI/Workflow/actions/runs/$EDEN_ID/artifacts --jq '.artifacts[] | select(.name| contains("standard.apk")) | .id')/zip" > eden-orig.apk  
     java -jar APKEditor.jar d -i eden-orig.apk -o eden-src -t xml -dex
     sed -i 's/dev\.eden\.eden_emulator\.nightly/com.tencent.ig/g' eden-src/AndroidManifest.xml
     java -jar APKEditor.jar b -i eden-src -o eden-patched.apk
     sign eden-patched.apk ./release/Eden-Android-pubg-$date1-$EDEN_NAME.apk
     echo -e "Patched $EDEN_NAME with com.tencent.ig package name" > CHANGELOG.md
-    echo -e "{ \"appname\": \"Eden-Android\", \"patchname\": \"pubg\" , \"appversion\": \"$date1\" }" > ./release/version.json
 }
 
 winlator-pubgvn() {
@@ -38,7 +38,6 @@ winlator-pubgvn() {
     java -jar APKEditor.jar b -i winlator-src -o winlator-patched.apk
     sign winlator-patched.apk ./release/winlator-pubgvn-$tag.apk
     echo -e "Patched Winlator-Ludashi with com.vng.pubgmobile package name" > CHANGELOG.md
-    echo -e "{ \"appname\": \"Winlator-Ludashi\", \"patchname\": \"pubgvn\" , \"appversion\": \"$tag\" }" > ./release/version.json
 }
 case $1 in
     "dolphin-sdk29")
