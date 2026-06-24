@@ -12,12 +12,13 @@ dolphin-sdk29() {
         sed -i 's/android:targetSdkVersion="[^"]*"/android:targetSdkVersion="29"/g' dolphin-src/AndroidManifest.xml
         java -jar APKEditor.jar b -i dolphin-src -o dolphin-patched.apk
         sign dolphin-patched.apk ./release/$DOLPHIN_NAME-signed.apk
+        echo -e "Patched $DOLPHIN_NAME with SDK 29" > CHANGELOG.md
+        rm -f ./release/*.idsig
     else
        echo "[*] No new version found, skipping build."
        exit 1
     fi
-    echo -e "Patched $DOLPHIN_NAME with SDK 29" > CHANGELOG.md
-}
+    }
 
 eden-pubg() {
     export EDEN_ID=$(gh run list -R Eden-CI/Workflow -w nightly.yml --status success --limit 1 --json databaseId -q ".[0].databaseId")
@@ -28,6 +29,7 @@ eden-pubg() {
     sed -i 's/dev\.eden\.eden_emulator\.nightly/com.tencent.ig/g' eden-src/AndroidManifest.xml
     java -jar APKEditor.jar b -i eden-src -o eden-patched.apk
     sign eden-patched.apk ./release/Eden-Android-pubg-$date1-$EDEN_NAME.apk
+    rm -f ./release/*.idsig
     echo -e "Patched $EDEN_NAME with com.tencent.ig package name" > CHANGELOG.md
 }
 
@@ -37,6 +39,7 @@ winlator-pubgvn() {
     sed -i -e 's/package="com\.tencent\.ig"/package="com.vng.pubgmobile"/' -e 's/com\.tencent\.ig\.tileprovider/com.vng.pubgmobile.tileprovider/' -e 's/com\.tencent\.ig\.core\.WinlatorFilesProvider/com.vng.pubgmobile.core.WinlatorFilesProvider/' -e 's/com\.tencent\.ig\.androidx-startup/com.vng.pubgmobile.androidx-startup/' winlator-src/AndroidManifest.xml
     java -jar APKEditor.jar b -i winlator-src -o winlator-patched.apk
     sign winlator-patched.apk ./release/winlator-pubgvn-$tag.apk
+    rm -f ./release/*.idsig
     echo -e "Patched Winlator-Ludashi with com.vng.pubgmobile package name" > CHANGELOG.md
 }
 case $1 in

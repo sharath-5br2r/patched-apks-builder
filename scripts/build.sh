@@ -148,6 +148,7 @@ patcher(){
 		    while read -r arch; do
 				get_app
 				sign "./download/$appname-$arch.apk" "./release/$appname-$arch-signed-$version.apk"
+				rm -f "./release/*.idsig"
 			done < <(jq -r '.[]' <<< "$archs")
 			;;
 		*)
