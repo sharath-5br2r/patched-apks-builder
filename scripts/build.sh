@@ -146,7 +146,7 @@ patcher(){
 		apksigner.jar)
 		    while read -r arch; do
 				get_app
-				sign "$appname-$arch.apk" "./release/$appname-$arch-signed-$version.apk"
+				sign "./download/$appname-$arch.apk" "./release/$appname-$arch-signed-$version.apk"
 			done < <(jq -r '.[]' <<< "$archs")
 			;;
 		*)
