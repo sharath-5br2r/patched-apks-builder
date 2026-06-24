@@ -16,6 +16,7 @@ on:
         options:
           - 'All'
           - 'Morphe'
+          - 'Piko(with shim)'
           - 'Piko'
           - 'Paresh'
           - 'hoo-dles'
@@ -51,7 +52,7 @@ jobs:
             appname: youtube-music
             patchname: morphe
           - app: X
-            patch: Piko
+            patch: Piko (with shim)
             appname: x
             patchname: shim-piko
           - app: Instagram

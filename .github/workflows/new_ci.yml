@@ -20,100 +20,37 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-      - name: Check github connection
-        id: check-gh
-        run: bash src/etc/connection.sh
-      - name: Check new patch Speedtest(xtra)
-        id: check-speedtest-xtra
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/check.sh gh  BholeyKaBhakt/android-patches-xtra prerelease speedtest-xtra
       - name: Check new patch Morphe YouTube
         id: check-morphe
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/check.sh gh MorpheApp/morphe-patches prerelease youtube-morphe
-      - name: Check new patch Morphe YouTube Music
-        id: check-morphe-ytm
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/check.sh gh MorpheApp/morphe-patches prerelease youtube-music-morphe
-      - name: Check new patch Piko(X)
-        id: check-piko-x
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/check.sh gh crimera/piko prerelease twitter-piko
+        run: bash scripts/checker.sh youtube-morphe
       - name: Check new patch Piko(Instagram)
         id: check-piko-instagram
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/check.sh gh crimera/piko prerelease instagram-piko
-      - name: Check new patch paresh Proton VPN
-        id: check-paresh-proton-vpn
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/check.sh gl Paresh-Maheshwari/paresh-patches latest protonvpn-paresh
-      - name: Check new app Proton VPN
-        id: check-app-proton-vpn
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/check.sh gh ProtonVPN/android-app latest protonvpn-paresh
-      - name: Check new patch paresh JioHotstar
-        id: check-paresh-jiohotstar
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/check.sh gl Paresh-Maheshwari/paresh-patches latest jiohotstar-paresh
-      - name: Check new patch binarymend Symfonium
-        id: check-binarymend-symfonium
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/check.sh gh binarymend/morphe-patches latest symfonium-binarymend
+        run: bash scripts/checker.sh instagram-piko
+      - name: Check new patch binarymend 
+        id: check-binarymend
+        run: bash src/etc/checker.sh symfonium-binarymend
       - name: Check new app FCL
         id: check-fcl
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/check.sh gh FCL-Team/FoldCraftLauncher latest fcl-cod
+        run: bash src/etc/checker.sh fcl-cod
       - name: Check new app Geode
         id: check-geode
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/check.sh gh geode-sdk/android-launcher latest geode-pubgkr
-      - name: Check new app Eden PUBG
-        id: check-eden
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/check.sh eden
-      - name: Check new app Winlator
-        id: check-winlator
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/check.sh gh StevenMXZ/Winlator-Ludashi latest winlator-pubgvn
+        run: bash src/etc/checker.sh geode-pubgkr
       - name: Check new app LeviLauncher Unlocked
         id: check-levilauncher
-        if: steps.check-gh.outputs.internet_error == '0'
-        run: bash src/etc/check.sh gh 0Sombra666/LeviLaunchroidUnlocked latest levilauncher-unlocked-bgmi
-      - name: Re-run workflow if github connection not stable
-        if: always() && steps.check-morphe.outcome == 'skipped' && env.retry_count < env.max_retries
-        uses: actions/github-script@v9
-        with:
-          script: |
-            const maxRetries = ${{ env.max_retries }};
-            let retryCount = ${{ env.retry_count }};
-            if (retryCount < maxRetries) {
-              retryCount += 1;
-              await github.rest.actions.createWorkflowDispatch({
-                owner: context.repo.owner,
-                repo: context.repo.repo,
-                workflow_id: "ci.yml",
-                ref: context.ref,
-                inputs: {
-                  'retry_count': String(retryCount)
-                }
-              });
-            }
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          retry_count: ${{ github.event.inputs.retry_count }}
-          max_retries: 3
+        run: bash src/etc/checker.sh levilauncher-unlocked-bgmi
+      - name: Check new app Winlator
+        id: check-winlator
+        run: bash src/etc/checker.sh winlator-pubgvn
+      - name: Check new patch icysymmetra
+        id: check-icysymmetra
+        run: bash src/etc/checker.sh tiktok-icysymmetra
     outputs:
       check_morphe: ${{ steps.check-morphe.outputs.new_patch }}
-      check_morphe_ytm: ${{ steps.check-morphe-ytm.outputs.new_patch }}
-      check_piko_x: ${{ steps.check-piko-x.outputs.new_patch }}
       check_piko_instagram: ${{ steps.check-piko-instagram.outputs.new_patch }}
-      check_paresh_proton-vpn: ${{ steps.check-paresh-proton-vpn.outputs.new_patch }}
-      check_app_proton-vpn: ${{ steps.check-app-proton-vpn.outputs.new_patch }}
-      check_paresh_jiohotstar: ${{ steps.check-paresh-jiohotstar.outputs.new_patch }}
-      check_binarymend_symfonium: ${{ steps.check-binarymend-symfonium.outputs.new_patch }}
+      check_binarymend: ${{ steps.check-binarymend.outputs.new_patch }}
       check_fcl: ${{ steps.check-fcl.outputs.new_patch }}
       check_geode: ${{ steps.check-geode.outputs.new_patch }}
-      check_eden: ${{ steps.check-eden.outputs.new_patch }}
+      check_icysymmetra: ${{ steps.check-icysymmetra.outputs.new_patch }}
       check_winlator: ${{ steps.check-winlator.outputs.new_patch }}
       check_levilauncher: ${{ steps.check-levilauncher.outputs.new_patch }}
   Patch-Morphe:
@@ -123,23 +60,14 @@ jobs:
     uses: ./.github/workflows/new_manual-patch.yml
     secrets: inherit
     with:
-      org: "Morphe YouTube"
-  Patch-Morphe-YouTube-Music:
-    name: Patch Morphe YouTube Music
-    needs: check
-    if: ${{ needs.check.outputs.check_morphe_ytm == 1 }}
-    uses: ./.github/workflows/new_manual-patch.yml
-    secrets: inherit
-    with:
-      org: "Morphe YouTube Music"
+      patch: "Morphe"
   Patch-Piko-X:
     name: Patch Piko(X)
     needs: check
-    if: ${{ needs.check.outputs.check_piko_x == 1 }}
     uses: ./.github/workflows/new_manual-patch.yml
     secrets: inherit
     with:
-      org: "piko X"
+      patch: "Piko (with shim)"
   Patch-Piko-Instagram:
     name: Patch Piko(Instagram)
     needs: check
@@ -147,93 +75,74 @@ jobs:
     uses: ./.github/workflows/new_manual-patch.yml
     secrets: inherit
     with:
-      org: "piko Instagram"
-  Patch-paresh-proton-vpn:
-    name: Patch Paresh Proton VPN
+      patch: "Piko"
+  Patch-paresh:
+    name: Patch Paresh
     needs: check
-    if: ${{ needs.check.outputs.check_paresh_proton-vpn == 1 || needs.check.outputs.check_app_proton-vpn == 1 }}
     uses: ./.github/workflows/new_manual-patch.yml
     secrets: inherit
     with:
-      org: "Paresh Proton VPN"
-  Patch-paresh-jiohotstar:
-    name: Patch Paresh JioHotstar
+      patch: "Paresh"
+  Patch-binarymend:
+    name: Patch binarymend
     needs: check
-    if: ${{ needs.check.outputs.check_paresh_jiohotstar == 1 }}
+    if: ${{ needs.check.outputs.check_binarymend == 1 }}
     uses: ./.github/workflows/new_manual-patch.yml
     secrets: inherit
     with:
-      org: "Paresh JioHotstar"
-  Patch-binarymend-symfonium:
-    name: Patch binarymend Symfonium
-    needs: check
-    if: ${{ needs.check.outputs.check_binarymend_symfonium == 1 }}
-    uses: ./.github/workflows/new_manual-patch.yml
-    secrets: inherit
-    with:
-      org: "binarymend Symfonium"
+      patch: "binarymend"
   Patch-FCL:
     name: Patch FCL
     needs: check
     if: ${{ needs.check.outputs.check_fcl == 1 }}
-    uses: ./.github/workflows/new_manual-patch.yml
+    uses: ./.github/workflows/fcl.yml
     secrets: inherit
-    with:
-      org: "FCL CoD"
   Patch-Geode:
     name: Patch Geode
     needs: check
     if: ${{ needs.check.outputs.check_geode == 1 }}
-    uses: ./.github/workflows/new_manual-patch.yml
+    uses: ./.github/workflows/geode.yml
     secrets: inherit
-    with:
-      org: "Geode PUBGKR"
-  Patch-Eden-PUBG:
-    name: Patch Eden(PUBG)
+  Patch-Custom:
+    name: Patch Custom
     needs: check
     uses: ./.github/workflows/new_manual-patch.yml
-    if: ${{ needs.check.outputs.check_eden == 1 }}
     with:
-      org: "Eden PUBG"
+      patch: "Custom"
     secrets: inherit
-  Patch-Winlator:
-    name: Patch Winlator
+  Patch-Revenge:
+    name: Patch Revenge
+    uses: ./.github/workflows/new_manual-patch.yml
+    with:
+      patch: "Revenge"
+    secrets: inherit
+  sign:
+    name: Sign
     needs: check
     uses: ./.github/workflows/new_manual-patch.yml
-    if: ${{ needs.check.outputs.check_winlator == 1 }}
     with:
-      org: "Winlator PUBGVN"
+      patch: "Sign"
     secrets: inherit
-  Patch-Revenge-Discord:
-    name: Patch Revenge(Discord)
+  Patch-Hooman:
+    name: Patch Hooman
+    needs: check
     uses: ./.github/workflows/new_manual-patch.yml
     with:
-      org: "Revenge Discord"
+      patch: "Hooman"
     secrets: inherit
-  Patch-Dolphin-SDK-29:
-    name: Patch Dolphin SDK 29
+  Patch-Icysymmetra:
+    name: Patch Icysymmetra
+    needs: check
+    if: ${{ needs.check.outputs.check_icysymmetra == 1 }} 
     uses: ./.github/workflows/new_manual-patch.yml
     with:
-      org: "Dolphin SDK 29"
-    secrets: inherit
-  Amazon-India:
-    name: Patch Amazon India
-    uses: ./.github/workflows/new_manual-patch.yml
-    with:
-      org: "Amazon India"
-    secrets: inherit
-  Amazon-Alexa:
-    name: Patch Amazon Alexa
-    uses: ./.github/workflows/new_manual-patch.yml
-    with:
-      org: "Amazon Alexa"
-    secrets: inherit
-  Patch-hoo-dles-prime-video:
-    name: Patch hoo-dles Prime Video
+      patch: "Icysymmetra"
+  Patch-hoo-dles:
+    name: Patch hoo-dles
     uses: ./.github/workflows/new_manual-patch.yml
     secrets: inherit
     with:
-      org: "hoo-dles Prime Video"
+      patch: "hoo-dles"
   Patch-LeviLauncher-Unlocked:
     name: Patch LeviLauncher Unlocked
     needs: check
