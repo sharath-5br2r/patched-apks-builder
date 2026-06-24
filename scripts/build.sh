@@ -3,6 +3,7 @@ if [[ -n $1 ]] && [[ -n $2 ]]; then
 	appname=$1
 	patchname=$2
 fi
+configfile="build.toml"
 source ./scripts/utils.sh
 dl_cli() {
 	case $cli in
@@ -126,14 +127,14 @@ npatcher() {
 }	
 patcher(){
 	export query=$appname-$patchname
-	pkgname=$(cat build.yml | yq eval '.[strenv(query)].pkgname') || true
-	apktype=$(cat build.yml | yq eval '.[strenv(query)].apktype') || true
-	version_cmd=$(cat build.yml | yq eval '.[strenv(query)].version_cmd') || true
-	archs=$(cat build.yml | yq eval '.[strenv(query)].archs' -o=j -I=0) || true
-	patches=$(cat build.yml | yq eval '.[strenv(query)].patches' -o=j -I=0) || true
-	apksrc=$(cat build.yml | yq eval '.[strenv(query)].apksrc') || true
-	cli=$(cat build.yml | yq eval '.[strenv(query)].cli') || true	
-	module=$(cat build.yml | yq eval '.[strenv(query)].module') || true
+	pkgname=$(cat $configfile | yq eval '.[strenv(query)].pkgname') || true
+	apktype=$(cat $configfile | yq eval '.[strenv(query)].apktype') || true
+	version_cmd=$(cat $configfile | yq eval '.[strenv(query)].version_cmd') || true
+	archs=$(cat $configfile | yq eval '.[strenv(query)].archs' -o=j -I=0) || true
+	patches=$(cat $configfile | yq eval '.[strenv(query)].patches' -o=j -I=0) || true
+	apksrc=$(cat $configfile | yq eval '.[strenv(query)].apksrc') || true
+	cli=$(cat $configfile | yq eval '.[strenv(query)].cli') || true	
+	module=$(cat $configfile | yq eval '.[strenv(query)].module') || true
 	case $cli in
 		MorpheApp/morphe-cli)
 			dl_cli
