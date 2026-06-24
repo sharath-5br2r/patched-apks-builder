@@ -127,14 +127,14 @@ npatcher() {
 }	
 patcher(){
 	export query=$appname-$patchname
-	pkgname=$(cat $configfile | yq eval '.[strenv(query)].pkgname') || true
-	apktype=$(cat $configfile | yq eval '.[strenv(query)].apktype') || true
-	version_cmd=$(cat $configfile | yq eval '.[strenv(query)].version_cmd') || true
-	archs=$(cat $configfile | yq eval '.[strenv(query)].archs' -o=j -I=0) || true
-	patches=$(cat $configfile | yq eval '.[strenv(query)].patches' -o=j -I=0) || true
-	apksrc=$(cat $configfile | yq eval '.[strenv(query)].apksrc') || true
-	cli=$(cat $configfile | yq eval '.[strenv(query)].cli') || true	
-	module=$(cat $configfile | yq eval '.[strenv(query)].module') || true
+	pkgname=$(yq eval '.[strenv(query)].pkgname' $configfile) || true
+	apktype=$(yq eval '.[strenv(query)].apktype' $configfile) || true
+	version_cmd=$(yq eval '.[strenv(query)].version_cmd' $configfile) || true
+	archs=$(yq eval '.[strenv(query)].archs' -o=j -I=0 $configfile) || true
+	patches=$(yq eval '.[strenv(query)].patches' -o=j -I=0 $configfile) || true
+	apksrc=$(yq eval '.[strenv(query)].apksrc' $configfile) || true
+	cli=$(yq eval '.[strenv(query)].cli' $configfile) || true	
+	module=$(yq eval '.[strenv(query)].module' $configfile) || true
 	case $cli in
 		MorpheApp/morphe-cli)
 			dl_cli
