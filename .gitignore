@@ -21,6 +21,7 @@ bc.security
 module/*
 apksigner.jar
 pup
+pup.exe
 pup.zip
 morphe-data/*
 npatch.jar
