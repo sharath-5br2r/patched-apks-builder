@@ -44,7 +44,7 @@ elif [[ $(uname) == "Linux" && $(uname -m) == "x86_64" ]]; then
 fi
 #Setup APKEditor for install combine split apks
 echo -e "\e[32m[+] Setting up APKEditor for combining apks\e[0m"
-wget -q $(curl -fsSL https://api.github.com/repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O APKEditor.jar
+wget -q $(gh api /repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O APKEditor.jar
 APKEditor="./APKEditor.jar"
 #Find lastest user_agent
 user_agent=$(wget -qO- https://www.whatismybrowser.com/guides/the-latest-user-agent/firefox | tr '\n' ' ' | sed 's#</tr>#\n#g' | grep 'Firefox (Standard)' | sed -n 's/.*<span class="code">\([^<]*Android[^<]*\)<\/span>.*/\1/p') \
