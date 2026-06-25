@@ -2,8 +2,29 @@
 
 mkdir ./release ./download
 
+#Check if ks.keystore file exists
+if [ ! -f ks.keystore ]; then
+	echo "[-] Missing ks.keystore file. Please provide the keystore file."
+fi
+if [ -f .env ]; then
+	source .env
+fi
+
+
+# Check Experimental app version for Morphe
+get_experimental_version() {
+ prefer_version=$(curl -s https://raw.githubusercontent.com/MorpheApp/morphe-patches/refs/tags/$(gh release list --limit 1  --repo MorpheApp/morphe-patches | awk '{print $1}')/patches-list.json  | jq --arg pkg $1 -r '[.patches[].compatiblePackages[]? | select(.packageName == $pkg) | .targets[] | select(.isExperimental == true).version] | unique | sort_by(split(".") | map(tonumber)) | last')
+}
+
+
+#Setup Apksigner
+if [ ! -f apksigner.jar ]; then
+	wget -qO sdk.zip "https://dl.google.com/android/repository/build-tools_r37_linux.zip"
+	unzip -q -j sdk.zip android-37.0/lib/apksigner.jar
+	rm -f ./sdk.zip
+fi
+
 #Setup pup for download apk files
-rm -f ./pup ./pup.exe
 echo -e "\e[32m[+] Setting up pup for HTML parsing\e[0m"
 if [[ $OSTYPE == "cygwin" ]]; then
 	wget -q -O ./pup.zip https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_windows_amd64.zip
@@ -33,6 +54,23 @@ user_agent=$(wget -qO- https://www.whatismybrowser.com/guides/the-latest-user-ag
   echo "[-] Can't found lastest user-agent"
 }
 
+# Setup Bouncy Castle Provider
+bcversion=$(curl -fsSL https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/maven-metadata.xml | grep -oPm1 '(?<=<release>)[^<]+')
+echo -e "\e[32m[+] Downloading Bouncy Castle Provider\e[0m"
+wget -qO bcprov.jar "https://repo1.maven.org/maven2/org/bouncycastle/bcprov-jdk18on/$bcversion/bcprov-jdk18on-$bcversion.jar"
+LAST_PROV=$(grep "^security.provider\." "$JAVA_HOME/conf/security/java.security"  | grep -oP '(?<=security\.provider\.)\d+' | sort -n | tail -1)
+echo "security.provider.$((LAST_PROV+1))=org.bouncycastle.jce.provider.BouncyCastleProvider"  > bc.security
+
+
+#Sign Apks
+sign() {
+	if [[ $OSTYPE == "cygwin" ]]; then
+		java -cp "bcprov.jar;apksigner.jar" com.android.apksigner.ApkSignerTool sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in "$1" --out "$2"
+    else
+        java -cp "bcprov.jar:apksigner.jar" com.android.apksigner.ApkSignerTool sign --ks-provider-class org.bouncycastle.jce.provider.BouncyCastleProvider  --provider-class org.bouncycastle.jce.provider.BouncyCastleProvider --ks ks.keystore --ks-type BKS --ks-key-alias $KEYSTORE_ALIAS --ks-pass pass:$KEYSTORE_PASS --in "$1" --out "$2"
+	fi
+}
+
 #################################################
 
 # Colored output logs
@@ -49,74 +87,54 @@ yellow_log() {
 #################################################
 
 # Download Github assets requirement:
-dl_gh() {
-  if [ $3 == "prerelease" ]; then
-    local repo=$1
-    for repo in $1 ; do
-      local owner=$2 tag=$3 found=0 assets=0
-      releases=$(wget -qO- "https://api.github.com/repos/$owner/$repo/releases")
-      while read -r line; do
-        if [[ $line == *"\"tag_name\":"* ]]; then
-          tag_name=$(echo $line | cut -d '"' -f 4)
-          if [ "$tag" == "latest" ] || [ "$tag" == "prerelease" ]; then
-            found=1
-          else
-            found=0
-          fi
-        fi
-        if [[ $line == *"\"prerelease\":"* ]]; then
-          prerelease=$(echo $line | cut -d ' ' -f 2 | tr -d ',')
-          if [ "$tag" == "prerelease" ] && [ "$prerelease" == "true" ] ; then
-            found=1
-          elif [ "$tag" == "prerelease" ] && [ "$prerelease" == "false" ]; then
-            found=1
-          fi
-        fi
-        if [[ $line == *"\"assets\":"* ]]; then
-          if [ $found -eq 1 ]; then
-            assets=1
-          fi
-        fi
-        if [[ $line == *"\"browser_download_url\":"* ]]; then
-          if [ $assets -eq 1 ]; then
-            url=$(echo $line | cut -d '"' -f 4)
-            if [[ $url != *.asc ]]; then
-              name=$(basename "$url")
-              wget -q -O "$name" "$url"
-              green_log "[+] Downloading $name from $owner"
-            fi
-          fi
-        fi
-        if [[ $line == *"],"* ]]; then
-          if [ $assets -eq 1 ]; then
-            assets=0
-            break
-          fi
-        fi
-      done <<< "$releases"
-    done
-  else
-    for repo in $1 ; do
-      tags=$( [ "$3" == "latest" ] && echo "latest" || echo "tags/$3" )
-      wget -qO- "https://api.github.com/repos/$2/$repo/releases/$tags" \
-        | jq -r '.assets[] | "\(.browser_download_url) \(.name)"' \
-        | while read -r url names; do
-          if [[ $url != *.asc ]]; then
-            if [[ "$3" == "latest" && "$names" == *dev* ]]; then
-              continue
-            fi
-            green_log "[+] Downloading $names from $2"
-            wget -q -O "$names" $url
-          fi
-        done
-    done
-  fi
+
+dl_gh(){
+	local repo="$1"
+	owner="$2"
+    tag="$3"
+	if [[ "$tag" == "latest" ]]; then
+	   tag=$(gh release list --repo $repo --exclude-pre-releases --limit 1 --json tagName --jq '.[].tagName')
+	elif [[ "$tag" == "prerelease" ]]; then
+	   tag=$(gh release list --repo $repo --limit 1 --json tagName --jq '.[].tagName')
+	fi
+	local output=$4
+	local filter=$5
+    local exclude=$6
+	if [ -n "$filter" ]; then
+       if [[ "$exclude" == "exclude" ]]; then
+          urls=$(gh release view $tag --repo $repo  --json assets | jq --arg filter "$filter" -r '.assets[] | select(.name | contains($filter) | not ) | .url')
+       else
+	      urls=$(gh release view $tag --repo $repo  --json assets | jq --arg filter "$filter" -r '.assets[] | select(.name | contains($filter)) | .url')
+       fi
+	else
+	   urls=$(gh release view $tag --repo $repo  --json assets | jq -r '.assets[] | .url')
+	fi
+	if [[  ! "$urls" == *$'\n'* ]]; then
+	   if [ -n $output ]; then
+	        name=$(basename "$urls")
+	        green_log "[+] Downloading $name from $repo $tag to $output"
+	    	wget -qO $output $urls
+	   else
+	        name=$(basename "$urls")
+	        green_log "[+] Downloading $name from $repo $tag"
+	        wget -q $urls
+       fi
+	else
+	   for url in $urls; do
+	        name=$(basename "$url")
+			green_log "[+] Downloading $name from $repo $tag"
+	        wget -q $url
+	   done
+	fi
 }
 
 dl_gl() {
-  local repo=$1 owner=$2 tag=${3:-latest}
+  local repo=$1 owner=$2 output=$4 tag=${3:-latest} domain=$5
   local project_path="${owner}%2F${repo}"
-  local api_url="https://gitlab.com/api/v4/projects/${project_path}/releases"
+  if [ -z "$domain" ]; then
+    domain="gitlab.com"
+  fi
+  local api_url="https://$domain/api/v4/projects/${project_path}/releases"
 
   local releases
   releases=$(wget -qO- "$api_url")
@@ -125,7 +143,7 @@ dl_gl() {
   if [[ "$tag" == "latest" ]]; then
     release=$(echo "$releases" | jq -r '[.[] | select(.tag_name | test("-dev") | not)][0]')
   elif [[ "$tag" == "prerelease" ]]; then
-    release=$(echo "$releases" | jq -r '[.[] | select(.tag_name | test("-dev"))][0]')
+    release=$(echo "$releases" | jq -r '[.[] | select(.tag_name )][0]')
   else
     release=$(wget -qO- "$api_url/$tag")
   fi
@@ -135,14 +153,24 @@ dl_gl() {
     return 1
   fi
 
+
+  tag=$(echo "$release" | jq -r '.tag_name')
   local tag_name
   tag_name=$(echo "$release" | jq -r '.tag_name')
 
   echo "$release" | jq -r '.assets.links[] | "\(.direct_asset_url // .url) \(.name)"' | \
     while read -r url name; do
       if [[ -n "$url" ]] && [[ "$url" != "null" ]] && [[ $url != *.asc ]]; then
-        green_log "[+] Downloading $name from $owner"
-        wget -q -O "$name" "$url"
+
+	    if [[ "$urls" =~ $'\n'  && -n $output]]; then
+			output_file="$output/$name"
+		elif [[  ! "$urls" =~ $'\n'  && -n $output ]]; then
+			output_file="$output"
+		else
+			output_file="$name"
+		fi
+        green_log "[+] Downloading $name from $owner/$repo $tag to $output_file"
+        wget -q -O "$output_file" "$url"
       fi
     done
 }
@@ -255,7 +283,9 @@ detect_version() {
 	if [ -z "$version" ] && [ "$lock_version" != "1" ]; then
 	  for spec in "revanced-cli-|5|*.rvp" "morphe-cli-|1|*.mpp"; do
 		IFS="|" read -r jar_prefix min_major patch_glob <<<"$spec"
-
+		if [[ -n $2 ]]; then
+		  patch_glob="$2"
+		fi
 		if [[ $(ls "${jar_prefix}"*.jar 2>/dev/null) =~ ${jar_prefix}([0-9]+) ]]; then
 		  num=${BASH_REMATCH[1]}
 
@@ -781,9 +811,12 @@ npatch() {
 			red_log "[-] Module not found: $2"
 			return 1
 		fi
-		java -jar jar*.jar ./download/$1.apk -k ./src/fiorenmas.ks "fiorenmas" "morphe" "fiorenmas" $4 -m "$module" -o ./release/
+		if [[ "$OSTYPE" == "cygwin" ]]; then
+			java -cp "bcprov.jar;npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$patchname.apk" -o ./release/
+		else
+			java -cp "bcprov.jar:npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$1.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$patchname.apk" -o ./release/
+		fi
 		mv ./release/$1-*-npatched.apk ./release/$1-$3-npatched.apk
-		unset version
 		unset lock_version
 	else
 		red_log "[-] Not found $1.apk"

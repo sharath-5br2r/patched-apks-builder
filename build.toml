@@ -1,5 +1,5 @@
 [adobe-acrobat-hooman]
-cli = "MorpheApp/morphe-cli"
+cliType = "morphe"
 appPkgName = "com.adobe.reader"
 apkSrc = "apkmirror"
 apkType = "bundle"
@@ -7,34 +7,37 @@ archs = ["universal"]
 appVersion = "latest"
 [[adobe-acrobat-hooman.patches]]
 name = "hooman"
-repo = "arandomhooman/hoomans-morphe-patches"
+repo = "hoomans-morphe-patches"
+owner = "arandomhooman"
 src = "github"
 tag = "prerelease"
 
 [speedtest-xtra]
-cli = "MorpheApp/morphe-cli"
+cliType = "morphe"
 appPkgName = "org.zwanoo.android.speedtest"
 apkSrc = "apkmirror"
 apkType = "apk"
 archs = ["arm64-v8a", "x86_64"]
 [[speedtest-xtra.patches]]
 name = "xtra"
-repo = "BholeyKaBhakt/android-patches-xtra"
+repo = "android-patches-xtra"
+owner = "BholeyKaBhakt"
 src = "github"
 
 [tiktok-icysymmetra]
-cli = "MorpheApp/morphe-cli"
+cliType = "morphe"
 appPkgName = "com.zhiliaoapp.musically"
 apkSrc = "apkmirror"
 apkType = "apk"
 archs = ["arm64-v8a"]
 [[tiktok-icysymmetra.patches]]
 name = "icysymmetra"
-repo = "icysymmetra/tiktok-patches-for-morphe"
+repo = "tiktok-patches-for-morphe"
+owner = "icysymmetra"
 src = "github"
 
 [youtube-morphe]
-cli = "MorpheApp/morphe-cli"
+cliType = "morphe"
 buildModule = "true"
 appPkgName = "com.google.android.youtube"
 apkSrc = "apkmirror"
@@ -43,13 +46,14 @@ archs = ["universal"]
 appVersionCmd = "get_experimental_version com.google.android.youtube"
 [[youtube-morphe.patches]]
 name = "morphe"
-repo = "MorpheApp/morphe-patches"
+repo = "morphe-patches"
+owner = "MorpheApp"
 src = "github"
 cliOptions = "-e 'Custom branding' -OcustomName='YouTube Morphe' -e Theme -OdarkThemeBackgroundColor=#000000 -d 'Custom Header'"
 rootCliOptions = "-d 'GmsCore Support'"
 
 [youtube-music-morphe]
-cli = "MorpheApp/morphe-cli"
+cliType = "morphe"
 buildModule = "true"
 appPkgName = "com.google.android.apps.youtube.music"
 apkSrc = "apkmirror"
@@ -58,13 +62,14 @@ archs = ["arm64-v8a", "x86_64"]
 appVersionCmd = "get_experimental_version com.google.android.apps.youtube.music"
 [[youtube-music-morphe.patches]]
 name = "morphe"
-repo = "MorpheApp/morphe-patches"
+repo = "morphe-patches"
+owner = "MorpheApp"
 src = "github"
 cliOptions = "-e 'Custom branding' -OcustomName='YouTube Morphe' -e Theme -OdarkThemeBackgroundColor=#000000"
 rootCliOptions = "-d 'GmsCore Support'"
 
 [prime-video-hoo-dles]
-cli = "MorpheApp/morphe-cli"
+cliType = "morphe"
 appPkgName = "com.amazon.avod.thirdpartyclient"
 apkSrc = "apkmirror"
 apkType = "apk"
@@ -72,12 +77,13 @@ archs = ["arm64-v8a"]
 appVersion = "latest"
 [[prime-video-hoo-dles.patches]]
 name = "hoo-dles"
-repo = "hoo-dles/morphe-patches"
+repo = "morphe-patches"
+owner = "hoo-dles"
 src = "github"
 cliOptions = "-e 'Rename Shared Permissions'"
 
 [proton-vpn-paresh]
-cli = "MorpheApp/morphe-cli"
+cliType = "morphe"
 appPkgName = "ch.protonvpn.android"
 apkSrc = "apkmirror"
 apkType = "bundle"
@@ -85,79 +91,85 @@ archs = ["universal"]
 appVersion = "latest"
 [[proton-vpn-paresh.patches]]
 name = "paresh"
-repo = "Paresh-Maheshwari/paresh-patches"
+repo = "paresh-patches"
+owner = "Paresh-Maheshwari"
 src = "gitlab"
 
 [jiohotstar-paresh]
-cli = "MorpheApp/morphe-cli"
+cliType = "morphe"
 appPkgName = "in.startv.hotstar"
 archs = ["universal"]
 apkSrc = "apkmirror"
 apkType = "apk"
 [[jiohotstar-paresh.patches]]
 name = "paresh"
-repo = "Paresh-Maheshwari/paresh-patches"
+repo = "paresh-patches"
+owner = "Paresh-Maheshwari"
 src = "gitlab"
 
 [symfonium-binarymend]
-cli = "MorpheApp/morphe-cli"
+cliType = "morphe"
 appPkgName = "app.symfonik.music.player"
 apkSrc = "apkmirror"
 apkType = "bundle"
 archs = ["universal"]
 [[symfonium-binarymend.patches]]
 name = "binarymend"
-repo = "binarymend/morphe-patches"
+repo = "morphe-patches"
+owner = "binarymend"
 src = "github"
 
 [x-shim-piko]
-cli = "MorpheApp/morphe-cli"
+cliType = "morphe"
 appPkgName = "com.twitter.android"
 apkSrc = "apkmirror"
 archs = ["universal"]
 apkType = "bundle"
 [[x-shim-piko.patches]]
 name = "shim"
-repo = "inotia00/x-shim"
+repo = "x-shim"
+owner = "inotia00"
 src = "gitlab"
 [[x-shim-piko.patches]]
 name = "piko"
-repo = "crimera/piko"
+repo = "piko"
+owner = "crimera"
 src = "github"
 
 [instagram-piko]
-cli = "MorpheApp/morphe-cli"
+cliType = "morphe"
 appPkgName = "com.instagram.android"
 apkSrc = "apkmirror"
 apkType = "bundle"
 archs = ["arm64-v8a", "x86_64"]
 [[instagram-piko.patches]]
 name = "piko"
-repo = "crimera/piko"
+repo = "piko"
+owner = "crimera"
 src = "github"
 
 [discord-revenge]
-cli = "7723mod/NPatch"
+cliType = "npatch"
 appPkgName = "com.discord"
 apkSrc = "apkmirror"
 apkType = "bundle"
 archs = ["universal"]
 [[discord-revenge.patches]]
 name = "revenge"
-repo = "revenge-mod/revenge-xposed"
+repo = "revenge-xposed"
+owner = "revenge-mod"
 src = "github"
 filter = "app-release.apk"
-excludeFilter = ""
 
 [amazon-india-signed]
-cli = "apksigner.jar"
+cliType = "apksigner"
 appPkgName = "in.amazon.mShop.android.shopping"
 apkSrc = "apkmirror"
 apkType = "bundle"
 archs = ["arm64-v8a"]
 
 [amazon-alexa-signed]
-cli = "apksigner.jar"
+cliType = "apksigner"
 appPkgName = "com.amazon.dee.app"
 apkSrc = "apkmirror"
 apkType = "bundle"

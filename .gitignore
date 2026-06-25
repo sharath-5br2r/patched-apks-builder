@@ -26,3 +26,4 @@ pup.zip
 morphe-data/*
 npatch.jar
 CHANGELOG.md
+*.pyc

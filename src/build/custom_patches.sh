@@ -1,5 +1,5 @@
 #!/bin/bash
-source scripts/utils.sh
+source ./src/build/utils.sh
 dolphin-sdk29() {
     _fs_get https://dolphin-emu.org/download/
     export DOLPHIN_LATEST=$(gh release view "Dolphin-SDK29" --json  assets | jq .[].[0].name)
@@ -34,7 +34,7 @@ eden-pubg() {
 }
 
 winlator-pubgvn() {
-	dl_gh_v2 "StevenMXZ/Winlator-Ludashi" "latest" "winlator-orig.apk" "build.apk"
+	dl_gh "Winlator-Ludashi" "StevenMXZ" "latest" "winlator-orig.apk" "build.apk"
     java -jar APKEditor.jar d -i winlator-orig.apk -o winlator-src -t xml -dex
     sed -i -e 's/package="com\.tencent\.ig"/package="com.vng.pubgmobile"/' -e 's/com\.tencent\.ig\.tileprovider/com.vng.pubgmobile.tileprovider/' -e 's/com\.tencent\.ig\.core\.WinlatorFilesProvider/com.vng.pubgmobile.core.WinlatorFilesProvider/' -e 's/com\.tencent\.ig\.androidx-startup/com.vng.pubgmobile.androidx-startup/' winlator-src/AndroidManifest.xml
     java -jar APKEditor.jar b -i winlator-src -o winlator-patched.apk
