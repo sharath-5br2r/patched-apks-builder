@@ -59,7 +59,7 @@ get_app(){
 	apkType=$(yq eval '.[strenv(query)].apkType' $configfile) || true
 	appVersion=$(yq eval '.[strenv(query)].appVersion' $configfile) || true
 	apkSrc=$(yq eval '.[strenv(query)].apkSrc' $configfile) || true
-	apkArchs=$(yq eval '.[strenv(query)].apkArchs' -o=j -I=0 $configfile) || true
+	archs=$(yq eval '.[strenv(query)].archs' -o=j -I=0 $configfile) || true
 	apkDLParams=$(yq eval '.[strenv(query)].apkDLParams' -o=j -I=0 $configfile) || true
 	if [[ $appVersion == "latest" ]]; then
 	   lock_version=1
@@ -88,7 +88,7 @@ get_app(){
 			esac
 			appVersion=$(java -jar ./APKEditor.jar info -i ./download/$appname-$arch.apk -version-name  -t json | jq -r '.[].VersionName')
 			echo -e "{ \"appname\": \"$appname\", \"appVersion\": \"$appVersion\" , \"arch\": \"$arch\", \"apkSrc\": \"$apkSrc\", \"appRepo\": \"$appRepo\", \"appTag\": \"$appTag\", \"apkDLParams\": \"$apkDLParams\" }" >> ./release/version.jsonl
-	done < <(jq -r '.[]' <<< "$apkArchs")
+	done < <(jq -r '.[]' <<< "$archs")
 	echo -e "App: $appname\nVersion: $appVersion\n\n" >> CHANGELOG.md
 }
 rvpatcher(){

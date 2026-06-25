@@ -3,7 +3,7 @@ cli = "MorpheApp/morphe-cli"
 appPkgName = "com.adobe.reader"
 apkSrc = "apkmirror"
 apkType = "bundle"
-apkArchs = ["universal"]
+archs = ["universal"]
 appVersion = "latest"
 [[adobe-acrobat-hooman.patches]]
 name = "hooman"
@@ -16,7 +16,7 @@ cli = "MorpheApp/morphe-cli"
 appPkgName = "org.zwanoo.android.speedtest"
 apkSrc = "apkmirror"
 apkType = "apk"
-apkArchs = ["arm64-v8a", "x86_64"]
+archs = ["arm64-v8a", "x86_64"]
 [[speedtest-xtra.patches]]
 name = "xtra"
 repo = "BholeyKaBhakt/android-patches-xtra"
@@ -27,7 +27,7 @@ cli = "MorpheApp/morphe-cli"
 appPkgName = "com.zhiliaoapp.musically"
 apkSrc = "apkmirror"
 apkType = "apk"
-apkArchs = ["arm64-v8a"]
+archs = ["arm64-v8a"]
 [[tiktok-icysymmetra.patches]]
 name = "icysymmetra"
 repo = "icysymmetra/tiktok-patches-for-morphe"
@@ -39,7 +39,7 @@ buildModule = "true"
 appPkgName = "com.google.android.youtube"
 apkSrc = "apkmirror"
 apkType = "apk"
-apkArchs = ["universal"]
+archs = ["universal"]
 appVersionCmd = "get_experimental_version com.google.android.youtube"
 [[youtube-morphe.patches]]
 name = "morphe"
@@ -54,7 +54,7 @@ buildModule = "true"
 appPkgName = "com.google.android.apps.youtube.music"
 apkSrc = "apkmirror"
 apkType = "apk"
-apkArchs = ["arm64-v8a", "x86_64"]
+archs = ["arm64-v8a", "x86_64"]
 appVersionCmd = "get_experimental_version com.google.android.apps.youtube.music"
 [[youtube-music-morphe.patches]]
 name = "morphe"
@@ -68,7 +68,7 @@ cli = "MorpheApp/morphe-cli"
 appPkgName = "com.amazon.avod.thirdpartyclient"
 apkSrc = "apkmirror"
 apkType = "apk"
-apkArchs = ["arm64-v8a"]
+archs = ["arm64-v8a"]
 appVersion = "latest"
 [[prime-video-hoo-dles.patches]]
 name = "hoo-dles"
@@ -81,7 +81,7 @@ cli = "MorpheApp/morphe-cli"
 appPkgName = "ch.protonvpn.android"
 apkSrc = "apkmirror"
 apkType = "bundle"
-apkArchs = ["universal"]
+archs = ["universal"]
 appVersion = "latest"
 [[proton-vpn-paresh.patches]]
 name = "paresh"
@@ -91,7 +91,7 @@ src = "gitlab"
 [jiohotstar-paresh]
 cli = "MorpheApp/morphe-cli"
 appPkgName = "in.startv.hotstar"
-apkArchs = ["universal"]
+archs = ["universal"]
 apkSrc = "apkmirror"
 apkType = "apk"
 [[jiohotstar-paresh.patches]]
@@ -104,7 +104,7 @@ cli = "MorpheApp/morphe-cli"
 appPkgName = "app.symfonik.music.player"
 apkSrc = "apkmirror"
 apkType = "bundle"
-apkArchs = ["universal"]
+archs = ["universal"]
 [[symfonium-binarymend.patches]]
 name = "binarymend"
 repo = "binarymend/morphe-patches"
@@ -114,7 +114,7 @@ src = "github"
 cli = "MorpheApp/morphe-cli"
 appPkgName = "com.twitter.android"
 apkSrc = "apkmirror"
-apkArchs = ["universal"]
+archs = ["universal"]
 apkType = "bundle"
 [[x-shim-piko.patches]]
 name = "shim"
@@ -130,7 +130,7 @@ cli = "MorpheApp/morphe-cli"
 appPkgName = "com.instagram.android"
 apkSrc = "apkmirror"
 apkType = "bundle"
-apkArchs = ["arm64-v8a", "x86_64"]
+archs = ["arm64-v8a", "x86_64"]
 [[instagram-piko.patches]]
 name = "piko"
 repo = "crimera/piko"
@@ -141,7 +141,7 @@ cli = "7723mod/NPatch"
 appPkgName = "com.discord"
 apkSrc = "apkmirror"
 apkType = "bundle"
-apkArchs = ["universal"]
+archs = ["universal"]
 [[discord-revenge.patches]]
 name = "revenge"
 repo = "revenge-mod/revenge-xposed"
@@ -154,11 +154,11 @@ cli = "apksigner.jar"
 appPkgName = "in.amazon.mShop.android.shopping"
 apkSrc = "apkmirror"
 apkType = "bundle"
-apkArchs = ["arm64-v8a"]
+archs = ["arm64-v8a"]
 
 [amazon-alexa-signed]
 cli = "apksigner.jar"
 appPkgName = "com.amazon.dee.app"
 apkSrc = "apkmirror"
 apkType = "bundle"
-apkArchs = ["universal"]
+archs = ["universal"]
