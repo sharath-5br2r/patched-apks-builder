@@ -1,14 +1,15 @@
 [adobe-acrobat-hooman]
 cli = "MorpheApp/morphe-cli"
-pkgname = "com.adobe.reader"
-apksrc = "apkmirror"
-apktype = "bundle"
-archs = ["universal"]
-version_cmd = "latest"
+appPkgName = "com.adobe.reader"
+apkSrc = "apkmirror"
+apkType = "bundle"
+apkArchs = ["universal"]
+appVersion = "latest"
 [[adobe-acrobat-hooman.patches]]
-patchname = "hooman"
-patchsrc = "arandomhooman/hoomans-morphe-patches"
-source = "github"
+name = "hooman"
+repo = "arandomhooman/hoomans-morphe-patches"
+src = "github"
+tag = "prerelease"
 
 [speedtest-xtra]
 cli = "MorpheApp/morphe-cli"

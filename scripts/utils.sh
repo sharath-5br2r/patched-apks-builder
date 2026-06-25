@@ -153,56 +153,49 @@ patch_mod() {
 	name_out="$name_in"
 	if [ -f "./download/$name_in.apk" ]; then
 		local p b m ks a pu opt force
-		if [ "$clitype" = inotia ]; then
-			b="-p $patchname.rvp" pu="--purge=true" force=" --force"
-			toolmsg= "Revanced-cli inotia"
-		elif [ "$clitype" = morphe ]; then
-		    b="-p $patchname.mpp" pu="--purge=true" force=" --force --continue-on-error"
+		if [ "$cliType" = "morphe" ]; then
+		    pu="--purge=true" force=" --force --continue-on-error"
 			toolmsg="Morphe"
-		else
-			if [[ $(ls revanced-cli-*.jar) =~ revanced-cli-([0-9]+) ]]; then
-				num=${BASH_REMATCH[1]}
-				if [ $num -eq 6 ]; then
-					b="-bp $patchname.rvp" pu="--purge=true"  force=" --force"
-					toolmsg="Revanced-cli"
-				fi
-			fi
+        elif [ "$cliType" = "revanced" ]; then
+			b="-bp $name.rvp" pu="--purge=true"  force=" --force"
+			toolmsg="Revanced"
 		fi
-		if [[ "$clitype" = inotia || "$clitype" = morphe ]]; then
+		fi
+		if [["$clitype" = morphe ]]; then
 			unset CI GITHUB_ACTION GITHUB_ACTIONS GITHUB_ACTOR GITHUB_ENV GITHUB_EVENT_NAME GITHUB_EVENT_PATH GITHUB_HEAD_REF GITHUB_JOB GITHUB_REF GITHUB_REPOSITORY GITHUB_RUN_ID GITHUB_RUN_NUMBER GITHUB_SHA GITHUB_WORKFLOW GITHUB_WORKSPACE RUN_ID RUN_NUMBER
 		fi
-		if [[ $makemodule == "true" ]]; then
+		if [[ $makeModule == "true" ]]; then
 			name_out="$name_in-module"
 		fi
 		options=""
 		pname=""
-		rootclioptions=""
-		if [[ "$clitype" == "morphe" ]]; then
+		rootCliOptions=""
+		if [[ "$cliType" == "morphe" ]]; then
 		    while read -r line; do
-               clioptions=$(jq -r '.clioptions // ""' <<< "$line")
-			   patchname=$(jq -r '.patchname // ""' <<< "$line")
-			   options="$options -p $patchname.mpp $clioptions"  
-			   pname="$pname-$patchname"
-			   rootclioptions="$rootclioptions $(jq -r '.rootclioptions // ""' <<< "$line")"
+               cliOptions=$(jq -r '.cliOptions // ""' <<< "$line")
+			   name=$(jq -r '.name // ""' <<< "$line")
+			   options="$options -p $name.mpp $cliOptions"  
+			   pname="$pname-$name"
+			   rootCliOptions="$rootCliOptions $(jq -r '.rootCliOptions // ""' <<< "$line")"
 			done < <(jq -c '.[]'  <<< "$patches")
-			name_out="$name_out$pname-$version$pversion"
+			name_out="$name_out$pname-$appVersion$pversion"
 		else
-            rootclioptions=$(jq -r '.rootclioptions // ""' < <(jq -c '.[0]'  <<< "$patches"))
-		    clioptions=$(jq -r '.clioptions // ""' < <(jq -c '.[0]'  <<< "$patches"))
-			pname=$(jq -r '.patchname // ""' < <(jq -c '.[0]'  <<< "$patches"))
+            rootCliOptions=$(jq -r '.rootCliOptions // ""' < <(jq -c '.[0]'  <<< "$patches"))
+		    cliOptions=$(jq -r '.cliOptions // ""' < <(jq -c '.[0]'  <<< "$patches"))
+			pname=$(jq -r '.name // ""' < <(jq -c '.[0]'  <<< "$patches"))
 			pversion=$patchversion
-		    name_out="$name_out-$pname-$version-p$patchversion"
-			options="$b $clioptions"
+		    name_out="$name_out-$pname-$appVersion-p$patchversion"
+			options="$b $cliOptions"
 	    fi   
-		if [[ $makemodule == "true" ]]; then
-			options="$options $rootclioptions"
+		if [[ $makeModule == "true" ]]; then
+			options="$options $rootCliOptions"
 		fi
-		green_log "[+] Patching $name_in with $toolmsg $cliver and $patchname $patchversion"
+		green_log "[+] Patching $name_in with $toolmsg $cliVer and $pname $pversion"
 	    eval java -jar *cli*.jar patch --keystore=./ks.keystore --keystore-password=$KEYSTORE_PASS --keystore-entry-password=$KEYSTORE_PASS --keystore-entry-alias=$KEYSTORE_ALIAS  --out=./release/$name_out.apk $options $pu$force $a ./download/$name_in.apk
 		unset lock_version
 		unset options
-		if [[ $makemodule == "true" ]]; then
-		    repotag="$apppname$pname"
+		if [[ $makeModule == "true" ]]; then
+		    repotag="$appname$pname"
 			code=$(gh api "/repos/$github_repo/releases/tags/$repotag" | jq -r '.assets[]? | select(.name == "update-$arch.json") | .url' | xargs wget -qO- | jq -r '.versionCode // 0') || yes
 			if [ -z "$code" ] ; then
 				code=1
@@ -220,12 +213,12 @@ patch_mod() {
 			else
 				archname=$arch
 			fi
-			echo -e "PKG_NAME=$pkgname\nPKG_VER=$version\nMODULE_ARCH=$archname" > ./module/config
+			echo -e "PKG_NAME=$appPkgName\nPKG_VER=$appVersion\nMODULE_ARCH=$archname" > ./module/config
 			echo -e "id=$appname-$arch\nname=$appname$pname\nversion=$version (patches $pname - $pversion)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$appname $pname Module\nupdateJson=https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/$repotag/update-$arch.json" > ./module/module.prop
 			zip -r "./release/$name_out.zip" ./module/ > /dev/null 2>&1
 			green_log "[+] Module created: ./release/$name_out.zip"
 			rm -rf ./module ./release/$name_out.apk ./rv_module
-			echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$repotag/$name_out.zip\"\n}" > ./release/update-$arch.json
+			echo -e "{\n\"version\":\"$appVersion\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$repotag/$name_out.zip\"\n}" > ./release/update-$arch.json
 
 		fi
 	else
