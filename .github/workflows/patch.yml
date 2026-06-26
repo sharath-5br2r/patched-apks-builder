@@ -36,7 +36,7 @@ on:
         type: string
 
 jobs:
-  patch:
+  check:
     name: Patch ${{ matrix.app }} with ${{ matrix.patch }} patch
     runs-on: ubuntu-latest
     defaults:
@@ -117,8 +117,7 @@ jobs:
             patch: Icysymmetra
             appname: tiktok
             patchname: icysymmetra
-          
-            
+                   
     steps:
       - name: Check Match
         id: match-check
@@ -127,8 +126,8 @@ jobs:
             echo "should_run=true" >> $GITHUB_OUTPUT
           else
             echo "should_run=false" >> $GITHUB_OUTPUT
-            exit 1
           fi
+    
       - name: Checkout
         uses: actions/checkout@v7
         if: steps.match-check.outputs.should_run == 'true'
