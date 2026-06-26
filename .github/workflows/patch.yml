@@ -159,10 +159,10 @@ jobs:
         run: |
           if [ "${{ matrix.patch }}" =~ "Custom" ]; then
             echo -e "relname=\"${{ matrix.app }} - ${{ matrix.suffix }}\"" >> $GITHUB_OUTPUT
-            bash -e  src/build/custom_patches.sh $appname-$patchname
+            bash  src/build/custom_patches.sh $appname-$patchname
           else
             echo -e "relname=\"${{ matrix.app }} - ${{ matrix.patch }}\"" >> $GITHUB_OUTPUT
-            bash  -e src/build/build.sh
+            bash src/build/build.sh
           fi
       - name: Tailored Release
         uses: ncipollo/release-action@v1
