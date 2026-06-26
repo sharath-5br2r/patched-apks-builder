@@ -191,16 +191,17 @@ rvpatcher(){
 
 npatcher() {
 	dl_patch
-	arch=$(jq -r '.[]' <<< "$archs")
 	get_app
-	green_log "[+] Patching $appname-$arch:"
-	if [[ "$OSTYPE" == "cygwin" ]]; then
-		java -cp "bcprov.jar;npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$appname-$arch.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$patchname.apk" -o ./release/
-	else
-		java -cp "bcprov.jar:npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$appname-$arch.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$patchname.apk" -o ./release/
-	fi
-	mv ./release/$appname-$arch-*-npatched.apk "./release/$appname-$arch-$patchname-$appVersion-$patchVersion.apk"
-	unset lock_version	
+	while read -r arch; do
+		green_log "[+] Patching $appname-$arch:"
+		if [[ "$OSTYPE" == "cygwin" ]]; then
+			java -cp "bcprov.jar;npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$appname-$arch.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$patchname.apk" -o ./release/
+		else
+			java -cp "bcprov.jar:npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$appname-$arch.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$patchname.apk" -o ./release/
+		fi
+		mv ./release/$appname-$arch-*-npatched.apk "./release/$appname-$arch-$patchname-$appVersion-$patchVersion.apk"
+		unset lock_version	
+	done < <(jq -r '.[]' <<< "$archs")
 }	
 patcher(){
 	export query=$appname-$patchname
@@ -223,10 +224,11 @@ patcher(){
 			npatcher
 			;;
 		apksigner)
-            arch=$(jq -r '.[]' <<< "$archs")
 			get_app
-			sign "./download/$appname-$arch.apk" "./release/$appname-$arch-signed-$version.apk"
-			rm -f "./release/*.idsig"
+            while read -r arch; do
+				sign "./download/$appname-$arch.apk" "./release/$appname-$arch-signed-$version.apk"
+				rm -f "./release/*.idsig"
+			done < <(jq -r '.[]' <<< "$archs")
 			;;
 		*)
 			echo "Unknown CLI type, exiting."
