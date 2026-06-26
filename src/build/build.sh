@@ -17,7 +17,7 @@ patch_mod() {
 		b="-bp $name.rvp" pu="--purge=true"  force=" --force"
 		toolmsg="Revanced"
 	fi
-	if [["$clitype" = morphe ]]; then
+	if [[ "$clitype" = morphe ]]; then
 		unset CI GITHUB_ACTION GITHUB_ACTIONS GITHUB_ACTOR GITHUB_ENV GITHUB_EVENT_NAME GITHUB_EVENT_PATH GITHUB_HEAD_REF GITHUB_JOB GITHUB_REF GITHUB_REPOSITORY GITHUB_RUN_ID GITHUB_RUN_NUMBER GITHUB_SHA GITHUB_WORKFLOW GITHUB_WORKSPACE RUN_ID RUN_NUMBER
 	fi
 	if [[ $makeModule == "true" ]]; then
@@ -109,11 +109,11 @@ dl_patch() {
 	excludeFilter=$(jq -r '.excludeFilter // ""' <<< "$line")	
 	case $src in
 		github)
-			eval dl_gh "$repo" "$owner" "$tag" "$patchname$patchExt" $filter $excludeFilter
+			eval dl_gh "$repo" "$owner" "$tag" "$name$patchExt" $filter $excludeFilter
 			changelog_url="https://github.com/$owner/$repo/releases/tag/$tag"
 			;;
 		gitlab)
-			dl_gl "$repo" "$owner" "$tag" "$patchname$patchExt"
+			dl_gl "$repo" "$owner" "$tag" "$name$patchExt"
 			changelog_url="https://gitlab.com/$owner/$repo/-/tags/$tag"
 			;;
 		*)
