@@ -190,17 +190,16 @@ rvpatcher(){
 
 npatcher() {
 	dl_patch
-	while read -r arch; do
-		get_app
-		green_log "[+] Patching $appname-$arch:"
-		if [[ "$OSTYPE" == "cygwin" ]]; then
-			java -cp "bcprov.jar;npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$appname-$arch.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$patchname.apk" -o ./release/
-		else
-			java -cp "bcprov.jar:npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$appname-$arch.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$patchname.apk" -o ./release/
-		fi
-		mv ./release/$appname-$arch-*-npatched.apk "./release/$appname-$arch-$patchname-$appVersion-$patchVersion.apk"
-		unset lock_version	
-	done < <(jq -r '.[]' <<< "$archs")
+	arch=$(jq -r '.[]' <<< "$archs")
+	get_app
+	green_log "[+] Patching $appname-$arch:"
+	if [[ "$OSTYPE" == "cygwin" ]]; then
+		java -cp "bcprov.jar;npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$appname-$arch.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$patchname.apk" -o ./release/
+	else
+		java -cp "bcprov.jar:npatch.jar" -Djava.security.properties=bc.security top.nkbe.npatch.patch.NPatch ./download/$appname-$arch.apk -k ks.keystore  $KEYSTORE_PASS $KEYSTORE_ALIAS $KEYSTORE_PASS -m "$patchname.apk" -o ./release/
+	fi
+	mv ./release/$appname-$arch-*-npatched.apk "./release/$appname-$arch-$patchname-$appVersion-$patchVersion.apk"
+	unset lock_version	
 }	
 patcher(){
 	export query=$appname-$patchname
@@ -223,11 +222,10 @@ patcher(){
 			npatcher
 			;;
 		apksigner)
-		    while read -r arch; do
-				get_app
-				sign "./download/$appname-$arch.apk" "./release/$appname-$arch-signed-$version.apk"
-				rm -f "./release/*.idsig"
-			done < <(jq -r '.[]' <<< "$archs")
+            arch=$(jq -r '.[]' <<< "$archs")
+			get_app
+			sign "./download/$appname-$arch.apk" "./release/$appname-$arch-signed-$version.apk"
+			rm -f "./release/*.idsig"
 			;;
 		*)
 			echo "Unknown CLI type, exiting."
