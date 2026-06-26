@@ -50,7 +50,7 @@ patch_mod() {
 	eval java -jar *cli*.jar patch --keystore=./ks.keystore --keystore-password=$KEYSTORE_PASS --keystore-entry-password=$KEYSTORE_PASS --keystore-entry-alias=$KEYSTORE_ALIAS  --out=./release/$name_out.apk $options $pu$force $a ./download/$name_in.apk
 	unset lock_version
 	unset options
-	if [[ $makeModule == "true" ]]; then
+	if [[ $makeModule == "true" && -f ./release/$name_out.apk ]]; then
 		repotag="$appname$pname"
 		code=$(gh api "/repos/$repository/releases/tags/$repotag" | jq -r '.assets[]? | select(.name == "update-$arch.json") | .url' | xargs wget -qO- | jq -r '.versionCode // 0') || yes
 		if [ -z "$code" ] ; then
@@ -124,16 +124,16 @@ dl_patch() {
 	echo -e "Patch: $patchname\nSource: $owner/$repo($src)\nVersion: $patchVersion\nChangelog: $changelog_url\n\n" >> CHANGELOG.md
 }
 get_app(){
-	appPkgName=$(yq eval '.[strenv(query)].appPkgName' $configfile) || true
-	apkType=$(yq eval '.[strenv(query)].apkType' $configfile) || true
-	appVersion=$(yq eval '.[strenv(query)].appVersion' $configfile) || true
-	appVersionCmd=$(yq eval '.[strenv(query)].appVersionCmd' $configfile) || true
-	apkSrc=$(yq eval '.[strenv(query)].apkSrc' $configfile) || true
-	archs=$(yq eval '.[strenv(query)].archs' -o=j -I=0 $configfile) || true
-	apkDLParams=$(yq eval '.[strenv(query)].apkDLParams' -o=j -I=0 $configfile) || true
-	appRepo=$(yq eval '.[strenv(query)].appRepo' $configfile) || true
-	appOwner=$(yq eval '.[strenv(query)].appOwner' $configfile) || true
-	appTag=$(yq eval '.[strenv(query)].appTag' $configfile) || true
+	appPkgName=$(yq eval -e  '.[strenv(query)].appPkgName' $configfile) || appPkgName=
+	apkType=$(yq eval -e '.[strenv(query)].apkType' $configfile) || apkType=
+	appVersion=$(yq eval -e '.[strenv(query)].appVersion' $configfile) || appVersion=
+	appVersionCmd=$(yq eval -e '.[strenv(query)].appVersionCmd' $configfile) || appVersionCmd=
+	apkSrc=$(yq eval -e '.[strenv(query)].apkSrc' $configfile) || apkSrc=
+	archs=$(yq eval -e '.[strenv(query)].archs' -o=j -I=0 $configfile) || archs=
+	apkDLParams=$(yq eval -e '.[strenv(query)].apkDLParams' $configfile) || apkDLParams=
+	appRepo=$(yq eval -e '.[strenv(query)].appRepo' $configfile) || appRepo=
+	appOwner=$(yq eval -e '.[strenv(query)].appOwner' $configfile) || appOwner=
+	appTag=$(yq eval -e '.[strenv(query)].appTag' $configfile) || appTag=
 	if [[ $appVersion == "latest" ]]; then
 	   lock_version=1
 	elif [[ -n $appVersionCmd ]]; then
