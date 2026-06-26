@@ -80,11 +80,11 @@ patch_mod() {
 dl_cli() {
 	case $cliType in
 		morphe)
-			dl_gh "morphe-cli" "MorpheApp" "latest" "morphe-cli.jar"
+			dl_gh "morphe-cli" "MorpheApp" "latest"
 			patchExt=".mpp"
 			;;
 		revanced)
-			dl_gh "revanced-cli" "ReVanced" "latest" "revanced-cli.jar"
+			dl_gh "revanced-cli" "ReVanced" "latest"
 			patchExt=".rvp"
 			;;
 		npatch)
@@ -127,6 +127,7 @@ get_app(){
 	appPkgName=$(yq eval '.[strenv(query)].appPkgName' $configfile) || true
 	apkType=$(yq eval '.[strenv(query)].apkType' $configfile) || true
 	appVersion=$(yq eval '.[strenv(query)].appVersion' $configfile) || true
+	appVersionCmd=$(yq eval '.[strenv(query)].appVersionCmd' $configfile) || true
 	apkSrc=$(yq eval '.[strenv(query)].apkSrc' $configfile) || true
 	archs=$(yq eval '.[strenv(query)].archs' -o=j -I=0 $configfile) || true
 	apkDLParams=$(yq eval '.[strenv(query)].apkDLParams' -o=j -I=0 $configfile) || true
@@ -166,7 +167,6 @@ get_app(){
 	echo -e "App: $appname\nVersion: $appVersion\n\n" >> CHANGELOG.md
 }
 rvpatcher(){
-    get_app
 	pversion=""
 	while read -r line; do
 	    if [[ -z $lineno ]]; then
@@ -176,6 +176,7 @@ rvpatcher(){
 		pversion="$pversion-p$patchVersion"
 		lineno=$((lineno + 1))
 	done < <(jq -c '.[]'  <<< "$patches")
+	get_app
 	while read -r arch; do
 		patch_mod
 		if [[ $buildModule == "true" ]]; then

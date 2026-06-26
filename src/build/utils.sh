@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mkdir ./release ./download
+mkdir -p ./release ./download
 
 #Check if ks.keystore file exists
 if [ ! -f ks.keystore ]; then
@@ -20,7 +20,7 @@ get_experimental_version() {
 #Setup Apksigner
 if [ ! -f apksigner.jar ]; then
 	wget -qO sdk.zip "https://dl.google.com/android/repository/build-tools_r37_linux.zip"
-	unzip -q -j sdk.zip android-37.0/lib/apksigner.jar
+	unzip -q -o -j sdk.zip android-37.0/lib/apksigner.jar
 	rm -f ./sdk.zip
 fi
 
@@ -28,23 +28,23 @@ fi
 echo -e "\e[32m[+] Setting up pup for HTML parsing\e[0m"
 if [[ $OSTYPE == "cygwin" ]]; then
 	wget -q -O ./pup.zip https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_windows_amd64.zip
-	unzip "./pup.zip" -d "./" > /dev/null 2>&1
+	unzip -o "./pup.zip" -d "./" > /dev/null 2>&1
 	rm -f "./pup.zip"
 	pup="./pup.exe"
 elif [[ $(uname) == "Linux" && $(uname -m) == "aarch64" ]]; then
 	wget -q -O ./pup.zip https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_linux_arm64.zip
-	unzip "./pup.zip" -d "./" > /dev/null 2>&1
+	unzip -o "./pup.zip" -d "./" > /dev/null 2>&1
 	rm -f "./pup.zip"
 	pup="./pup"
 elif [[ $(uname) == "Linux" && $(uname -m) == "x86_64" ]]; then
 	wget -q -O ./pup.zip https://github.com/ericchiang/pup/releases/download/v0.4.0/pup_v0.4.0_linux_amd64.zip
-	unzip "./pup.zip" -d "./" > /dev/null 2>&1
+	unzip -o "./pup.zip" -d "./" > /dev/null 2>&1
 	rm -f "./pup.zip"
 	pup="./pup"
 fi
 #Setup APKEditor for install combine split apks
 echo -e "\e[32m[+] Setting up APKEditor for combining apks\e[0m"
-wget -q $(gh api /repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O APKEditor.jar
+wget -q $(gh api repos/REAndroid/APKEditor/releases/latest | jq -r '.assets[0].browser_download_url') -O APKEditor.jar
 APKEditor="./APKEditor.jar"
 #Find lastest user_agent
 user_agent=$(wget -qO- https://www.whatismybrowser.com/guides/the-latest-user-agent/firefox | tr '\n' ' ' | sed 's#</tr>#\n#g' | grep 'Firefox (Standard)' | sed -n 's/.*<span class="code">\([^<]*Android[^<]*\)<\/span>.*/\1/p') \
@@ -102,30 +102,27 @@ dl_gh(){
     local exclude=$6
 	if [ -n "$filter" ]; then
        if [[ "$exclude" == "exclude" ]]; then
-          urls=$(gh release view $tag --repo $owner/$repo  --json assets | jq --arg filter "$filter" -r '.assets[] | select(.name | contains($filter) | not ) | .url')
+          urls=$(gh release view $tag --repo $owner/$repo  --json assets | jq --arg filter "$filter" -r '.assets[] | select(.name | contains($filter) | not ) | "\(.url) \(.name)"')
        else
-	      urls=$(gh release view $tag --repo $owner/$repo  --json assets | jq --arg filter "$filter" -r '.assets[] | select(.name | contains($filter)) | .url')
+	      urls=$(gh release view $tag --repo $owner/$repo  --json assets | jq --arg filter "$filter" -r '.assets[] | select(.name | contains($filter)) | "\(.url) \(.name)"')
        fi
 	else
-	   urls=$(gh release view $tag --repo $owner/$repo  --json assets | jq -r '.assets[] | .url')
+	   urls=$(gh release view $tag --repo $owner/$repo  --json assets | jq -r '.assets[] | "\(.url) \(.name)"')
 	fi
-	if [[  ! "$urls" == *$'\n'* ]]; then
-	   if [ -n $output ]; then
-	        name=$(basename "$urls")
-	        green_log "[+] Downloading $name from $owner/$repo $tag to $output"
-	    	wget -qO $output $urls
-	   else
-	        name=$(basename "$urls")
-	        green_log "[+] Downloading $name from $owner/$repo $tag"
-	        wget -q $urls
-       fi
-	else
-	   for url in $urls; do
-	        name=$(basename "$url")
-			green_log "[+] Downloading $name from $owner/$repo $tag"
-	        wget -q $url
-	   done
-	fi
+	while read -r url name; do
+		if [[ -n "$url" ]] && [[ "$url" != "null" ]]; then
+			if [[ "$urls" =~ $'\n'  && -n $output ]]; then
+				output_file="$output/$name"
+			elif [[  ! "$urls" =~ $'\n'  && -n $output ]]; then
+				output_file="$output"
+			else
+				output_file="$name"
+			fi
+			green_log "[+] Downloading $name from $owner/$repo $tag to $output_file"
+			wget -q -O "$output_file" "$url"
+		fi
+	done <<< "$urls"
+	
 }
 
 dl_gl() {

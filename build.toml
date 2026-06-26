@@ -24,6 +24,7 @@ name = "xtra"
 repo = "android-patches-xtra"
 owner = "BholeyKaBhakt"
 src = "github"
+tag = "prerelease"
 
 [tiktok-icysymmetra]
 cliType = "morphe"
@@ -36,6 +37,7 @@ name = "icysymmetra"
 repo = "tiktok-patches-for-morphe"
 owner = "icysymmetra"
 src = "github"
+tag = "prerelease"
 
 [youtube-morphe]
 cliType = "morphe"
@@ -52,6 +54,7 @@ owner = "MorpheApp"
 src = "github"
 cliOptions = "-e 'Custom branding' -OcustomName='YouTube Morphe' -e Theme -OdarkThemeBackgroundColor=#000000 -d 'Custom Header'"
 rootCliOptions = "-d 'GmsCore Support'"
+tag = "prerelease"
 
 [youtube-music-morphe]
 cliType = "morphe"
@@ -68,6 +71,7 @@ owner = "MorpheApp"
 src = "github"
 cliOptions = "-e 'Custom branding' -OcustomName='YouTube Morphe' -e Theme -OdarkThemeBackgroundColor=#000000"
 rootCliOptions = "-d 'GmsCore Support'"
+tag = "prerelease"
 
 [prime-video-hoo-dles]
 cliType = "morphe"
@@ -82,6 +86,7 @@ repo = "morphe-patches"
 owner = "hoo-dles"
 src = "github"
 cliOptions = "-e 'Rename Shared Permissions'"
+tag = "prerelease"
 
 [proton-vpn-paresh]
 cliType = "morphe"
@@ -95,6 +100,7 @@ name = "paresh"
 repo = "paresh-patches"
 owner = "Paresh-Maheshwari"
 src = "gitlab"
+tag = "prerelease"
 
 [jiohotstar-paresh]
 cliType = "morphe"
@@ -107,6 +113,7 @@ name = "paresh"
 repo = "paresh-patches"
 owner = "Paresh-Maheshwari"
 src = "gitlab"
+tag = "prerelease"
 
 [symfonium-binarymend]
 cliType = "morphe"
@@ -119,6 +126,7 @@ name = "binarymend"
 repo = "morphe-patches"
 owner = "binarymend"
 src = "github"
+tag = "prerelease"
 
 [x-shim-piko]
 cliType = "morphe"
@@ -131,11 +139,13 @@ name = "shim"
 repo = "x-shim"
 owner = "inotia00"
 src = "gitlab"
+tag = "prerelease"
 [[x-shim-piko.patches]]
 name = "piko"
 repo = "piko"
 owner = "crimera"
 src = "github"
+tag = "prerelease"
 
 [instagram-piko]
 cliType = "morphe"
@@ -148,6 +158,7 @@ name = "piko"
 repo = "piko"
 owner = "crimera"
 src = "github"
+tag = "prerelease"
 
 [discord-revenge]
 cliType = "npatch"
@@ -161,6 +172,7 @@ repo = "revenge-xposed"
 owner = "revenge-mod"
 src = "github"
 filter = "app-release.apk"
+tag = "prerelease"
 
 [amazon-india-signed]
 cliType = "apksigner"
