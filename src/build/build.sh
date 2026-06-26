@@ -141,17 +141,14 @@ get_app(){
 	elif [[ $cliType == "morphe" ]] || [[ $cliType == "revanced" ]]; then
 	   detect_version "$appPkgName" "$patchname$patchExt"
 	fi
-	if [[ $arch != "universal" ]]; then
-	   arch2=$arch
-	fi
 	    
 	while read -r arch; do
 		case $apkSrc in
 			apkmirror)
-				eval get_apk "$appPkgName" "$appname-$arch" "$apkType" $arch2 $apkDLParams
+				eval get_apk "$appPkgName" "$appname-$arch" "$apkType" $arch $apkDLParams
 				;;
 			apkpure)
-				eval get_apkpure "$appPkgName" "$appname-$arch" "$apkType" $arch2 $apkDLParams
+				eval get_apkpure "$appPkgName" "$appname-$arch" "$apkType" $arch $apkDLParams
 				;;
 			google_play)
 			    eval get_apk_chplay "$appPkgName" "$appname-$arch" "$apkType" $apkDLParams
@@ -207,11 +204,11 @@ npatcher() {
 }	
 patcher(){
 	export query=$appname-$patchname
-	archs=$(yq eval '.[strenv(query)].archs' -o=j -I=0 $configfile) || true
-	patches=$(yq eval '.[strenv(query)].patches' -o=j -I=0 $configfile) || true
-	apkSrc=$(yq eval '.[strenv(query)].apkSrc' $configfile) || true
-	cliType=$(yq eval '.[strenv(query)].cliType' $configfile) || true
-	buildModule=$(yq eval '.[strenv(query)].buildModule' $configfile) || true
+	archs=$(yq eval '.[strenv(query)].archs' -o=j -I=0 $configfile) || archs=
+	patches=$(yq eval '.[strenv(query)].patches' -o=j -I=0 $configfile) || patches=
+	apkSrc=$(yq eval '.[strenv(query)].apkSrc' $configfile) || apkSrc=
+	cliType=$(yq eval '.[strenv(query)].cliType' $configfile) || cliType=
+	buildModule=$(yq eval '.[strenv(query)].buildModule' $configfile) || buildModule=
 	case $cliType in
 		morphe)
 			dl_cli
