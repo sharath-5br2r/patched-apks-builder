@@ -121,6 +121,7 @@ appPkgName = "app.symfonik.music.player"
 apkSrc = "apkmirror"
 apkType = "bundle"
 archs = ["universal"]
+appVersion = "latest"
 [[symfonium-binarymend.patches]]
 name = "binarymend"
 repo = "morphe-patches"
@@ -134,6 +135,7 @@ appPkgName = "com.twitter.android"
 apkSrc = "apkmirror"
 archs = ["universal"]
 apkType = "bundle"
+appVersion = "latest"
 [[x-shim-piko.patches]]
 name = "shim"
 repo = "x-shim"

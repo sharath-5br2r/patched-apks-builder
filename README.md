@@ -1,11 +1,17 @@
 # Patched APKs Builder 🛠️
 >[!Note]
->Contains LeviLaunchroid Unlocked BGMI Spoof (Mobile MC Bedrock launcher)
-> -  [Original Unlocked](https://github.com/0Sombra666/LeviLaunchroidUnlocked) — [Apache-2.0](https://github.com/0Sombra666/LeviLaunchroidUnlocked/blob/main/LICENSE) 
-> - [Download](../../releases/tag/levilauncher-unlocked-bgmi) (arm64 only) 
-> - Requires your own Minecraft APK
-> - Built via GitHub Actions and modified with sed
-> - Requires android sdk and ndk and xmake to build locally, it is independent of the other scripts.
+>Contains Dynamic patch modified with sed and  built via GitHub Actions  , these requires lots of tools to build locally
+> - LeviLaunchroid Unlocked BGMI Spoof (Mobile MC Bedrock launcher)
+> 	- [Original Unlocked](https://github.com/0Sombra666/LeviLaunchroidUnlocked) — [Apache-2.0](https://github.com/0Sombra666/LeviLaunchroidUnlocked/blob/main/LICENSE) 
+> 	- [Download](../../releases/tag/levilauncher-unlocked-bgmi) (arm64 only) 
+> 	- Requires your own Minecraft APK
+> - Fold Craft Launcher CoDM Spoof (Java MC Launcher)
+> 	- Original: [GitHub](https://github.com/FCL-Team/FoldCraftLauncher) — [GPL-3.0 License](https://github.com/FCL-Team/FoldCraftLauncher/blob/main/LICENSE)
+>    - [Download Patched](../../releases/tag/fcl-cod)
+>- Geode Launcher PUBG KR Spoof  (Geometry Dash Mod Loader)
+> 	 - Original: [GitHub](https://github.com/geode-sdk/android-launcher) — [Boost-1.0 License](https://github.com/geode-sdk/android-launcher/blob/main/LICENSE.txt)
+> 	 - [Download Patched](../../releases/tag/geode-pubgkr)
+> 	 - Requires your own Geometry Dash APK
 
 ---
 > [!NOTE]
@@ -15,6 +21,7 @@
 > - Added local Windows and Android support.
 > - Added support for chaining patches (required for Piko).
 > - Added root module support.
+> - Added easy configuration using [build.toml](./build.toml)
 
 ---
 
@@ -23,7 +30,7 @@
 Simply choose the app you want to use from the list below. The link will take you directly to the corresponding release of that app. Just download and install it!
 
 > [!NOTE]
-> For older versions of apps, check out the [Archive Release](../..//releases/tag/all).
+> For older versions of apps, check out the [Archive Release](../..//releases/tag/archive).
 
 > [!TIP]
 > **For Obtainium Users:**
@@ -32,9 +39,8 @@ Simply choose the app you want to use from the list below. The link will take yo
 > 3. Enable **Use latest asset upload as release date** and **Use release date as version string (pseudo-version)**.
 
 > [!NOTE]
-> * If you are an advanced user and want to use custom patches for patching ReVanced apps, read the [Customization Guide](../main/docs/Customization.md).
-> * To run the project locally, see the [Local Guide](../main/docs/Local.md).
-> * To see what to do after forking the repository, refer to the [GitHub Actions Guide](../main/docs/Github-Actions.md).
+> * If you are an advanced user and want to use custom patches for patching apps, read the [Customization Guide](./docs/Customization.md).
+
 
 ---
 
@@ -54,81 +60,84 @@ Simply choose the app you want to use from the list below. The link will take yo
 
 ## 📱 Patched Apps
 
-### 🔹 Morphe (beta)
+### 🔹Morphe (beta)
 * **Source:** [MorpheApp/morphe-patches](https://github.com/MorpheApp/morphe-patches) — [GPL-3.0 License](https://github.com/MorpheApp/morphe-patches/blob/main/LICENSE)
-  * [YouTube](https://play.google.com/store/apps/details?id=com.google.android.youtube) (Universal) – [Download Patched](../../releases/tag/youtube-morphe) *(Root module and APKs)*
-  * [YouTube Music](https://play.google.com/store/apps/details?id=com.google.android.apps.youtube.music) (x86_64 & arm64) – [Download Patched](../..//releases/tag/youtube-music-morphe) *(Root module and APKs)*
+* [YouTube](https://play.google.com/store/apps/details?id=com.google.android.youtube) (Universal) – [Download Patched](../../releases/tag/youtube-morphe) *(Root module and APKs)*
+* [YouTube Music](https://play.google.com/store/apps/details?id=com.google.android.apps.youtube.music) (x86_64 & arm64) – [Download Patched](../..//releases/tag/youtube-music-morphe) *(Root module and APKs)*
 
-### 🔹 Piko
+### 🔹Piko
 * **Source:** [crimera/piko](https://github.com/crimera/piko) — [GPL-3.0 License](https://github.com/crimera/piko/blob/main/LICENSE) by crimera
-  * [X (Twitter)](https://play.google.com/store/apps/details?id=com.twitter.android) (Universal) – [Download Patched](../..//releases/tag/x-piko) 
+* [X (Twitter)](https://play.google.com/store/apps/details?id=com.twitter.android) (Universal) – [Download Patched](../..//releases/tag/x-piko) 
     * *Includes [X Shim](https://gitlab.com/inotia00/x-shim/) by inotia00 — [GPL-3.0](https://gitlab.com/inotia00/x-shim/-/blob/main/LICENSE)*
-  * [Instagram](https://play.google.com/store/apps/details?id=com.instagram.android) (x86_64 & arm64) – [Download Patched](../..//releases/tag/instagram-piko)
+- [Instagram](https://play.google.com/store/apps/details?id=com.instagram.android) (x86_64 & arm64) – [Download Patched](../..//releases/tag/instagram-piko)
 
-### 🔹 hoo-dles
+### 🔹Hoo-dles
 * **Source:** [hoo-dles/morphe-patches](https://github.com/hoo-dles/morphe-patches) — [GPL-3.0 License](https://github.com/hoo-dles/morphe-patches/blob/main/LICENSE)
-  * [Prime Video](https://play.google.com/store/apps/details?id=com.amazon.avod.thirdpartyclient) (arm64 only) – [Download Patched](../..//releases/tag/prime-video-hoo-dles)
-  * [Amazon India](https://play.google.com/store/apps/details?id=in.amazon.mShop.android.shopping) (armv7a + arm64) – [Download Signed](../..//releases/tag/amazon-india) *(Signed for compatibility)*
-  * [Amazon Alexa](https://play.google.com/store/apps/details?id=com.amazon.dee.app) (Universal) – [Download Signed](../..//releases/tag/amazon-alexa) *(Signed for compatibility)*
+* [Prime Video](https://play.google.com/store/apps/details?id=com.amazon.avod.thirdpartyclient) (arm64 only) – [Download Patched](../../releases/tag/prime-video-hoo-dles)
+	  * [Amazon India](https://play.google.com/store/apps/details?id=in.amazon.mShop.android.shopping) (armv7a + arm64) – [Download Signed](../../releases/tag/amazon-india) *(Signed for compatibility)*
+	  * [Amazon Alexa](https://play.google.com/store/apps/details?id=com.amazon.dee.app) (Universal) – [Download Signed](../../releases/tag/amazon-alexa) *(Signed for compatibility)*
 
-### 🔹 Paresh
+### 🔹Paresh
 * **Source:** [Paresh-Maheshwari/paresh-patches](https://gitlab.com/Paresh-Maheshwari/paresh-patches) — [GPL-3.0 License](https://gitlab.com/Paresh-Maheshwari/paresh-patches/-/blob/main/LICENSE)
-  * **Proton VPN** (Universal)
+* **Proton VPN** (Universal)
     * Originals: [Play Store](https://play.google.com/store/apps/details?id=ch.protonvpn.android) | [F-Droid](https://f-droid.org/en/packages/ch.protonvpn.android/) | [GitHub](https://github.com/ProtonVPN/android-app) — [GPL-3.0](https://github.com/ProtonVPN/android-app/blob/master/LICENSE)
-    * [Download Patched](../..//releases/tag/protonvpn-paresh)
-  * [JioHotstar](https://play.google.com/store/apps/details?id=in.startv.hotstar) (Indian OTT platform) (Universal) – [Download Patched](../..//releases/tag/jiohotstar-paresh)
+    * [Download Patched](../../releases/tag/protonvpn-paresh)
+* [JioHotstar](https://play.google.com/store/apps/details?id=in.startv.hotstar) (Indian OTT platform) (Universal) – [Download Patched](../../releases/tag/jiohotstar-paresh)
 
----
+### 🔹Xtra
+- **Source:** [BholeyKaBhakt/android-patches-xtra](https://github.com/BholeyKaBhakt/android-patches-xtra)— [GPL-3.0 License](https://github.com/BholeyKaBhakt/android-patches-xtra/blob/main/LICENSE)
+- [**Speedtest**](https://play.google.com/store/apps/details?id=org.zwanoo.android.speedtest) (arm64 and x86_64)  - [Download Patched](../../releases/tag/speedtest-xtra)
+
+### 🔹TikTok Patches
+- **Source:** [icysymmetra/tiktok-patches-for-morphe](https://github.com/icysymmetra/tiktok-patches-for-morphe)— [GPL-3.0 License](https://github.com/icysymmetra/tiktok-patches-for-morphe/blob/main/LICENSE)
+- [TikTok](https://play.google.com/store/apps/details?id=com.zhiliaoapp.musically) (arm64 + armv7a) - [Download Patched](../../releases/tag/tiktok-icysymmetra)
+
+### 🔹Hooman
+- **Source:** [arandomhooman/hoomans-morphe-patches](https://github.com/arandomhooman/hoomans-morphe-patches) — [GPL-3.0 License](https://github.com/arandomhooman/hoomans-morphe-patches/blob/main/LICENSE)
+- [Adobe Acrobat](https://play.google.com/store/apps/details?id=com.adobe.reader) (universal) - [Download Patched](../../releases/tag/adobe-acrobat-hooman)
+
+### 🔹Binarymend
+- **Source:** [binarymend/morphe-patches](https://github.com/binarymend/morphe-patches) — [GPL-3.0 License](https://github.com/binarymend/morphe-patches/blob/main/LICENSE)
+- [Symfonium](https://play.google.com/store/apps/details?id=app.symfonik.music.player) - [Download Patched](../../releases/tag/symfonium-binarymend)
+
+### 🧪 Xposed Patches
+* **Discord** (Revenge) (Likely arm64 only)
+  * [Download Patched](../../releases/tag/discord-revenge)
 
 ## 🛠️ Custom Patches
 
 * **Eden Nightly** (Switch Emulator) (PUBG Spoof) (arm64 standard)
   * Originals: [Homepage](https://eden-emu.dev) | [Nightly Releases](https://git.eden-emu.dev/eden-ci/nightly/releases) — [GPL-3.0 License](https://git.eden-emu.dev/eden-emu/eden/src/branch/master/LICENSE.txt)
-  * [Download Patched](../..//releases/tag/eden-pubg)
+  * [Download Patched](../../releases/tag/eden-pubg)
 * **Dolphin Emulator** (Wii/GameCube Emulator) (arm64 + x86_64) *(SDK 29, no scoped storage)*
   * Originals: [Official Site](https://dolphin-emu.org/download) | [Play Store](https://play.google.com/store/apps/details?id=org.dolphinemu.dolphinemu) — [GPL-2.0+ Mostly](https://github.com/dolphin-emu/dolphin/blob/master/COPYING)
-  * [Download Patched](../..//releases/tag/dolphin-sdk-29)
-* **Fold Craft Launcher** (Universal) (Minecraft Java Launcher) (CoD Spoof)
-  * Original: [GitHub](https://github.com/FCL-Team/FoldCraftLauncher) — [GPL-3.0 License](https://github.com/FCL-Team/FoldCraftLauncher/blob/main/LICENSE)
-  * [Download Patched](../..//releases/tag/fcl-cod)
-* **Geode** (Geometry Dash Mods) (PUBG KR Spoof) (arm64 only)
-  * Original: [GitHub](https://github.com/geode-sdk/android-launcher) — [Boost-1.0 License](https://github.com/geode-sdk/android-launcher/blob/main/LICENSE.txt)
-  * [Download Patched](../..//releases/tag/geode-pubgkr)
+  * [Download Patched](../../releases/tag/dolphin-sdk-29)
 * **Winlator CMOD/Ludashi** (Windows Emulator) (PUBG VN Spoof) (arm64 only)
   * Original: [GitHub](https://github.com/StevenMXZ/Winlator-Ludashi) — [MIT License](https://github.com/StevenMXZ/Winlator-Ludashi/blob/ludashi-3.0/LICENSE)
-  * [Download Patched](../..//releases/tag/winlator-pubgvn)
-
-### 🧪 Xposed Patches
-* **Discord** (Revenge) (Likely arm64 only)
-  * [Download Patched](../..//releases/tag/discord-revenge)
+  * [Download Patched](../../releases/tag/winlator-pubgvn)
 
 
 ---
 
 ## 🧰 Libraries & Tools
 
-* **Morphe Ecosystem**
+* **Morphe**
   * [Morphe CLI](https://github.com/MorpheApp/morphe-cli) — [GPL-3.0 License](https://github.com/MorpheApp/morphe-cli/blob/main/LICENSE)
   * [MicroG RE](https://github.com/MorpheApp/MicroG-RE) — [Apache-2.0 License](https://github.com/MorpheApp/MicroG-RE/blob/main/LICENSE)
 * [pup](https://github.com/ericchiang/pup) — [MIT License](https://github.com/ericchiang/pup/blob/master/LICENSE)
 * [APKEditor](https://github.com/REAndroid/APKEditor) — [Apache-2.0 License](https://github.com/REAndroid/APKEditor/blob/master/LICENSE)
 * [FlareSolverr](https://github.com/FlareSolverr/FlareSolverr) — [MIT License](https://github.com/FlareSolverr/FlareSolverr/blob/master/LICENSE)
 * [tdl](https://github.com/iyear/tdl) — [AGPL-3.0 License](https://github.com/iyear/tdl/blob/master/LICENSE)
+* [AuroraStore](https://gitlab.com/AuroraOSS/AuroraStore) - [GPL-3.0 License](https://gitlab.com/AuroraOSS/AuroraStore/-/blob/master/LICENSE)
 * [NPatch](https://github.com/7723mod/NPatch) — [GPL-3.0 License](https://github.com/7723mod/NPatch/blob/main/LICENSE) *(Used for Xposed)*
 * **Android SDK Build-Tools** —[Custom ToS](https://developer.android.com/studio/terms)
+* [yq](https://github.com/mikefarah/yq) — [MIT License](https://github.com/mikefarah/yq/blob/master/LICENSE)
 * **Revenge**
   * Code inspired by [Manager](https://github.com/revenge-mod/revenge-manager) — [OSL-3.0 License](https://github.com/revenge-mod/revenge-manager/blob/main/LICENSE)
   * Actual module: [Xposed](https://github.com/revenge-mod/revenge-xposed) — [OSL-3.0 License](https://github.com/revenge-mod/revenge-manager/blob/main/LICENSE)
-* **j-hc** [revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module) — [GPL-3.0 License](https://github.com/j-hc/revanced-magisk-module/blob/main/LICENSE) *(Module code only, included as a git submodule)*
+* **j-hc** [revanced-magisk-module](https://github.com/j-hc/revanced-magisk-module) — [GPL-3.0 License](https://github.com/j-hc/revanced-magisk-module/blob/main/LICENSE) *(Module code only, included by cloning git repo, additional inspiration for release notes format and configuration)*
 * **0xBadCod3** [Morphe-RVX-NR](https://github.com/0xBadCod3/Morphe-RVX-NR) — [GPL-3.0 License](https://github.com/0xBadCod3/Morphe-RVX-NR/blob/main/LICENSE) *(Inspiration for Obtainium compatibility & auto-update code upstream)*
 
----
-
-## 🌱 Inspired By
-
-* [@luxysiv / yt-revanced-nonroot](https://github.com/luxysiv/yt-revanced-nonroot) — [GPL-3.0 License](https://github.com/luxysiv/revanced-nonroot/blob/main/LICENSE)
-* [revanced-build-template](https://github.com/n0k0m3/revanced-build-template) — [GPL-3.0 License](https://github.com/n0k0m3/revanced-build-template/blob/main/LICENSE)
-* [revanced-magisk-module by j-hc](https://github.com/j-hc/revanced-magisk-module) — [GPL-3.0 License](https://github.com/j-hc/revanced-magisk-module/blob/main/LICENSE) *(CI code, project now archived)*
 
 
 <details>

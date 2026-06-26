@@ -138,7 +138,9 @@ get_app(){
 	if [[ $appVersion == "latest" ]]; then
 	   lock_version=1
 	elif [[ -n $appVersionCmd ]]; then
-	   eval "$appVersionCmd"
+	   version=$(eval "$appVersionCmd")
+	elif [[ -n $appVersion ]]; then
+	   version=$appVersion
 	elif [[ $cliType == "morphe" ]] || [[ $cliType == "revanced" ]]; then
 	   detect_version "$appPkgName" "$patchname$patchExt"
 	fi

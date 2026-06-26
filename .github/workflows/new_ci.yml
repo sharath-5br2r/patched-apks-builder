@@ -100,6 +100,12 @@ jobs:
     secrets: inherit
     with:
       patch: "icysymmetra"
+  Patch-binarymend:
+    name: Patch binarymend
+    uses: ./.github/workflows/patch.yml
+    secrets: inherit
+    with:
+      patch: "binarymend"
   Patch-Discord-Revenge:
     name: Patch Discord Revenge
     uses: ./.github/workflows/patch.yml

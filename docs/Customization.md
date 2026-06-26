@@ -1,14 +1,52 @@
 # How to customize this repo
 
-> [!IMPORTANT]
-> Remember to append your apps onto `utils.sh` for simplicity.
-
 > [!NOTE]
 > Custom patches are made using [Apktool M](https://maximoff.su/apktool/?lang=en), diff, and then ChatGPT to generate a `sed` patch for that diff.
 
-## `src/build/utils.sh` syntax
+## [`build.toml`](../build.toml) syntax
 
-- Download from GitHub: `dl_gh $repo $owner $tag`
+```toml
+[appname-patchname] # appname and patchname. It is the format of releases
+cliType = "morphe" # Type of CLI. Currenly it is 'morphe', 'revanced', 'apksigner', 'npatch'
+buildModule = "true" # Whether to build a module or not. It is optional.
+
+appPkgName = "com.google.android.apps.youtube.music" # Package name of your app to be patched
+apkSrc = "apkmirror" # Download Source of APK. Currently available are 'apkmirror', 'apkpure', 'google_play', 'github', and 'custom'
+apkType = "apk" # Type of APK. Can be 'apk', 'bundle', 'bundle_extract' depending upon app. Needed for Google Play, APkMirror and APKPure Sources.
+archs = ["arm64-v8a", "x86_64"] # Architecures of app needed to be patched for. Type 'universal' if you dont know anything.
+apkDLParams = '"120-640dpi"  "Android 9.0+"' # Other parameters needed for apk Download. it variues depening upon source.
+#For APKMirror and APKPure, it is the dpi and android version.
+#For google play it is dispenser url
+#For github, it is the filters and its exclusion nature. See below at dl_gh
+#It is optional
+
+appRepo = "FoldCraftLauncher" #Github Repo of app needed to be downloaded from. Only needed for GitHub Source.
+appOnwer = "FCL-Team" #Github Owner of that repo. Only Needed for GitHub Source.
+appTag = "prerelease" #Tag of app needed to be downloaded. Refer below atdl_gh
+
+appVersion = "latest" # version of the app. It can be latest to get latest version, or a provided version.
+appVersionCmd = "get_experimental_version com.google.android.apps.youtube.music" #Custom Command to get version of the app. Here get_experimental_version is used to get experimetal version for morphe. Dont use it with appVersion
+
+[[appname-patchname.patches]]
+name = "morphe" # name of the patch
+repo = "morphe-patches" # repo of the patch
+owner = "MorpheApp" # owner of patch repo
+src = "github" # Where to download patch. Currently supported are 'github' and 'gitlab'
+cliOptions = "-e 'Custom branding' -OcustomName='YouTube Morphe' -e Theme -OdarkThemeBackgroundColor=#000000" # Patch options 
+rootCliOptions = "-d 'GmsCore Support'" # Root only patch options
+tag = "prerelease" # tag of patch. see below at dl_gh
+filter = "mpp" # filter assets in that repo
+excludeFilter = "false" # wheter to exclude thr filter
+#You can repeat this block only for Morphe based Patches .
+```
+
+## [`src/build/helper/apps.json`](../src/build/helper/apps.json) help
+
+-  Add your apps here. Please refer previous entries in that file to add new app.
+-  You need package name, and example urls.
+## [`src/build/utils.sh`](../src/build/utils.sh) syntax
+
+- Download from GitHub: `dl_gh $repo $owner $tag $output $filter $excludeFilter`
   > Where:
   > - `$repo` refers to the repository.
   > - `$owner` refers to the owner of the repository.
@@ -16,80 +54,30 @@
   > - `$tag` can also be:
   >   - `latest` for the latest stable release.
   >   - `prerelease` for the latest prerelease.
+  > - `$output` refers to output file name for one file and dir for many files.
+  > - `$filter` refers to the filter used to select only a few apps. Change it to exclude by setting `$excludeFilter`=`true`
 
-- GitLab syntax is similar, but replace `dl_gh` with `dl_gl`.
+- GitLab syntax is similar, but replace `dl_gh` with `dl_gl`. It currently lacks filtering
 
-- For APKMirror APK downloads, first see `src/build/apps.json` to know the template of links. Then, after adding apps, use:
+- For APKMirror APK downloads, first see [`src/build/helper/apps.json`](../src/build/helper/apps.json) to know the template of links. Then, after adding apps, use:
   ```sh
-  get_apk $apppkgname $appname $filetype $arch $dpi $androidversion
+  get_apk $appPkgName $appname $apkType $arch $dpi $androidversion
   ```
   > Where:
-  > - `$apppkgname` refers to the Android package name.
-  > - `$appname` refers to the friendly app name.
-  > - `$filetype` is either `bundle`, `bundle_extract`, or `apk`, depending upon the app.
-  > - `$arch`, `$dpi`, and `$androidversion` are optional and are needed in some cases. Refer to the build scripts in `src/build` for more information.
-
-- For APKPure, the syntax is similar, but replace it with `dl_apkpure`.
-
-- `get_patches_key $appname-$patchname` is used to initialize custom options.
-  > Where:
-  > - `$appname` refers to the provided app name.
-  > - `$patchname` refers to the provided patch name.
-
-- `patch $apkname $patchname $cli` refers to the main ReVanced patching command.
-  > Where:
-  > - `$apkname` is the name of the APK.
-  > - `$patchname` is the name of the patches bundle.
-  > - `$cli` is the name of the patcher. It can be `revanced` or `morphe`.
-  > - If `$apkname` is `repatch`, it takes the previous APK and patches it with a different patch.
+  > - `$appPkgName` refers to the Android package name.
+  > - `$appname` refers to the patching app name.
+  > - `$apkType` is either `bundle`, `bundle_extract`, or `apk`, depending upon the app.
+  > 	- `$arch`, `$dpi`, and `$androidversion` are optional and are needed in some cases. Refer to the build scripts in[ `src/build`](../src/build/) and [`build.toml`](../build.toml) for more information.
+- For APKPure, the syntax is similar, but replace it with `dl_apkpure`. Remember to edit  [`src/build/helper/apps.json`](../src/build/helper/apps.json)
+- For Google Play, the syntax is almost similar but
+```sh
+get_chplay $appPkgName $appname $filetype $dispenser_url
+```
 
 - `check_experimental $apppkgname` is specific to Morphe experimental app versions to get the latest experimental version from the README.
-
 - `_fs_get $url` uses FlareSolverr against `$url`, which is protected by anti-bot measures. It outputs the content as `$html` and cookies as `$FS_COOKIES`.
-
-- `npatch $baseapkname $moduleapkname $modulename` is used for Xposed patches.
-  > Where:
-  > - `$baseapkname` refers to the original APK name.
-  > - `$moduleapkname` refers to the module APK name.
-  > - `$modulename` is the fancy name of the module.
-
 - `sign $input $output` is used to sign an app, usually one that has been custom patched, where `$input` and `$output` refer to APKs.
-- `make_module $apppkgname $appname $patchname $releasetag $arch` is used to make root modules. `$releasetag` is used to specify which release the module is uploaded and `$arch` is optional unless the app only supports one architecture.
 
-> [!IMPORTANT]
-> Remember to set `$version` before `revanced`/`npatch` to get the original app version appended to the end of ReVanced/Morphe/Xposed patches. Refer to `src/build/build.sh` for more information. Use it as a template for obtaining the version from APKMirror feeds.
-
-## `src/build/build.sh` syntax
-
-> [!NOTE]
-> The script can be launched as:
-> ```sh
-> src/build/build.sh $appname-$patchname
-> ```
-
-- First, there are functions to download dependencies.
-- Then, there are the main patching blocks.
-- Finally, there are case blocks for executing the script with a specific patch.
-
-## For ReVanced/Morphe patches
-
-1. If you want an `options.json`, put it as `$patches-name.json` in `src/options`, where `$patches-name` refers to the patches name (e.g. `piko`, `revanced`, `morphe`). For example:
-   ```
-   src/options/morphe.json
-   ```
-
-2. For simple patch inclusion/exclusion, check:
-   - `src/options/$(appname-patchname)/exclude-patches`
-   - `src/options/$(appname-patchname)/include-patches`
-
-   - Syntax for these files:
-     - One patch per line, with options separated by `|`.
-     - Example:
-       ```
-       Custom branding|-OappName="YouTube ReVanced" -OiconPath=ReVanced*Logo
-       ```
-
-3. If you want to add new apps, see the `utils.sh` syntax above.
 
 ## KeyStore
 
@@ -100,3 +88,146 @@ To create a keystore, refer online and try to use GUI utilities such as <https:/
 You will provide an alias and password when generating a certificate and keystore.
 
 The keystore must be in the BKS (Bouncy Castle KeyStore) format for compatibility with the Morphe/ReVanced CLI.
+
+## GitHub Actions
+
+This repository uses GitHub Actions to automate APK patching. If you want your own version, follow the steps below.
+
+## Required Secrets
+
+To create secrets, go to the **Settings** tab, then select **Actions** under **Secrets and variables** in the **Security and quality** section. Then click **New repository secret**.
+
+The following secrets are required:
+
+- `KEYSTORE`: Base64-encoded version of your BKS keystore. Use:
+  ```sh
+  base64 ks.keystore
+  ```
+- `KEYSTORE_ALIAS`: Signing alias of the keystore.
+- `KEYSTORE_PASS`: Password of the keystore.
+- `PAT_TOKEN`: GitHub Personal Access Token. Used to auto rebase repo. Get it from GitHub Settings.
+- Some other secrets may be needed for dynamic actions only patches. Refer them.
+
+## Syntax
+
+- `.github/workflows/patch.yml` contains every patch you need to manually patch.
+
+  To add a new app:
+  - Copy any one of the existing matrix blocks.
+  - Change the required `appname`,` patchname`,` app`(friendly name) and `patch`(friendly name)
+  - Remember to add `patch` into options of `workflow_dispatch`
+
+  It can be triggered manually using the **Actions** menu or from other workflows.
+
+- `src/etc/ci.sh` is the checker script for GitHub and GitLab, respectively, used to determine whether a new app should be built.
+
+  Syntax:
+  ```sh
+  bash src/etc/ci.sh $reponame $channel $urtag $source
+  ```
+
+  > Where:
+  > - `$source` is either `gh` for github, `gl` for gitlab and `eden` is purpose built for eden emulator ci.
+  > - `$reponame` is formatted as `Owner/Repo`.
+  > - `$channel` is either `latest`, `prerelease`, or `$remotetag`, which is the tag of the remote repository.
+  > - `$urtag` is the name of the tag where the APK is present in your repository.
+
+- `.github/workflows/new_ci.yml` checks for new patches on GitHub/GitLab every 4 hours and runs some patches always
+
+  To add a new app:
+  - Copy one of the existing check blocks.
+  - Modify the patch repository, APK pattern, and release tag used by the checkers.
+  - Add your check output at the end of the `check:` job.
+  - Copy a patching block and modify its check variable in the `if:` field and the `org:` field.
+  - Exclude `needs:` and `if:` if the app receives latest updates instead of patch based 
+
+- `.github/workflows/ci_.yml` , `.github/workflows/manual-patch.yml` and  `.github/workflows/ci.yml` are untouched upstream files to maintain merge compatibility.
+
+## Instructions
+
+1. Select the **Actions** tab.
+2. Select the **Manual Patch** workflow.
+3. Click **Run workflow**.
+4. Select your app or `all` to patch all apps.
+
+# How to run this project locally
+
+## Dependencies
+
+- `git`
+- `wget`
+- `curl`
+- GitHub CLI (`gh`)
+- `bash`
+- `FlareSolverr`
+- Java (any JDK is OK)
+- `yq`
+
+Some of the tools can be downloaded on Windows via Git Bash/MSYS2.
+
+For Termux, run:
+
+```sh
+pkg install git wget curl gh bash openjdk-25
+```
+
+Then download my fork of [FlareSolverr](https://github.com/sharath-5br2r/FlareSolverr-Termux) and install the remaining dependencies:
+
+```sh
+pkg install chromium python
+```
+
+Start FlareSolverr before running the scripts. On Termux:
+
+```sh
+python src/flaresolverr.py
+```
+
+## Steps
+
+### Step 1: Clone this repository or your fork
+
+```sh
+git clone https://github.com/sharath-5br2r/patched-apks-builder
+```
+
+### Step 2: Configure the project
+
+- Copy `.env.example` to `.env` and edit it to your liking.
+- Place your BKS keystore as `ks.keystore` in the root of the repository.
+
+### Step 3: Start the build script
+
+```sh
+bash src/build/build.sh $appname $patchname
+```
+
+Where `$appname` and `$patchname` is described via `build.toml`
+
+Example:
+
+```sh
+bash src/build/build.sh youtube morphe
+```
+
+For Custom Patches, it is
+
+```sh
+bash src/build/custom_patch.sh dolphin-sdk29
+```
+
+>[!Note]
+> On Windows remember to add `-o igncr` to fix patch name before name of the script 
+### Step 4: Get the output
+
+The generated APKs will be available in:
+
+```text
+./build/*.apk
+```
+
+If module is generated, it is at 
+
+```text
+./build/*.zip
+```
