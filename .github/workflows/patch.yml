@@ -127,20 +127,25 @@ jobs:
             echo "should_run=true" >> $GITHUB_OUTPUT
           else
             echo "should_run=false" >> $GITHUB_OUTPUT
+            exit 1
           fi
       - name: Checkout
         uses: actions/checkout@v7
+        if: steps.match-check.outputs.should_run == 'true'
         with:
           submodules: recursive
       - name: Setup Java
+        if: steps.match-check.outputs.should_run == 'true'
         uses: actions/setup-java@v5
         with:
           java-version: 25
           distribution: temurin
       - name: Decode Keystore
+        if: steps.match-check.outputs.should_run == 'true'
         run: |
           echo "${{ secrets.KEYSTORE }}" | base64 --decode > ks.keystore
       - name: Download and Setup FlareSolverr
+        if: steps.match-check.outputs.should_run == 'true'
         run: |
           docker run -d --name flaresolverr -p 8191:8191 ghcr.io/flaresolverr/flaresolverr:latest
           echo "[*] Waiting for FlareSolverr to start..."
@@ -152,6 +157,7 @@ jobs:
             sleep 2
           done
       - name: Patch APK
+        if: steps.match-check.outputs.should_run == 'true'
         id: patch
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -175,6 +181,7 @@ jobs:
             exit 1
           fi
       - name: Tailored Release
+        if: steps.match-check.outputs.should_run == 'true'
         uses: ncipollo/release-action@v1
         with:
           artifacts: |
@@ -185,6 +192,7 @@ jobs:
           removeArtifacts: true
           bodyFile: CHANGELOG.md
       - name: Upload to Archive Release
+        if: steps.match-check.outputs.should_run == 'true'
         uses: ncipollo/release-action@v1
         with:
           artifacts: |
