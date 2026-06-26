@@ -157,7 +157,7 @@ jobs:
           patchname: ${{ matrix.patchname }}
           github_repo: $GITHUB_REPOSITORY
         run: |
-          if [ "${{ matrix.patch }}" == "Custom" ]; then
+          if [ "${{ matrix.patch }}" =~ "Custom" ]; then
             echo -e "relname=\"${{ matrix.app }} - ${{ matrix.suffix }}\"" >> $GITHUB_OUTPUT
             bash -e  src/build/custom_patches.sh $appname-$patchname
           else
