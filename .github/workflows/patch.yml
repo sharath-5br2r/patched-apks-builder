@@ -159,14 +159,14 @@ jobs:
         run: |
           if [ "${{ matrix.patch }}" == "Custom" ]; then
             echo -e "relname=\"${{ matrix.app }} - ${{ matrix.suffix }}\"" >> $GITHUB_OUTPUT
-            bash src/build/custom_patches.sh $appname-$patchname
+            bash src/build/custom_patches.sh $appname-$patchname && echo "build_success=true" >> $GITHUB_OUTPUT || echo "build_success=false" >> $GITHUB_OUTPUT
           else
             echo -e "relname=\"${{ matrix.app }} - ${{ matrix.patch }}\"" >> $GITHUB_OUTPUT
-            bash src/build/build.sh
+            bash src/build/build.sh && echo "build_success=true" >> $GITHUB_OUTPUT || echo "build_success=false" >> $GITHUB_OUTPUT
           fi
       - name: Tailored Release
         uses: ncipollo/release-action@v1
-        if: steps.patch.outcome == 'success' && steps.match-check.outputs.should_run == 'true'
+        if: steps.patch.outputs.build_success == 'true' && steps.match-check.outputs.should_run == 'true'
         with:
           artifacts: |
             ./release/*
@@ -177,7 +177,7 @@ jobs:
           bodyFile: CHANGELOG.md
       - name: Upload to Archive Release
         uses: ncipollo/release-action@v1
-        if: steps.patch.outcome == 'success' && steps.match-check.outputs.should_run == 'true'
+        if: steps.patch.outputs.build_success == 'true' && steps.match-check.outputs.should_run == 'true'
         with:
           artifacts: |
             ./release/*

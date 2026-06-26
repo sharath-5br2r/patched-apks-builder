@@ -162,7 +162,7 @@ dl_gl() {
     while read -r url name; do
       if [[ -n "$url" ]] && [[ "$url" != "null" ]] && [[ $url != *.asc ]]; then
 
-	    if [[ "$urls" =~ $'\n'  && -n $output]]; then
+	    if [[ "$urls" =~ $'\n'  && -n $output ]]; then
 			output_file="$output/$name"
 		elif [[  ! "$urls" =~ $'\n'  && -n $output ]]; then
 			output_file="$output"
