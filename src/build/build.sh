@@ -141,13 +141,17 @@ get_app(){
 	elif [[ $cliType == "morphe" ]] || [[ $cliType == "revanced" ]]; then
 	   detect_version "$appPkgName" "$patchname$patchExt"
 	fi
+	if [[ $arch != "universal" ]]; then
+	   arch2=$arch
+	fi
+	    
 	while read -r arch; do
 		case $apkSrc in
 			apkmirror)
-				eval get_apk "$appPkgName" "$appname-$arch" "$apkType" "$arch" $apkDLParams
+				eval get_apk "$appPkgName" "$appname-$arch" "$apkType" $arch2 $apkDLParams
 				;;
 			apkpure)
-				eval get_apkpure "$appPkgName" "$appname-$arch" "$apkType" "$arch" $apkDLParams
+				eval get_apkpure "$appPkgName" "$appname-$arch" "$apkType" $arch2 $apkDLParams
 				;;
 			google_play)
 			    eval get_apk_chplay "$appPkgName" "$appname-$arch" "$apkType" $apkDLParams
