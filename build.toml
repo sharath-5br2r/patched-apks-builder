@@ -121,7 +121,6 @@ appPkgName = "app.symfonik.music.player"
 apkSrc = "apkmirror"
 apkType = "bundle"
 archs = ["universal"]
-appVersion = "latest"
 [[symfonium-binarymend.patches]]
 name = "binarymend"
 repo = "morphe-patches"
