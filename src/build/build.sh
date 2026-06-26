@@ -72,6 +72,7 @@ patch_mod() {
 		echo -e "PKG_NAME=$appPkgName\nPKG_VER=$appVersion\nMODULE_ARCH=$archname" > ./module/config
 		echo -e "id=$appname-$arch\nname=$appname$pname\nversion=$version (patches $pname - $pversion)\nversionCode=$code\nauthor=sharath-5br2r\ndescription=$appname $pname Module\nupdateJson=https://github.com/sharath-5br2r/patched-apks-builder/releases/tag/$repotag/update-$arch.json" > ./module/module.prop
 		zip -r "./release/$name_out.zip" ./module/ > /dev/null 2>&1
+		echo -e "{\n\"version\":\"$version\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$repotag/$name_out.zip\"\n}" > ./release/update-$arch.json
 		green_log "[+] Module created: ./release/$name_out.zip"
 		rm -rf ./module ./release/$name_out.apk ./rv_module
 	fi
