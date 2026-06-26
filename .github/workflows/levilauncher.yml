@@ -120,17 +120,6 @@ jobs:
           KEYSTORE_PASS: ${{ secrets.KEYSTORE_PASS }}
           KEYSTORE_ALIAS: ${{ secrets.KEYSTORE_ALIAS }}
 
-      - name: Upload to Archive Release
-        uses: ncipollo/release-action@v1.21.0
-        with:
-          artifacts: |
-            ${{ env.APK_OUT }}
-          name: "Old APKs"
-          tag: "archive"
-          allowUpdates: true
-          makeLatest: true
-          body: "This release contains all the old APKs that have been patched and released in the past. You can download any of the old APKs from this release."
-        
       - name: Release Seperately
         uses: ncipollo/release-action@v1.21.0
         with:
@@ -140,3 +129,14 @@ jobs:
             name: "LeviLauncher Unlocked BGMI"
             tag: "levilauncher-unlocked-bgmi"
             allowUpdates: true
+      - name: Upload to Archive Release
+        uses: ncipollo/release-action@v1.21.0
+        with:
+          artifacts: |
+            ${{ env.APK_OUT }}
+          name: "Old APKs"
+          tag: "archive"
+          allowUpdates: true
+          makeLatest: true
+          body: "This release contains some of the old APKs that have been patched and released in the past. You can download any of the old APKs from this release."
+      

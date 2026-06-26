@@ -1,151 +1,155 @@
 name: CI
 permissions: write-all
 on:
-  schedule:
-    - cron: "0 0/4 * * *"
   workflow_dispatch:
-    inputs:
-      retry_count:
-        description: 'Do not change value below'
-        required: false
-        default: '1'
+  schedule:
+    - cron: '0 0/4 * * *'
 jobs:
   check:
     name: Check new patch
     runs-on: ubuntu-latest
     env:
       repository: ${{ github.repository }}
-      TDL_BACKUP: ${{ secrets.TDL_BACKUP }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
         uses: actions/checkout@v7
-      - name: Check new patch Morphe YouTube
+      - name: Check new patch Morphe
         id: check-morphe
-        run: bash scripts/checker.sh youtube-morphe
-      - name: Check new patch Piko(Instagram)
-        id: check-piko-instagram
-        run: bash scripts/checker.sh instagram-piko
-      - name: Check new patch binarymend 
-        id: check-binarymend
-        run: bash src/etc/checker.sh symfonium-binarymend
-      - name: Check new app FCL
-        id: check-fcl
-        run: bash src/etc/checker.sh fcl-cod
-      - name: Check new app Geode
-        id: check-geode
-        run: bash src/etc/checker.sh geode-pubgkr
-      - name: Check new app LeviLauncher Unlocked
-        id: check-levilauncher
-        run: bash src/etc/checker.sh levilauncher-unlocked-bgmi
-      - name: Check new app Winlator
-        id: check-winlator
-        run: bash src/etc/checker.sh winlator-pubgvn
+        run: bash src/etc/ci.sh MorpheApp/morphe-patches prerelease youtube-morphe github
+      - name: Check new patch Piko
+        id: check-piko
+        run: bash src/etc/ci.sh crimera/piko prerelease instagram-piko github
+      - name: Check new patch Paresh
+        id: check-paresh
+        run: bash src/etc/ci.sh Paresh-Maheshwari/paresh-patches prerelease jiohotstar-paresh gitlab
+      - name: Check new patch hoo-dles
+        id: check-hoo-dles
+        run: bash src/etc/ci.sh hoo-dles/morphe-patches prerelease prime-video-hoo-dles github
       - name: Check new patch icysymmetra
         id: check-icysymmetra
-        run: bash src/etc/checker.sh tiktok-icysymmetra
+        run: bash src/etc/ci.sh icysymmetra/tiktok-patches-for-morphe prerelease tiktok-icysymmetra
+      - name: Check new app Eden
+        id: check-eden
+        run: bash src/etc/ci.sh Eden-CI/Workflow prerelease eden-pubg eden
+      - name: Check new app FoldCraftLauncher
+        id: check-fcl
+        run: bash src/etc/ci.sh FCL-Team/FoldCraftLauncher prerelease fcl-cod github
+      - name: Check new app LeviLauncher Unlocked
+        id: check-levilauncher-unlocked
+        run: bash src/etc/ci.sh 0Sombra666/LeviLaunchroidUnlocked prerelease levilauncher-unlocked-bgmi github
+      - name: Check new app Geode Launcher
+        id: check-geode
+        run: bash src/etc/ci.sh geode-sdk/android-launcher prerelease geode-pubgkr github
+      - name: Check new app Winlator Ludashi
+        id: check-winlator
+        run: bash src/etc/ci.sh StevenMXZ/Winlator-Ludashi prerelease winlator-pubgvn github
     outputs:
       check_morphe: ${{ steps.check-morphe.outputs.new_patch }}
-      check_piko_instagram: ${{ steps.check-piko-instagram.outputs.new_patch }}
-      check_binarymend: ${{ steps.check-binarymend.outputs.new_patch }}
-      check_fcl: ${{ steps.check-fcl.outputs.new_patch }}
-      check_geode: ${{ steps.check-geode.outputs.new_patch }}
+      check_piko: ${{ steps.check-piko.outputs.new_patch }}
+      check_paresh: ${{ steps.check-paresh.outputs.new_patch }}
+      check_hoo_dles: ${{ steps.check-hoo-dles.outputs.new_patch }}
       check_icysymmetra: ${{ steps.check-icysymmetra.outputs.new_patch }}
+      check_eden: ${{ steps.check-eden.outputs.new_patch }}
+      check_fcl: ${{ steps.check-fcl.outputs.new_patch }}
+      check_levilauncher_unlocked: ${{ steps.check-levilauncher-unlocked.outputs.new_patch }}
+      check_geode: ${{ steps.check-geode.outputs.new_patch }}
       check_winlator: ${{ steps.check-winlator.outputs.new_patch }}
-      check_levilauncher: ${{ steps.check-levilauncher.outputs.new_patch }}
   Patch-Morphe:
     name: Patch Morphe
     needs: check
     if: ${{ needs.check.outputs.check_morphe == 1 }}
-    uses: ./.github/workflows/new_manual-patch.yml
+    uses: ./.github/workflows/patch.yml
     secrets: inherit
     with:
       patch: "Morphe"
-  Patch-Piko-X:
-    name: Patch Piko(X)
-    needs: check
-    uses: ./.github/workflows/new_manual-patch.yml
+  Patch-Twitter-Piko:
+    name: Patch Twitter Piko
+    uses: ./.github/workflows/patch.yml
     secrets: inherit
     with:
       patch: "Piko (with shim)"
-  Patch-Piko-Instagram:
-    name: Patch Piko(Instagram)
+  Patch-Piko:
+    name: Patch Piko
     needs: check
-    if: ${{ needs.check.outputs.check_piko_instagram == 1 }}
-    uses: ./.github/workflows/new_manual-patch.yml
+    if: ${{ needs.check.outputs.check_piko == 1 }}
+    uses: ./.github/workflows/patch.yml
     secrets: inherit
     with:
       patch: "Piko"
-  Patch-paresh:
+  Patch-Paresh:
     name: Patch Paresh
     needs: check
-    uses: ./.github/workflows/new_manual-patch.yml
+    if: ${{ needs.check.outputs.check_paresh == 1 }}
+    uses: ./.github/workflows/patch.yml
     secrets: inherit
     with:
       patch: "Paresh"
-  Patch-binarymend:
-    name: Patch binarymend
+  Patch-hoo-dles:
+    name: Patch hoo-dles
     needs: check
-    if: ${{ needs.check.outputs.check_binarymend == 1 }}
-    uses: ./.github/workflows/new_manual-patch.yml
+    if: ${{ needs.check.outputs.check_hoo_dles == 1 }}
+    uses: ./.github/workflows/patch.yml
     secrets: inherit
     with:
-      patch: "binarymend"
-  Patch-FCL:
-    name: Patch FCL
+      patch: "hoo-dles"
+  Patch-icysymmetra:
+    name: Patch icysymmetra
+    needs: check
+    if: ${{ needs.check.outputs.check_icysymmetra == 1 }}
+    uses: ./.github/workflows/patch.yml
+    secrets: inherit
+    with:
+      patch: "icysymmetra"
+  Patch-Discord-Revenge:
+    name: Patch Discord Revenge
+    uses: ./.github/workflows/patch.yml
+    secrets: inherit
+    with:
+      patch: "Revenge"
+  Patch-Dolphin-Custom:
+    name: Patch Dolphin Custom
+    uses: ./.github/workflows/patch.yml
+    secrets: inherit
+    with:
+      patch: "Custom (Dolphin)"
+  Patch-Eden-Custom:
+    name: Patch Eden Custom
+    needs: check
+    if: ${{ needs.check.outputs.check_eden == 1 }}
+    uses: ./.github/workflows/patch.yml
+    secrets: inherit
+    with:
+      patch: "Custom (Eden)"
+  Patch-Winlator-Custom:
+    name: Patch Winlator Custom
+    needs: check
+    if: ${{ needs.check.outputs.check_winlator == 1 }}
+    uses: ./.github/workflows/patch.yml
+    secrets: inherit
+    with:
+      patch: "Custom (Winlator)"
+  Patch-LeviLauncher-Unlocked:
+    name: Patch LeviLauncher Unlocked
+    needs: check
+    if: ${{ needs.check.outputs.check_levilauncher_unlocked == 1 }}
+    uses: ./.github/workflows/levilauncher.yml
+    secrets: inherit
+  Patch-FoldCraftLauncher:
+    name: Patch FoldCraftLauncher
     needs: check
     if: ${{ needs.check.outputs.check_fcl == 1 }}
     uses: ./.github/workflows/fcl.yml
     secrets: inherit
-  Patch-Geode:
-    name: Patch Geode
+  Patch-Geode-Launcher:
+    name: Patch Geode Launcher
     needs: check
     if: ${{ needs.check.outputs.check_geode == 1 }}
     uses: ./.github/workflows/geode.yml
     secrets: inherit
-  Patch-Custom:
-    name: Patch Custom
-    needs: check
-    uses: ./.github/workflows/new_manual-patch.yml
-    with:
-      patch: "Custom"
+  Sign-Apps:
+    name: Sign Apps
+    uses: ./.github/workflows/patch.yml
     secrets: inherit
-  Patch-Revenge:
-    name: Patch Revenge
-    uses: ./.github/workflows/new_manual-patch.yml
-    with:
-      patch: "Revenge"
-    secrets: inherit
-  sign:
-    name: Sign
-    needs: check
-    uses: ./.github/workflows/new_manual-patch.yml
     with:
       patch: "Sign"
-    secrets: inherit
-  Patch-Hooman:
-    name: Patch Hooman
-    needs: check
-    uses: ./.github/workflows/new_manual-patch.yml
-    with:
-      patch: "Hooman"
-    secrets: inherit
-  Patch-Icysymmetra:
-    name: Patch Icysymmetra
-    needs: check
-    if: ${{ needs.check.outputs.check_icysymmetra == 1 }} 
-    uses: ./.github/workflows/new_manual-patch.yml
-    with:
-      patch: "Icysymmetra"
-  Patch-hoo-dles:
-    name: Patch hoo-dles
-    uses: ./.github/workflows/new_manual-patch.yml
-    secrets: inherit
-    with:
-      patch: "hoo-dles"
-  Patch-LeviLauncher-Unlocked:
-    name: Patch LeviLauncher Unlocked
-    needs: check
-    if: ${{ needs.check.outputs.check_levilauncher == 1 }}
-    uses: ./.github/workflows/levilauncher.yml
-    secrets: inherit
+    

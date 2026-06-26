@@ -77,4 +77,4 @@ jobs:
           name: "Old APKs"
           tag: "archive"
           allowUpdates: true
-          body: "This release contains all the old APKs that have been patched and released in the past. You can download any of the old APKs from this release."
+          body: "This release contains some of the old APKs that have been patched and released in the past. You can download any of the old APKs from this release."

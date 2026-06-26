@@ -22,10 +22,13 @@ on:
           - 'hoo-dles'
           - 'binarymend'
           - 'Revenge'
-          - 'Custom'
+          - 'Custom (Dolphin)'
+          - 'Custom (Eden)'
+          - 'Custom (Winlator)'
           - 'Sign'
           - 'Hooman'
           - 'Icysymmetra'
+          - 'Xtra'
   workflow_call:
     inputs:
       patch:
@@ -80,18 +83,18 @@ jobs:
             appname: discord
             patchname: revenge
           - app: Dolphin
-            patch: Custom
+            patch: Custom (Dolphin)
             suffix: SDK29
             appname: dolphin
             patchname: sdk29
           - app: Eden Nightly
-            patch: Custom
+            patch: Custom (Eden)
             suffix: PUBG
             appname: eden
             patchname: pubg
           - app: Winlator 
             suffix: PUBGVN
-            patch: Custom
+            patch: Custom (Winlator)
             appname: winlator
             patchname: pubgvn
           - app: Amazon India
@@ -155,10 +158,10 @@ jobs:
           github_repo: $GITHUB_REPOSITORY
         run: |
           if [ "${{ matrix.patch }}" == "Custom" ]; then
-            name="${{ matrix.app }}-${{ matrix.suffix }}"
-            bash scripts/custom_patches.sh $appname-$patchname ${{ matrix.suffix }}
+            echo -e "relname=\"${{ matrix.app }} - ${{ matrix.suffix }}\"" >> $GITHUB_OUTPUT
+            bash scripts/custom_patches.sh $appname-$patchname
           else
-            name="${{ matrix.app }}-${{ matrix.patch }}"
+            echo -e "relname=\"${{ matrix.app }} - ${{ matrix.patch }}\"" >> $GITHUB_OUTPUT
             bash scripts/build.sh
           fi
       - name: Tailored Release
@@ -167,7 +170,7 @@ jobs:
         with:
           artifacts: |
             ./release/*
-          name: ${{ matrix.app }} - ${{ matrix.patch }} Patch
+          name: ${{ steps.patch.outputs.relname }}
           tag: ${{ matrix.appname }}-${{ matrix.patchname }}
           allowUpdates: true
           removeArtifacts: true
@@ -182,6 +185,6 @@ jobs:
           tag: "archive"
           allowUpdates: true
           makeLatest: true
-          body: "This release contains all the old APKs that have been patched and released in the past. You can download any of the old APKs from this release."
+          body: "This release contains some of the old APKs that have been patched and released in the past. You can download any of the old APKs from this release."
 
         
