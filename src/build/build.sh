@@ -74,8 +74,6 @@ patch_mod() {
 		zip -r "./release/$name_out.zip" ./module/ > /dev/null 2>&1
 		green_log "[+] Module created: ./release/$name_out.zip"
 		rm -rf ./module ./release/$name_out.apk ./rv_module
-		echo -e "{\n\"version\":\"$appVersion\",\n\"versionCode\":$code,\n\"zipUrl\":\"https://github.com/sharath-5br2r/patched-apks-builder/releases/download/$repotag/$name_out.zip\"\n}" > ./release/update-$arch.json
-
 	fi
 }
 
@@ -100,7 +98,6 @@ dl_cli() {
 	esac
 	cliVer=$tag
 	echo -e "CLI: $cliType\nVersion: $cliVer\n\n" >> CHANGELOG.md
-	echo -e "{ \"cli\": \"$cliType\", \"version\": \"$cliVer\" }" >> ./release/version.jsonl
 }
 dl_patch() {
 	name=$(jq -r '.name // ""' <<< "$line")
@@ -124,7 +121,6 @@ dl_patch() {
 			;;
 	esac
 	patchVersion=$tag
-	echo -e "{ \"patchname\": \"$patchname\", \"owner\": \"$owner\", \"repo\": \"$repo\", \"source\": \"$src\", \"version\": \"$patchVersion\" }" >> ./release/version.jsonl
 	echo -e "Patch: $patchname\nSource: $owner/$repo($src)\nVersion: $patchVersion\nChangelog: $changelog_url\n\n" >> CHANGELOG.md
 }
 get_app(){
@@ -166,7 +162,6 @@ get_app(){
 				;;
 			esac
 			appVersion=$(java -jar ./APKEditor.jar info -i ./download/$appname-$arch.apk -version-name  -t json | jq -r '.[].VersionName')
-			echo -e "{ \"appname\": \"$appname\", \"appVersion\": \"$appVersion\" , \"arch\": \"$arch\", \"apkSrc\": \"$apkSrc\", \"appRepo\": \"$appRepo\", \"appTag\": \"$appTag\", \"apkDLParams\": \"$apkDLParams\" }" >> ./release/version.jsonl
 	done < <(jq -r '.[]' <<< "$archs")
 	echo -e "App: $appname\nVersion: $appVersion\n\n" >> CHANGELOG.md
 }

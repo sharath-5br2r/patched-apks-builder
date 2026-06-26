@@ -93,36 +93,36 @@ dl_gh(){
 	owner="$2"
     tag="$3"
 	if [[ "$tag" == "latest" ]]; then
-	   tag=$(gh release list --repo $repo --exclude-pre-releases --limit 1 --json tagName --jq '.[].tagName')
+	   tag=$(gh release list --repo $owner/$repo --exclude-pre-releases --limit 1 --json tagName --jq '.[].tagName')
 	elif [[ "$tag" == "prerelease" ]]; then
-	   tag=$(gh release list --repo $repo --limit 1 --json tagName --jq '.[].tagName')
+	   tag=$(gh release list --repo $owner/$repo --limit 1 --json tagName --jq '.[].tagName')
 	fi
 	local output=$4
 	local filter=$5
     local exclude=$6
 	if [ -n "$filter" ]; then
        if [[ "$exclude" == "exclude" ]]; then
-          urls=$(gh release view $tag --repo $repo  --json assets | jq --arg filter "$filter" -r '.assets[] | select(.name | contains($filter) | not ) | .url')
+          urls=$(gh release view $tag --repo $owner/$repo  --json assets | jq --arg filter "$filter" -r '.assets[] | select(.name | contains($filter) | not ) | .url')
        else
-	      urls=$(gh release view $tag --repo $repo  --json assets | jq --arg filter "$filter" -r '.assets[] | select(.name | contains($filter)) | .url')
+	      urls=$(gh release view $tag --repo $owner/$repo  --json assets | jq --arg filter "$filter" -r '.assets[] | select(.name | contains($filter)) | .url')
        fi
 	else
-	   urls=$(gh release view $tag --repo $repo  --json assets | jq -r '.assets[] | .url')
+	   urls=$(gh release view $tag --repo $owner/$repo  --json assets | jq -r '.assets[] | .url')
 	fi
 	if [[  ! "$urls" == *$'\n'* ]]; then
 	   if [ -n $output ]; then
 	        name=$(basename "$urls")
-	        green_log "[+] Downloading $name from $repo $tag to $output"
+	        green_log "[+] Downloading $name from $owner/$repo $tag to $output"
 	    	wget -qO $output $urls
 	   else
 	        name=$(basename "$urls")
-	        green_log "[+] Downloading $name from $repo $tag"
+	        green_log "[+] Downloading $name from $owner/$repo $tag"
 	        wget -q $urls
        fi
 	else
 	   for url in $urls; do
 	        name=$(basename "$url")
-			green_log "[+] Downloading $name from $repo $tag"
+			green_log "[+] Downloading $name from $owner/$repo $tag"
 	        wget -q $url
 	   done
 	fi
