@@ -1,4 +1,7 @@
 # Patched APKs Builder 🛠️
+>[!WARNING]
+>This project had been deprecated for a new builder 
+
 >[!Note]
 >Contains Dynamic patch modified with sed and  built via GitHub Actions  , these requires lots of tools to build locally
 > - LeviLaunchroid Unlocked BGMI Spoof (Mobile MC Bedrock launcher)
